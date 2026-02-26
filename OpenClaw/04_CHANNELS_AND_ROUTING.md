@@ -10,7 +10,14 @@ Common channels documented: WhatsApp, Telegram, Discord, Slack, Google Chat, Sig
 - Channel account receives inbound messages.
 - Gateway maps inbound context to agent/session.
 - Group policies can require mentions / activation rules.
-- Reply routing can target source channel/session context.
+- Reply routing targets source channel/session context by default, with same-channel fallback behavior when origin routing is unavailable.
+
+## Telegram behavior to know (current)
+- Preview streaming is controlled by `channels.telegram.streaming` with modes: `off | partial | block | progress`.
+- Telegram preview streaming is message-based (`sendMessage` + `editMessageText`), not token-delta transport.
+- `progress` maps to Telegram partial-style preview behavior.
+- Mixed text + media turns keep finalized text previews visible.
+- Reaction ingress and group sender access are authorization-gated by channel policy.
 
 ## Pairing and trust model
 - Pairing + allowlists are central to DM safety for unknown senders.

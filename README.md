@@ -1,6 +1,9 @@
 # Malik's LLM Documentation Library
 
 ## Collections
-- `openclaw/` — curated, bot-friendly orientation pack for the OpenClaw project.
+- `OpenClaw/` — curated, bot-friendly orientation pack for the OpenClaw project.
+- `ElevenLabs/` — realtime transcription/translation architecture + implementation docs.
 
-Start at: `openclaw/00_INDEX.md`
+Start points:
+- `OpenClaw/00_INDEX.md`
+- `ElevenLabs/00_INDEX.md`

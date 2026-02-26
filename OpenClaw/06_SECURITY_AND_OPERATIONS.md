@@ -4,10 +4,15 @@
 OpenClaw treats inbound chat surfaces as untrusted input. Pairing, allowlists, auth tokens/passwords, and sandbox boundaries are core controls.
 
 ## Critical docs
-- `openclaw-src/docs/gateway/security.md`
+- `openclaw-src/docs/gateway/security/index.md`
 - `openclaw-src/docs/channels/troubleshooting.md`
 - `openclaw-src/docs/gateway/*` (ops runbooks)
 - CLI security surface: `openclaw-src/docs/cli/security.md`
+
+## Current policy defaults/operators should know
+- Heartbeat direct/DM delivery policy is explicit via `agents.defaults.heartbeat.directPolicy` (`allow` or `block`).
+- Keep channel authorization fail-closed in shared/group contexts (use explicit allowlists).
+- Treat reaction/interaction ingress as privileged input and keep policy checks aligned with normal message authorization.
 
 ## Operational hygiene checklist
 - Use `openclaw doctor` for drift and common misconfigurations.
