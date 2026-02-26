@@ -19,7 +19,6 @@ Use this to jump to the right docs quickly.
 - `openclaw-src/docs/channels/troubleshooting.md`
 - `openclaw-src/docs/channels/<channel>.md`
 - `openclaw-src/docs/gateway/troubleshooting.md`
-- For streaming behavior/mode mapping: `openclaw-src/docs/concepts/streaming.md`
 
 ## “How do I automate this?”
 - `openclaw-src/docs/automation/cron-jobs.md`

@@ -1,6 +1,22 @@
-# Trilinos Package Catalog (First Pass)
+# Trilinos Package Catalog
 
-Total packages detected: **43**
+## Scope
+Catalog of package directories under `Trilinos/packages/`, with CODEOWNERS mapping when available.
+
+## Audience
+- Engineers locating package roots quickly
+- LLM systems routing package-specific queries
+
+## Prerequisites
+- Local or remote access to the Trilinos repository tree
+- `.github/CODEOWNERS` for owner mapping
+
+## Content
+
+### Package count
+Total packages detected under `packages/`: **43**
+
+### Package to owner mapping
 
 | Package | Owner (CODEOWNERS) |
 |---|---|
@@ -47,3 +63,11 @@ Total packages detected: **43**
 | `xpetra` | @trilinos/xpetra |
 | `zoltan` | @trilinos/zoltan |
 | `zoltan2` | @trilinos/zoltan2 |
+
+## Validation
+- Recompute package list from `packages/` when repository updates.
+- Re-read `.github/CODEOWNERS` because ownership entries can change independently of package paths.
+
+## Provenance
+- `Trilinos/packages/`
+- `Trilinos/.github/CODEOWNERS`

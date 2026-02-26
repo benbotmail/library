@@ -12,7 +12,6 @@ Key source: `openclaw-src/docs/concepts/architecture.md`
 - First frame must be `connect`.
 - Request/response frame model with typed payloads.
 - Server-push events for streaming + state updates.
-- Channel streaming is preview/message-based and layered separately from block reply chunking.
 - Token/password auth can gate connections.
 - Idempotency keys expected for side-effecting operations.
 

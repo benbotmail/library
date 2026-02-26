@@ -1,4 +1,4 @@
-# Trilinos Build & Install Playbook (LLM-Friendly, First Draft)
+# Trilinos Build & Install Playbook
 
 ## Scope
 Quick, reliable paths to configure, build, and install Trilinos.
@@ -78,11 +78,14 @@ See: `demos/simpleBuildAgainstTrilinos/README.md` in repo.
 3. **Unclear package set**
    - Use configure output or package list docs (`PackagesList.cmake`) to choose targeted enables.
 
+## Validation
+- Confirm CMake version is at least 3.23.0 before configure.
+- For MPI builds, verify MPI wrapper/compiler consistency (`mpicc`, `mpicxx`, optional `mpifort`).
+- After install, validate downstream consumption using `demos/simpleBuildAgainstTrilinos`.
+
 ## Provenance
 - `Trilinos/INSTALL.rst`
 - `Trilinos/README.md`
 - `Trilinos/PackagesList.cmake`
+- `Trilinos/demos/simpleBuildAgainstTrilinos/README.md`
 - Official docs index: <https://trilinos.github.io/documentation.html>
-
-## Status
-Draft v1 (to be expanded with platform-specific recipes and validated examples).

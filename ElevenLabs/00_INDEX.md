@@ -8,8 +8,6 @@ This pack is focused on building a **near-real-time transcription + translation 
 3. `03_IMPLEMENTATION_BLUEPRINT_NODE.md`
 4. `04_BATCH_TRANSLATION_WITH_DUBBING.md`
 5. `05_OPS_LATENCY_COST_CHECKLIST.md`
-6. `06_REALTIME_TRANSLATION_REFERENCE_ARCHITECTURE.md`
-7. `07_GAPS_CHECKLIST_AND_RESEARCH_NOTES.md`
 
 ## Key source docs
 - STT overview: https://elevenlabs.io/docs/overview/capabilities/speech-to-text
@@ -18,7 +16,6 @@ This pack is focused on building a **near-real-time transcription + translation 
 - Realtime commit strategies: https://elevenlabs.io/docs/eleven-api/guides/cookbooks/speech-to-text/realtime/transcripts-and-commit-strategies
 - Models list: https://elevenlabs.io/docs/overview/models
 - Token endpoint for client-safe realtime auth: https://elevenlabs.io/docs/api-reference/tokens/create
-- Realtime cookbook (client-side streaming): https://elevenlabs.io/docs/eleven-api/guides/cookbooks/speech-to-text/realtime/client-side-streaming
 - Dubbing capability overview: https://elevenlabs.io/docs/overview/capabilities/dubbing
 - Dubbing create/status/audio: 
   - https://elevenlabs.io/docs/api-reference/dubbing/create

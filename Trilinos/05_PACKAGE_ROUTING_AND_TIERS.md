@@ -1,21 +1,31 @@
-# Trilinos Package Routing & Tier Signals
+# Trilinos Package Routing and Tier Signals
 
 ## Scope
-Fast routing guide for LLM/human navigation across Trilinos package space.
+Routing guide for navigating Trilinos package families and TriBITS tier markers.
 
-## Key fact
-`PackagesList.cmake` defines **71 package entries** in TriBITS repository definitions (including framework/test/external entries).
+## Audience
+- Engineers deciding where to start in the Trilinos package ecosystem
+- LLM systems routing queries to the right package families
 
-## Tier markers seen in `PackagesList.cmake`
-- `PT` — primary/stable package tier in practice for most user-facing paths.
-- `ST` — secondary/supplemental tier (often optional or specialized in typical workflows).
-- `EX` — experimental/external-oriented tier entries.
+## Prerequisites
+- Basic familiarity with Trilinos package-oriented architecture
+- Access to repository metadata files (`PackagesList.cmake`, `CODEOWNERS`)
 
-> Note: These labels are used by Trilinos/TriBITS configuration logic; treat this page as a routing aid, not policy.
+## Content
 
-## High-priority package families for first docs wave
+### Package entry count in TriBITS definitions
+`PackagesList.cmake` defines **71 package entries** in `TRIBITS_REPOSITORY_DEFINE_PACKAGES(...)` (including framework/test/external entries).
 
-### Solver / preconditioner / linear algebra ecosystem
+### Tier markers from `PackagesList.cmake`
+- `PT` — primary tier entries commonly central to user-facing workflows.
+- `ST` — secondary/supplemental entries, often more specialized.
+- `EX` — experimental/external-oriented entries.
+
+These labels are build-system metadata signals and should be treated as routing hints.
+
+### High-priority package families
+
+#### Solver, preconditioner, and linear algebra ecosystem
 - Belos
 - Ifpack2
 - Amesos2
@@ -26,7 +36,7 @@ Fast routing guide for LLM/human navigation across Trilinos package space.
 - ROL
 - Piro
 
-### Core foundations
+#### Core foundations
 - Teuchos
 - Tpetra
 - Thyra
@@ -35,7 +45,7 @@ Fast routing guide for LLM/human navigation across Trilinos package space.
 - Kokkos
 - KokkosKernels
 
-### Discretization / FE / multiphysics-adjacent
+#### Discretization and multiphysics-adjacent
 - Intrepid2
 - Phalanx
 - Panzer
@@ -44,19 +54,18 @@ Fast routing guide for LLM/human navigation across Trilinos package space.
 - Tempus
 - TrilinosCouplings
 
-### Partitioning / load balancing
+#### Partitioning and load balancing
 - Zoltan
 - Zoltan2
 
-## Recommended documentation order (ROI-first)
-1. Build/install and package enable strategy (done in `04_BUILD_INSTALL_PLAYBOOK.md`)
+### Recommended reading order
+1. `04_BUILD_INSTALL_PLAYBOOK.md`
 2. Core foundations (Teuchos/Tpetra/Kokkos family)
 3. Solver stack (Belos/Ifpack2/Amesos2/MueLu)
-4. FE/multiphysics path (Intrepid2/Phalanx/Panzer/STK)
-5. Specialty and experimental entries
+4. Multiphysics path (Intrepid2/Phalanx/Panzer/STK)
+5. Specialized and experimental entries
 
-## Retrieval tags (proposed)
-Use these tags in per-package pages for consistent retrieval:
+### Retrieval tag set for package pages
 - `family:core`
 - `family:solver`
 - `family:preconditioner`
@@ -64,6 +73,10 @@ Use these tags in per-package pages for consistent retrieval:
 - `family:multiphysics`
 - `family:partitioning`
 - `tier:PT|ST|EX`
+
+## Validation
+- Package and tier assertions should be verified directly against `PackagesList.cmake`.
+- Ownership mappings should be cross-checked against `.github/CODEOWNERS`.
 
 ## Provenance
 - `Trilinos/PackagesList.cmake`
