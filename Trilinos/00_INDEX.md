@@ -13,6 +13,12 @@ This collection is a practical, retrieval-friendly guide to working with the Tri
 - `07_BUILDING_DOWNSTREAM_APPS_WITH_TRILINOS.md` — **Downstream app integration guide** using CMake `find_package(Trilinos)` and `CMAKE_PREFIX_PATH`.
 - `08_CONTRIBUTING_AND_SECURITY_WORKFLOW.md` — **Contributor and security reporting workflow** for issues, branches, PRs, DCO sign-off, and vulnerability disclosure.
 - `09_TPL_BASELINE_AND_ACCELERATOR_SIGNALS.md` — **TPL readiness guide** covering baseline dependencies, accelerator-related TPL signals, and pre-configure checks.
+- `10_GETTING_STARTED_ROUTE.md` — **Getting-started router** with task-based navigation from first install to downstream integration.
+- `11_LLM_QUERY_ROUTING_HINTS.md` — **Query-intent routing map** that links common questions to the most relevant docs in this pack.
+- `12_TERMS_AND_METADATA_GLOSSARY.md` — **Glossary** for Trilinos, TriBITS, TPL, and metadata terms used across the collection.
+- `13_CMAKE_FLAG_QUICK_REFERENCE.md` — **CMake flag reference** for common Trilinos configure options and practical usage patterns.
+- `14_BUILD_PROFILES_MINIMAL_TO_ADVANCED.md` — **Build profile templates** from minimal CPU setup to broad package-enabled configurations.
+- `15_DOC_QUALITY_CHECKLIST.md` — **Quality checklist** for schema consistency, provenance integrity, and LLM retrieval readiness.
 
 ## Primary external references
 - Upstream repo: <https://github.com/trilinos/Trilinos>
