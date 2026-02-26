@@ -1,27 +1,22 @@
 # 05 — Tools and Automation
 
-## Tooling areas to know
-- Browser control: `openclaw-src/docs/tools/browser*` + CLI/browser docs
-- Nodes/canvas/device actions: `openclaw-src/docs/nodes/*`, `openclaw-src/docs/platforms/*`
-- Skills: `openclaw-src/docs/tools/skills*`
-- Automation: `openclaw-src/docs/automation/*` (cron, webhooks, hooks, gmail pubsub)
+## Tooling areas
+- Built-ins: filesystem/runtime/web/browser/canvas/nodes/messaging/session tools
+- Skills: task-specific instruction bundles
+- Automations: cron, hooks/webhooks, heartbeat/system events
 
-## Automation primitives
-- **Cron jobs** for scheduled execution.
-- **System events** for internal wakeups/signals.
-- **Webhooks** for external trigger intake.
-- **Heartbeat patterns** for lightweight periodic checks.
+Primary references:
+- `openclaw-src/docs/tools/index.md`
+- `openclaw-src/docs/automation/*`
+- `openclaw-src/docs/gateway/heartbeat.md`
 
-## Bot workflow recommendation
-For implementation tasks involving tools:
-1. Confirm capability exists in docs first.
-2. Confirm command/tool names exactly (avoid guessing).
-3. Prefer deterministic, idempotent action patterns.
-4. Add observability steps (status/logs) in runbooks.
+## Automation guidance
+- Use **cron** for precise timing and isolated jobs.
+- Use **heartbeat** for periodic assistant check-ins/stateful proactive behavior.
+- Keep heartbeat prompt/checklist small (`HEARTBEAT.md`) to control token cost.
 
-## High-value doc pages to keep handy
-- `docs/automation/cron-jobs.md`
-- `docs/automation/webhook.md`
-- `docs/automation/hooks.md`
-- `docs/concepts/session-tool.md`
-- `docs/tools/skills*.md`
+## Important heartbeat config keys
+- `agents.defaults.heartbeat.every`
+- `agents.defaults.heartbeat.target`
+- `agents.defaults.heartbeat.directPolicy`
+- `agents.defaults.heartbeat.prompt`

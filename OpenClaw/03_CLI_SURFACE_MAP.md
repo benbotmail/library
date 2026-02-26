@@ -2,23 +2,16 @@
 
 Primary source: `openclaw-src/docs/cli/index.md`
 
-## Core command families
-- Setup/lifecycle: `setup`, `onboard`, `configure`, `doctor`, `update`
-- Gateway ops: `gateway *`, `status`, `health`, `logs`
-- Agent interactions: `agent`, `agents`, `sessions`, `acp`
-- Messaging: `message *`, channel helpers
-- Automation: `cron *`, `hooks`, `webhooks`
-- Infra/device: `nodes *`, `node *`, `devices *`, `browser *`
-- Config/model/security: `config *`, `models *`, `security audit`, `approvals`
+## Main command families
+- Lifecycle/setup: `onboard`, `configure`, `doctor`, `update`
+- Gateway/service: `gateway *`, `status`, `logs`, `health`
+- Channels/messaging: `channels *`, `message *`, `pairing *`
+- Agent/session: `agent`, `agents`, `sessions`, `acp`
+- Automation: `cron *`, `system *`, `hooks`
+- Devices/tools: `nodes *`, `browser *`, `plugins *`
 
-## Practical operator shortcuts
-- Check status: `openclaw status`
-- Check gateway service: `openclaw gateway status`
-- Start gateway service: `openclaw gateway start`
-- Open docs index: `openclaw docs`
-
-## Bot guidance
-When given an OpenClaw CLI task:
-1. Locate command family in this file.
-2. Validate exact syntax in `openclaw-src/docs/cli/<command>.md`.
-3. Prefer least-destructive subcommands first (`status`, `list`, `--json`).
+## Safe operator flow
+1. `openclaw status`
+2. `openclaw gateway status`
+3. targeted `... --help` or docs page
+4. run read-only/list/status commands before mutating commands

@@ -1,29 +1,22 @@
 # 02 — Architecture and Runtime
 
-## Gateway-centered architecture
-Key source: `openclaw-src/docs/concepts/architecture.md`
+Primary source: `openclaw-src/docs/concepts/architecture.md`
 
-- Single long-lived Gateway owns channel/provider connections.
-- Clients (CLI, app, web UI, automations) connect via WebSocket.
-- Nodes (macOS/iOS/Android/headless) connect via WS with `role: node`.
-- Gateway also serves canvas host paths (`/__openclaw__/canvas/`, `/__openclaw__/a2ui/`).
-
-## Protocol shape (high level)
-- First frame must be `connect`.
-- Request/response frame model with typed payloads.
-- Server-push events for streaming + state updates.
-- Token/password auth can gate connections.
-- Idempotency keys expected for side-effecting operations.
+## Shape
+- Single gateway process owns channel sessions + routing.
+- Clients connect over gateway APIs/WS.
+- Nodes connect with node role for device capabilities.
+- Events/requests flow through typed gateway protocol.
 
 ## Invariants
-- One gateway instance controls a host’s active channel sessions.
-- Handshake enforcement is strict.
-- Events are not replay logs; clients must recover on gaps.
+- One gateway instance coordinates active host channel state.
+- Side-effecting APIs rely on idempotency/correlation semantics.
+- Session keys partition direct/group/thread contexts.
 
-## Runtime topology
-Chat channels -> Gateway -> Agent runtime + tools + clients/nodes.
+## Practical mental model
+Channels -> Gateway -> Agent + Tools -> Outbound channel delivery.
 
-## Where to read deeper
-- Protocol: `openclaw-src/docs/gateway/protocol.md` (if present in your checkout)
-- Concepts: `openclaw-src/docs/concepts/*`
-- Web/control plane docs: `openclaw-src/docs/web/*`
+## Deep reads
+- `openclaw-src/docs/gateway/protocol.md`
+- `openclaw-src/docs/concepts/session.md`
+- `openclaw-src/docs/concepts/streaming.md`

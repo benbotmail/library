@@ -1,6 +1,10 @@
-# OpenClaw Docs Pack (LLM-Ready)
+# OpenClaw Docs Pack (Current-State, LLM-Ready)
 
-Purpose: fast orientation + retrieval-friendly summaries for bots working on OpenClaw.
+This pack summarizes **how OpenClaw works now** (not changelog narrative).
+
+- Upstream source repo: `openclaw-src`
+- Upstream commit processed: `1d43202930255eefc95527fdfdaaa3d0c867d054`
+- Refresh date (UTC): 2026-02-26
 
 ## Read order
 1. `01_PROJECT_OVERVIEW.md`
@@ -12,14 +16,14 @@ Purpose: fast orientation + retrieval-friendly summaries for bots working on Ope
 7. `07_AGENT_WORKSPACE_MEMORY_SKILLS.md`
 8. `08_QUICK_TASK_ROUTER.md`
 
-## Source corpus used
-- `openclaw-src/README.md`
+## Canonical upstream docs to trust first
 - `openclaw-src/docs/index.md`
-- `openclaw-src/docs/concepts/architecture.md`
-- `openclaw-src/docs/cli/index.md`
-- Additional docs trees inspected for structure under `openclaw-src/docs/*`
+- `openclaw-src/docs/gateway/configuration-reference.md`
+- `openclaw-src/docs/channels/telegram.md`
+- `openclaw-src/docs/gateway/heartbeat.md`
+- `openclaw-src/docs/channels/groups.md`
 
-## Notes for bots
-- Prefer local docs under `openclaw-src/docs` before web docs.
-- Treat this pack as a map; confirm implementation details in source files.
-- When handling security-sensitive tasks, read `06_SECURITY_AND_OPERATIONS.md` first.
+## Notes for assistant workflows
+- Prefer local docs under `openclaw-src/docs/*` before web copies.
+- Treat this pack as a map; verify exact keys/defaults in upstream docs before making config changes.
+- For channel + safety behavior, always cross-check `04_*` and `06_*`.
