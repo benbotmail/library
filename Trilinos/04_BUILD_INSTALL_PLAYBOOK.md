@@ -13,6 +13,8 @@ Quick, reliable paths to configure, build, and install Trilinos.
 - Optional: Fortran compiler
 - Optional: MPI install
 
+## Content
+
 ## Fast path A: MPI build (broad package enable)
 ```bash
 cmake \

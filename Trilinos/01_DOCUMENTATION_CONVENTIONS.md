@@ -1,37 +1,59 @@
-# Trilinos Documentation Conventions (LLM-Friendly)
+# Trilinos Documentation Conventions
 
-## Purpose
-This document defines the documentation standard used by the Trilinos docs pack so pages stay consistent, trustworthy, and easy to retrieve.
+## Scope
+Documentation standards for pages in this Trilinos LLM-friendly collection.
 
-## Page structure standard
-Each substantive page should include:
-1. **Scope** — what the page covers and does not cover.
-2. **Audience** — who should use the page.
-3. **Prerequisites** — tools/context required.
-4. **Main content** — procedures, explanations, and examples.
-5. **Provenance** — source files/URLs used to support claims.
+## Audience
+- Engineers authoring or refining Trilinos documentation pages
+- LLM systems consuming this collection for reliable retrieval
 
-## Claim confidence labeling
-When useful, claims should be implicitly grounded by source type:
-- **Official-doc**: trilinos.github.io or official published references.
-- **Repo-doc**: upstream repository docs (`README`, `INSTALL`, `doc/`, etc.).
-- **Code-inferred**: derived from build/package metadata in source files.
-- **Community/wiki**: useful but lower-authority references.
+## Prerequisites
+- Familiarity with Trilinos source and documentation locations
+- Ability to cite repo paths and official URLs in provenance sections
 
-## Command snippet rules
-- Prefer minimal, reproducible snippets.
-- State assumptions (MPI vs non-MPI, compiler expectations).
-- Avoid environment-specific hardcoding.
-- Keep examples copy/paste ready.
+## Content
 
-## Troubleshooting content rules
+### Required page structure
+Each substantive page should use this heading order:
+1. `## Scope`
+2. `## Audience`
+3. `## Prerequisites`
+4. `## Content`
+5. `## Validation` (optional but preferred)
+6. `## Provenance`
+
+### Claim grounding model
+Ground non-trivial claims using one of these source types:
+- **official-doc**: `trilinos.github.io` and official published references
+- **repo-doc**: upstream repository docs (`README`, `INSTALL`, `doc/`, etc.)
+- **code-inferred**: build/package metadata inferred from source files
+- **community/wiki**: lower-authority contextual references
+
+When source confidence differs, prioritize higher-authority sources in narrative and provenance.
+
+### Command snippet rules
+- Keep snippets minimal and reproducible.
+- State assumptions (MPI vs non-MPI, compiler/toolchain expectations).
+- Avoid environment-specific hardcoding where avoidable.
+- Keep command blocks copy/paste safe.
+
+### Troubleshooting writing rules
 - Start with observable error pattern.
-- Provide likely causes ordered by frequency.
-- Give shortest safe fix path first.
-- Include escalation pointers when uncertainty remains.
+- List likely causes in practical order.
+- Provide shortest safe fix path first.
+- Include escalation guidance when uncertainty remains.
 
-## Provenance requirement
-Non-trivial guidance should be traceable to at least one listed source path or URL.
+### Documentation boundary
+This collection is documentation-only. Exclude planning notes, progress logs, and workflow orchestration notes.
 
-## Scope boundary
-This pack is documentation-focused. It does not define project management workflow, scheduling policy, or internal task orchestration.
+## Validation
+- Confirm required section headings exist before considering a page complete.
+- Confirm non-trivial claims are backed by listed provenance.
+- Confirm file naming and tone remain documentation-oriented.
+
+## Provenance
+- `library/Trilinos/00_INDEX.md`
+- `Trilinos/README.md`
+- `Trilinos/INSTALL.rst`
+- `Trilinos/PackagesList.cmake`
+- Official docs index: <https://trilinos.github.io/documentation.html>

@@ -12,6 +12,7 @@ This collection is a practical, retrieval-friendly guide to working with the Tri
 - `06_TROUBLESHOOTING_MATRIX_CONFIGURE_BUILD.md` — **Configure/build troubleshooting matrix** with common failure signatures, likely causes, and fixes.
 - `07_BUILDING_DOWNSTREAM_APPS_WITH_TRILINOS.md` — **Downstream app integration guide** using CMake `find_package(Trilinos)` and `CMAKE_PREFIX_PATH`.
 - `08_CONTRIBUTING_AND_SECURITY_WORKFLOW.md` — **Contributor and security reporting workflow** for issues, branches, PRs, DCO sign-off, and vulnerability disclosure.
+- `09_TPL_BASELINE_AND_ACCELERATOR_SIGNALS.md` — **TPL readiness guide** covering baseline dependencies, accelerator-related TPL signals, and pre-configure checks.
 
 ## Primary external references
 - Upstream repo: <https://github.com/trilinos/Trilinos>
