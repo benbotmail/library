@@ -1,71 +1,39 @@
-# 03 — Scribe Realtime STT Patterns
+# Scribe Realtime STT Patterns (Current)
 
-## Baseline conference preset (English)
+`@elevenlabs/client` includes `Scribe` for websocket realtime transcription.
+
+## Core connection
 
 ```ts
-import { Scribe, CommitStrategy, RealtimeEvents, AudioFormat } from "@elevenlabs/client";
+import { Scribe, AudioFormat, CommitStrategy } from "@elevenlabs/client";
 
 const conn = Scribe.connect({
-  token: scribeTokenFromBackend,
+  token: process.env.ELEVENLABS_TEMP_TOKEN!,
   modelId: "scribe_v2_realtime",
-  languageCode: "en",
-  includeTimestamps: true,
-
-  // For streamed/custom audio mode:
   audioFormat: AudioFormat.PCM_16000,
   sampleRate: 16000,
   commitStrategy: CommitStrategy.VAD,
-  vadThreshold: 0.5,
-  vadSilenceThresholdSecs: 0.5,
-  minSpeechDurationMs: 100,
-  minSilenceDurationMs: 500,
+  languageCode: "en",
+  includeTimestamps: true,
 });
 
-conn.on(RealtimeEvents.PARTIAL_TRANSCRIPT, d => handlePartial(d));
-conn.on(RealtimeEvents.COMMITTED_TRANSCRIPT, d => handleCommitted(d));
-conn.on(RealtimeEvents.COMMITTED_TRANSCRIPT_WITH_TIMESTAMPS, d => handleTimed(d));
-conn.on(RealtimeEvents.ERROR, e => reportError(e));
-```
-
-## Commit strategy choices
-
-- `VAD`: best default for live speech where boundaries are unknown
-- `MANUAL`: best when your app already controls segmentation (push-to-talk, known chunk boundaries, file slicing)
-
-Rule of thumb:
-- Live conference mic: start with `VAD`
-- Pre-cut media/transcodes: prefer `MANUAL` + explicit `commit()`
-
-## Previous context for domain terms
-
-`previousText` can improve continuity, but only in the **first** chunk.
-
-```ts
-conn.send({
-  audioBase64: firstChunk,
-  previousText: "Topic: orchid taxonomy and cultivation. Terms include Phalaenopsis, Dendrobium, Cattleya.",
+conn.on("partial_transcript", (e) => console.log("partial", e.text));
+conn.on("committed_transcript", (e) => console.log("final", e.text));
+conn.on("committed_transcript_with_timestamps", (e) => {
+  console.log(e.text, e.words);
 });
 ```
 
-Do not resend later in session; API returns error behavior for non-first-chunk use.
+## Current operational guidance
 
-## Token flow (required security pattern)
+- Prefer `PCM_16000` for low-latency subtitle pipelines.
+- Set `languageCode` when known (conference/domain talk use cases).
+- Use `previousText` only with first audio chunk after (re)connect.
+- For live subtitles, treat partials as draft and committed transcripts as canonical.
 
-Backend:
-1. Call ElevenLabs token endpoint with permanent API key
-2. Return short-lived/single-use token to frontend
+## Commit strategy
 
-Frontend:
-1. Request token from your backend
-2. Connect with `Scribe.connect({ token, ... })`
+- `manual`: your app controls segment finalization (`connection.commit()`).
+- `vad`: server-side voice activity detection auto-commits segments.
 
-Never place permanent key in browser/mobile app.
-
-## Error events to treat as first-class
-
-- `ERROR` (generic failure path)
-- `AUTH_ERROR` (expired/invalid token)
-- `QUOTA_EXCEEDED` (billing/rate condition)
-- `CLOSE` (connection teardown)
-
-Operationally, re-auth then reconnect with backoff; preserve pending segment IDs in your app-level pipeline.
+For conference captions, start with `vad`, then tune thresholds if phrase clipping appears.
