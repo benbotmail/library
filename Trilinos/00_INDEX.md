@@ -2,23 +2,34 @@
 
 This collection is a practical, retrieval-friendly guide to working with the Trilinos repository.
 
-## Files in this collection
+## Core orientation
+- `01_DOCUMENTATION_CONVENTIONS.md` — Documentation rules for structure, claim grounding, and provenance.
+- `02_SOURCE_OF_TRUTH_MAP.md` — Authority order for Trilinos sources when claims conflict.
+- `10_GETTING_STARTED_ROUTE.md` — Task-based starting route from first install to downstream use.
+- `16_REPO_SURFACE_MAP.md` — Top-level map of repository directories and where to look first.
+- `12_TERMS_AND_METADATA_GLOSSARY.md` — Glossary for Trilinos, TriBITS, TPL, and metadata terms.
 
-- `01_DOCUMENTATION_CONVENTIONS.md` — **Documentation conventions and quality standard** used across this pack (claim grounding, provenance labels, and page structure).
-- `02_SOURCE_OF_TRUTH_MAP.md` — **Source hierarchy** for Trilinos information, from official docs to repo-level and package-level sources.
-- `03_PACKAGE_CATALOG.md` — **Package catalog** from `packages/` with CODEOWNERS mapping where available.
-- `04_BUILD_INSTALL_PLAYBOOK.md` — **Build/install quick guide** for MPI and non-MPI setups, useful CMake flags, and baseline troubleshooting.
-- `05_PACKAGE_ROUTING_AND_TIERS.md` — **Routing guide** for package families and tier signals (`PT`, `ST`, `EX`) to help pick what to read first.
-- `06_TROUBLESHOOTING_MATRIX_CONFIGURE_BUILD.md` — **Configure/build troubleshooting matrix** with common failure signatures, likely causes, and fixes.
-- `07_BUILDING_DOWNSTREAM_APPS_WITH_TRILINOS.md` — **Downstream app integration guide** using CMake `find_package(Trilinos)` and `CMAKE_PREFIX_PATH`.
-- `08_CONTRIBUTING_AND_SECURITY_WORKFLOW.md` — **Contributor and security reporting workflow** for issues, branches, PRs, DCO sign-off, and vulnerability disclosure.
-- `09_TPL_BASELINE_AND_ACCELERATOR_SIGNALS.md` — **TPL readiness guide** covering baseline dependencies, accelerator-related TPL signals, and pre-configure checks.
-- `10_GETTING_STARTED_ROUTE.md` — **Getting-started router** with task-based navigation from first install to downstream integration.
-- `11_LLM_QUERY_ROUTING_HINTS.md` — **Query-intent routing map** that links common questions to the most relevant docs in this pack.
-- `12_TERMS_AND_METADATA_GLOSSARY.md` — **Glossary** for Trilinos, TriBITS, TPL, and metadata terms used across the collection.
-- `13_CMAKE_FLAG_QUICK_REFERENCE.md` — **CMake flag reference** for common Trilinos configure options and practical usage patterns.
-- `14_BUILD_PROFILES_MINIMAL_TO_ADVANCED.md` — **Build profile templates** from minimal CPU setup to broad package-enabled configurations.
-- `15_DOC_QUALITY_CHECKLIST.md` — **Quality checklist** for schema consistency, provenance integrity, and LLM retrieval readiness.
+## Build and configuration
+- `04_BUILD_INSTALL_PLAYBOOK.md` — Quick configure/build/install paths (MPI and non-MPI).
+- `13_CMAKE_FLAG_QUICK_REFERENCE.md` — High-utility CMake flag reference.
+- `14_BUILD_PROFILES_MINIMAL_TO_ADVANCED.md` — Build profile templates from minimal to broad coverage.
+- `09_TPL_BASELINE_AND_ACCELERATOR_SIGNALS.md` — Dependency/TPL readiness and accelerator-related TPL signals.
+- `17_PACKAGE_SELECTION_STRATEGY.md` — Framework for choosing initial package sets before expansion.
+
+## Troubleshooting and routing
+- `06_TROUBLESHOOTING_MATRIX_CONFIGURE_BUILD.md` — Configure/build failure matrix with fixes.
+- `18_ERROR_PATTERN_ROUTER_BY_BUILD_STAGE.md` — Stage-based router for configure/build/test/integration failures.
+- `11_LLM_QUERY_ROUTING_HINTS.md` — Query-intent routing map for LLM retrieval.
+- `19_CROSS_REFERENCE_MATRIX.md` — Task-to-document matrix with primary and secondary references.
+
+## Package and ownership references
+- `03_PACKAGE_CATALOG.md` — Package directory catalog with CODEOWNERS mapping where available.
+- `05_PACKAGE_ROUTING_AND_TIERS.md` — Package-family routing and tier signal interpretation.
+
+## Contribution and governance
+- `08_CONTRIBUTING_AND_SECURITY_WORKFLOW.md` — Contribution flow, DCO sign-off, and security disclosure path.
+- `20_SUPPORT_AND_COMPATIBILITY_BOUNDARIES.md` — Support boundary guide for tested compiler/MPI expectations and security support scope.
+- `15_DOC_QUALITY_CHECKLIST.md` — Quality gates for schema consistency, provenance, and retrieval readiness.
 
 ## Primary external references
 - Upstream repo: <https://github.com/trilinos/Trilinos>
