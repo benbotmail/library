@@ -17,7 +17,6 @@ Primary controls:
 - Fail-closed group fallback when provider config is missing
 
 ## Heartbeat defaults (important)
-From current docs:
 - cadence default: `30m` (or `1h` for Anthropic OAuth/setup-token mode)
 - `target` default: `none`
 - `directPolicy` default: `allow`
@@ -28,6 +27,8 @@ From current docs:
 - `channels.telegram.dmPolicy`: `pairing` (default)
 - `channels.telegram.groupPolicy`: `allowlist` (default)
 - `channels.telegram.streaming`: `off` (default)
+- canonical streaming values: `off | partial | block | progress` (`progress` maps to partial behavior)
+- legacy `streamMode`/boolean `streaming` forms are compatibility-migrated; canonical key is `channels.telegram.streaming`
 - `channels.telegram.replyToMode`: `off` (default)
 - `channels.telegram.reactionNotifications`: `own` (default)
 

@@ -3,7 +3,7 @@
 This pack summarizes **current OpenClaw behavior** (not release/changelog narration).
 
 - Upstream source repo: `openclaw-src`
-- Upstream commit processed: `84a88b2ace8ef4450f7052660c973ac964ee8201`
+- Upstream commit processed: `de77497ea84f8d044e8362ae602523d271908611`
 - Refresh date (UTC): 2026-02-27
 
 ## Read order
@@ -22,6 +22,7 @@ This pack summarizes **current OpenClaw behavior** (not release/changelog narrat
 - `openclaw-src/docs/channels/telegram.md`
 - `openclaw-src/docs/gateway/heartbeat.md`
 - `openclaw-src/docs/gateway/security/index.md`
+- `openclaw-src/docs/concepts/compaction.md`
 
 ## Usage notes
 - Prefer local docs in `openclaw-src/docs/*` before any mirror.
