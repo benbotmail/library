@@ -1,22 +1,24 @@
 # 05 — Tools and Automation
 
-## Tooling areas
-- Built-ins: filesystem/runtime/web/browser/canvas/nodes/messaging/session tools
-- Skills: task-specific instruction bundles
-- Automations: cron, hooks/webhooks, heartbeat/system events
-
-Primary references:
+Primary refs:
 - `openclaw-src/docs/tools/index.md`
-- `openclaw-src/docs/automation/*`
+- `openclaw-src/docs/tools/subagents.md`
 - `openclaw-src/docs/gateway/heartbeat.md`
+- `openclaw-src/docs/automation/cron-vs-heartbeat.md`
 
-## Automation guidance
-- Use **cron** for precise timing and isolated jobs.
-- Use **heartbeat** for periodic assistant check-ins/stateful proactive behavior.
-- Keep heartbeat prompt/checklist small (`HEARTBEAT.md`) to control token cost.
+## Tooling areas
+- Built-ins: file/runtime/web/browser/canvas/nodes/messaging/session/status
+- Skills: scoped workflow instruction packs
+- Orchestration: sub-agents and session messaging
+- Automation: cron, hooks, heartbeats, wake events
 
-## Important heartbeat config keys
+## Cron vs heartbeat (operator rule)
+- Use **cron** for exact schedules and isolated one-shot/periodic jobs.
+- Use **heartbeat** for contextual, conversational, periodic checks.
+
+## Heartbeat keys that matter most
 - `agents.defaults.heartbeat.every`
 - `agents.defaults.heartbeat.target`
 - `agents.defaults.heartbeat.directPolicy`
 - `agents.defaults.heartbeat.prompt`
+- `channels.defaults.heartbeat.{showOk,showAlerts,useIndicator}`

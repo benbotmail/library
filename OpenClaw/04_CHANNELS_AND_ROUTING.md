@@ -1,43 +1,41 @@
 # 04 — Channels and Routing (Current Behavior)
 
-## Channel model
-OpenClaw routes inbound channel events to session keys, then replies back through the same channel context.
-
-Primary references:
-- `openclaw-src/docs/channels/groups.md`
+Primary refs:
 - `openclaw-src/docs/channels/telegram.md`
-- `openclaw-src/docs/gateway/configuration-reference.md` (Channels section)
+- `openclaw-src/docs/channels/group-messages.md`
+- `openclaw-src/docs/gateway/configuration-reference.md` (Channels)
 
-## DM and group defaults (important)
-- **DM policy default:** `pairing`
-- **Group policy default:** `allowlist`
-- If a provider config block is entirely missing, runtime uses fail-closed group behavior (allowlist-like), not permissive open routing.
+## Global defaults to remember
+- DM policy default: `pairing`
+- Group policy default: `allowlist`
+- If `channels.<provider>` block is missing entirely, group handling is fail-closed (`allowlist` fallback).
 
-## Mention gating
-- Group replies are usually mention-gated by default (`requireMention: true` patterns are common defaults).
-- Reply-to-bot-message often counts as implicit mention on supported platforms.
-- Mention behavior is separate from `groupPolicy`.
+## Mention gating vs access policy
+- `groupPolicy` controls whether group traffic is eligible.
+- `requireMention` controls whether eligible traffic triggers a response.
+- These are separate gates and both can block replies.
 
-## Telegram-specific routing highlights
-From `docs/channels/telegram.md`:
-- Telegram is production-ready with **long polling default**; webhook mode optional.
-- `dmPolicy` values: `pairing | allowlist | open | disabled` (default `pairing`).
-- `groupPolicy` values: `open | allowlist | disabled` (default `allowlist`).
-- Group/topic session isolation:
-  - group: `agent:<id>:telegram:group:<chatId>`
-  - forum topic adds `:topic:<threadId>`
-- `groupAllowFrom` applies sender filtering in groups; fallback can use `allowFrom` when unset.
+## Telegram current-state behavior
+- Production-ready; long polling default, webhook optional.
+- `channels.telegram.dmPolicy`: `pairing | allowlist | open | disabled` (default `pairing`).
+- `channels.telegram.groupPolicy`: `open | allowlist | disabled` (default `allowlist`).
+- Group/topic routing is isolated by session key (`group:<chatId>` and `:topic:<threadId>`).
+- `groupAllowFrom` is sender filter for group execution; if omitted, fallback can use `allowFrom`.
 
-## Telegram streaming modes (current key)
-Canonical key: `channels.telegram.streaming`
-- Allowed: `off | partial | block | progress`
-- Default: `off`
-- `progress` is compatibility-mapped to `partial` on Telegram.
-- Legacy `streamMode`/boolean forms are auto-mapped, but new docs/config should use `streaming`.
+## Telegram streaming key (canonical)
+Use `channels.telegram.streaming`.
 
-## Practical routing checks for incidents
+Allowed values:
+- `off` (default)
+- `partial`
+- `block`
+- `progress` (compat alias; mapped to partial behavior on Telegram)
+
+Legacy `streamMode` and boolean `streaming` forms are auto-migrated, but new config should use the canonical key/value set above.
+
+## Routing incident checklist
 1. `openclaw status --deep`
-2. `openclaw channels status`
-3. Validate per-channel `dmPolicy/groupPolicy/allowFrom/groupAllowFrom/groups`
-4. Check mention gating (`requireMention`, `/activation` where supported)
-5. Review `openclaw logs --follow`
+2. `openclaw channels status --probe`
+3. verify `dmPolicy/groupPolicy/allowFrom/groupAllowFrom/groups`
+4. verify mention settings (`requireMention`, `/activation` state)
+5. inspect `openclaw logs --follow` for explicit drop reasons

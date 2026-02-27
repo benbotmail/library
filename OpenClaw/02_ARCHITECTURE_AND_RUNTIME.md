@@ -1,22 +1,19 @@
 # 02 — Architecture and Runtime
 
-Primary source: `openclaw-src/docs/concepts/architecture.md`
-
-## Shape
-- Single gateway process owns channel sessions + routing.
-- Clients connect over gateway APIs/WS.
-- Nodes connect with node role for device capabilities.
-- Events/requests flow through typed gateway protocol.
-
-## Invariants
-- One gateway instance coordinates active host channel state.
-- Side-effecting APIs rely on idempotency/correlation semantics.
-- Session keys partition direct/group/thread contexts.
-
-## Practical mental model
-Channels -> Gateway -> Agent + Tools -> Outbound channel delivery.
-
-## Deep reads
+Primary refs:
+- `openclaw-src/docs/concepts/architecture.md`
 - `openclaw-src/docs/gateway/protocol.md`
 - `openclaw-src/docs/concepts/session.md`
-- `openclaw-src/docs/concepts/streaming.md`
+
+## Shape
+- One gateway process owns channel adapters and session routing.
+- Clients/nodes interact via gateway APIs/websocket protocol.
+- Tools execute under policy controls (security mode, workspace constraints, sandboxing).
+
+## Invariants
+- Deterministic routing by channel/thread/session key.
+- Group and DM policy checks are applied before turn execution.
+- Runtime is fail-closed for missing provider config in group contexts (`allowlist` fallback behavior).
+
+## Practical model
+Channels → Gateway router/policies → Agent + tools → Channel-specific outbound delivery.

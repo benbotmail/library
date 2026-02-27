@@ -1,20 +1,20 @@
 # 01 — Project Overview
 
-OpenClaw is a self-hosted assistant gateway: channels in, agent/tool runtime in the middle, replies/actions out.
+OpenClaw is a self-hosted assistant gateway: channel traffic comes in, agents/tools run turns, and replies/actions are sent back through the originating surface.
 
-Current references:
+Primary refs:
 - `openclaw-src/README.md`
 - `openclaw-src/docs/index.md`
 - `openclaw-src/docs/start/getting-started.md`
 
 ## Core model
-- Gateway is the control plane.
-- Channels are ingress/egress surfaces.
-- Agents execute turns with tools.
-- Sessions hold routing + conversation state.
-- Nodes/canvas/browser extend execution beyond chat.
+- **Gateway**: control plane for runtime, channels, routing, scheduling, and policies.
+- **Channels**: ingress/egress adapters (Telegram, Discord, Slack, WhatsApp, etc.).
+- **Agents**: model + policy + tool execution context.
+- **Sessions**: conversation/routing identity and state.
+- **Extensions**: browser/canvas/nodes/plugins expand capabilities outside plain chat.
 
 ## Runtime baseline
 - Node.js 22+
 - Typical setup: `openclaw onboard --install-daemon`
-- Health checks: `openclaw status`, `openclaw gateway status`
+- Operational checks: `openclaw status`, `openclaw gateway status`, `openclaw channels status`

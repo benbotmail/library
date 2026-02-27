@@ -1,6 +1,6 @@
 # 03 — CLI Surface Map
 
-Primary source: `openclaw-src/docs/cli/index.md`
+Primary ref: `openclaw-src/docs/cli/index.md`
 
 ## Main command families
 - Lifecycle/setup: `onboard`, `configure`, `doctor`, `update`
@@ -13,5 +13,5 @@ Primary source: `openclaw-src/docs/cli/index.md`
 ## Safe operator flow
 1. `openclaw status`
 2. `openclaw gateway status`
-3. targeted `... --help` or docs page
-4. run read-only/list/status commands before mutating commands
+3. targeted `... --help` / docs lookup
+4. read-only/list/status checks before mutating commands

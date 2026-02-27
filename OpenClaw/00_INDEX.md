@@ -1,10 +1,10 @@
 # OpenClaw Docs Pack (Current-State, LLM-Ready)
 
-This pack summarizes **how OpenClaw works now** (not changelog narrative).
+This pack summarizes **current OpenClaw behavior** (not release/changelog narration).
 
 - Upstream source repo: `openclaw-src`
-- Upstream commit processed: `1d43202930255eefc95527fdfdaaa3d0c867d054`
-- Refresh date (UTC): 2026-02-26
+- Upstream commit processed: `84a88b2ace8ef4450f7052660c973ac964ee8201`
+- Refresh date (UTC): 2026-02-27
 
 ## Read order
 1. `01_PROJECT_OVERVIEW.md`
@@ -21,9 +21,9 @@ This pack summarizes **how OpenClaw works now** (not changelog narrative).
 - `openclaw-src/docs/gateway/configuration-reference.md`
 - `openclaw-src/docs/channels/telegram.md`
 - `openclaw-src/docs/gateway/heartbeat.md`
-- `openclaw-src/docs/channels/groups.md`
+- `openclaw-src/docs/gateway/security/index.md`
 
-## Notes for assistant workflows
-- Prefer local docs under `openclaw-src/docs/*` before web copies.
-- Treat this pack as a map; verify exact keys/defaults in upstream docs before making config changes.
-- For channel + safety behavior, always cross-check `04_*` and `06_*`.
+## Usage notes
+- Prefer local docs in `openclaw-src/docs/*` before any mirror.
+- Treat this pack as a fast map for LLM context loading.
+- For routing/safety decisions, always cross-check `04_*` and `06_*`.
