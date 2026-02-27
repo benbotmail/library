@@ -1,23 +1,26 @@
-# ElevenLabs Simultaneous Transcription/Translation Docs Pack
+# ElevenLabs JS/TS SDK — Current-State Reference
 
-This pack is focused on building a **near-real-time transcription + translation pipeline** with ElevenLabs APIs, as a migration alternative to `gpt-4o-transcribe` workflows.
+Last validated against upstream `elevenlabs/packages` commit: `e3eec1676125e354fa108ef040cee01c810f2ab7`.
+
+This pack documents **how the current ElevenLabs JavaScript/TypeScript SDK behaves now** (not a changelog).
+
+## What this pack covers
+- `@elevenlabs/client` for agent conversations (WebSocket + WebRTC)
+- Scribe real-time STT via `@elevenlabs/client`
+- Practical patterns for low-latency conference subtitles + translation fan-out
+- Operational guardrails (tokens, auth boundaries, failure handling)
 
 ## Read order
-1. `01_CAPABILITIES_AND_LIMITS.md`
-2. `02_ARCHITECTURE_PATTERNS.md`
-3. `03_IMPLEMENTATION_BLUEPRINT_NODE.md`
-4. `04_BATCH_TRANSLATION_WITH_DUBBING.md`
-5. `05_OPS_LATENCY_COST_CHECKLIST.md`
+1. `01_PRODUCT_SURFACE_AND_SCOPE.md`
+2. `02_CONVERSATION_SESSION_PATTERNS.md`
+3. `03_SCRIBE_REALTIME_STT_PATTERNS.md`
+4. `04_MULTILINGUAL_SUBTITLE_ARCHITECTURE.md`
+5. `05_OPERATIONS_CHECKLIST.md`
 
-## Key source docs
-- STT overview: https://elevenlabs.io/docs/overview/capabilities/speech-to-text
-- Batch STT endpoint: https://elevenlabs.io/docs/api-reference/speech-to-text/convert
-- Realtime STT endpoint (WebSocket): https://elevenlabs.io/docs/api-reference/speech-to-text/v-1-speech-to-text-realtime
-- Realtime commit strategies: https://elevenlabs.io/docs/eleven-api/guides/cookbooks/speech-to-text/realtime/transcripts-and-commit-strategies
-- Models list: https://elevenlabs.io/docs/overview/models
-- Token endpoint for client-safe realtime auth: https://elevenlabs.io/docs/api-reference/tokens/create
-- Dubbing capability overview: https://elevenlabs.io/docs/overview/capabilities/dubbing
-- Dubbing create/status/audio: 
-  - https://elevenlabs.io/docs/api-reference/dubbing/create
-  - https://elevenlabs.io/docs/api-reference/dubbing/get
-  - https://elevenlabs.io/docs/api-reference/dubbing/audio/get
+## Canonical source files
+- Monorepo overview: `open-source/elevenlabs/README.md`
+- Client SDK: `open-source/elevenlabs/packages/client/README.md`
+- Agents CLI status: `open-source/elevenlabs/packages/agents-cli/README.md` (deprecated)
+
+## Important scope note
+For realtime STT + translation pipelines, this pack treats the **Client SDK Scribe section** as the practical source of truth for SDK behavior (events, commit strategies, token flow, and options).
