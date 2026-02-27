@@ -21,6 +21,9 @@ This collection is a practical, retrieval-friendly guide to working with the Tri
 - `18_ERROR_PATTERN_ROUTER_BY_BUILD_STAGE.md` — Stage-based router for configure/build/test/integration failures.
 - `11_LLM_QUERY_ROUTING_HINTS.md` — Query-intent routing map for LLM retrieval.
 - `19_CROSS_REFERENCE_MATRIX.md` — Task-to-document matrix with primary and secondary references.
+- `21_CANONICAL_WORKFLOWS_BY_USER_GOAL.md` — Goal-based workflow sequences for install, package selection, troubleshooting, integration, and contribution paths.
+- `22_FREQUENT_BUILD_QUESTIONS.md` — FAQ-style quick answers for recurring Trilinos build and configuration decisions.
+- `23_REFERENCE_LINKS_AND_ANCHORS.md` — Central link and anchor index for authoritative Trilinos web and repository references.
 
 ## Package and ownership references
 - `03_PACKAGE_CATALOG.md` — Package directory catalog with CODEOWNERS mapping where available.

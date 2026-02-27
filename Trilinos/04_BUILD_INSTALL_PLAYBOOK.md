@@ -15,6 +15,17 @@ Quick, reliable paths to configure, build, and install Trilinos.
 
 ## Content
 
+### Recommended build-directory pattern
+Use an out-of-source build directory so configure/build artifacts stay separate from source:
+
+```bash
+mkdir -p <build-dir>
+cd <build-dir>
+cmake <options> <path-to-trilinos-source>
+```
+
+Keeping configure options in a reusable script (for example `do-configure`) improves repeatability.
+
 ## Fast path A: MPI build (broad package enable)
 ```bash
 cmake \
