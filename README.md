@@ -1,9 +1,11 @@
 # Malik's LLM Documentation Library
 
 ## Collections
-- `OpenClaw/` — curated, bot-friendly orientation pack for the OpenClaw project.
-- `ElevenLabs/` — realtime transcription/translation architecture + implementation docs.
+- `openclaw/` — curated, bot-friendly orientation pack for the OpenClaw project.
+- `ElevenLabs/` — implementation docs for simultaneous transcription/translation pipelines using ElevenLabs STT + Dubbing primitives.
+- `Trilinos/` — LLM-friendly documentation pack for the Trilinos monorepo (in progress).
 
-Start points:
-- `OpenClaw/00_INDEX.md`
+Start at:
+- `openclaw/00_INDEX.md`
 - `ElevenLabs/00_INDEX.md`
+- `Trilinos/00_INDEX.md`

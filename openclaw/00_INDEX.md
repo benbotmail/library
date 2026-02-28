@@ -3,8 +3,8 @@
 This pack summarizes **current OpenClaw behavior** (not release/changelog narration).
 
 - Upstream source repo: `openclaw-src`
-- Upstream commit processed: `de77497ea84f8d044e8362ae602523d271908611`
-- Refresh date (UTC): 2026-02-27
+- Upstream commit processed: `89e158fc96e617889d5303abb25e596e24003917`
+- Refresh date (UTC): 2026-02-28
 
 ## Read order
 1. `01_PROJECT_OVERVIEW.md`
