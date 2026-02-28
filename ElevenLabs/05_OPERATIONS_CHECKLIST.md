@@ -28,7 +28,7 @@
 
 ## Migration notes for this repo surface
 - `@elevenlabs/client` is the primary SDK for the patterns above.
-- `@elevenlabs/agents-cli` package in this monorepo is marked deprecated; use official ElevenLabs CLI for CLI-first workflows.
+- In the currently tracked monorepo revision, `packages/agents-cli` is absent. Treat older references as historical and use official ElevenLabs CLI/docs for CLI-first workflows.
 
 ## Done definition for production readiness
 A release is ready when:

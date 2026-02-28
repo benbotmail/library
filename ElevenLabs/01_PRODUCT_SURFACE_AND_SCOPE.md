@@ -8,14 +8,18 @@ Use this for:
 - Realtime speech-to-text with Scribe (`Scribe.connect`)
 - Event-driven session control and audio/device management
 
-### 2) Framework wrappers
+### 2) Framework + integration packages
 - `@elevenlabs/react`
 - `@elevenlabs/react-native`
+- `@elevenlabs/types`
+- `@elevenlabs/convai-widget-core`
+- `@elevenlabs/convai-widget-embed`
 
-These are convenience layers over client capabilities.
+These are convenience/integration layers over client capabilities.
 
-### 3) Agents CLI package in this repo
-`@elevenlabs/agents-cli` README explicitly marks it **deprecated** and directs users to the official ElevenLabs CLI repo.
+### 3) Package-surface freshness note
+In the currently tracked upstream commit (`f61e728...`), `packages/agents-cli` is no longer present in this monorepo.
+Treat any older references to `@elevenlabs/agents-cli` here as historical only.
 
 ---
 
@@ -47,4 +51,5 @@ These are convenience layers over client capabilities.
 - Need full voice agent UX (turn-taking + TTS + tools): use `Conversation.startSession`
 - Need high-control realtime transcription feed: use `Scribe.connect`
 - Need browser frontend with strict key isolation: server-minted tokens only
-- Need “agents as code” CLI from this package: avoid (deprecated); use official ElevenLabs CLI
+- Need embedded web widget UX: evaluate `convai-widget-*` packages
+- Need strictly typed shared event contracts across services: use `@elevenlabs/types`
