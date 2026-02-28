@@ -1,26 +1,28 @@
-# ElevenLabs Docs Pack (Current-State)
+# ElevenLabs JS/TS SDK — Current-State Reference
 
-This pack documents the **current behavior** of `elevenlabs/packages` for production implementers.
+Last validated against upstream `elevenlabs/packages` commit: `e3eec1676125e354fa108ef040cee01c810f2ab7`.
 
-- Upstream repo: `github.com/elevenlabs/packages`
-- Upstream commit: `f61e7282529a92f7f3332cf1cb3d8fe2fe480df4`
-- Focus: what is available **now**, and how to use it safely
+This pack documents **how the current ElevenLabs JavaScript/TypeScript SDK behaves now** (not a changelog).
 
-## Package Surface (current)
+## What this pack covers
+- `@elevenlabs/client` for agent conversations (WebSocket + WebRTC)
+- Scribe real-time STT via `@elevenlabs/client`
+- Practical patterns for low-latency conference subtitles + translation fan-out
+- Operational guardrails (tokens, auth boundaries, failure handling)
 
-1. `@elevenlabs/client` — core browser/client SDK for agent conversations (WebRTC/WebSocket) and Scribe realtime STT.
-2. `@elevenlabs/react` — React hook wrapper for conversation lifecycle.
-3. `@elevenlabs/react-native` — React Native SDK (LiveKit dependencies required).
-4. `@elevenlabs/convai-widget-core` — embeddable widget core package.
-5. `@elevenlabs/convai-widget-embed` — pre-bundled widget embed package.
-6. `@elevenlabs/types` — generated message/event TypeScript types from AsyncAPI specs.
+## Read order
+1. `01_PRODUCT_SURFACE_AND_SCOPE.md`
+2. `02_CONVERSATION_SESSION_PATTERNS.md`
+3. `03_SCRIBE_REALTIME_STT_PATTERNS.md`
+4. `04_MULTILINGUAL_SUBTITLE_ARCHITECTURE.md`
+5. `05_OPERATIONS_CHECKLIST.md`
+6. `06_REFERENCE_CONFIGS_AND_PIPELINE.md`
+7. `07_EVALUATION_AND_ACCEPTANCE.md`
 
-> Important release shift: this upstream revision removes `packages/agents-cli` from the monorepo. Do not rely on prior CLI workflows from older snapshots.
+## Canonical source files
+- Monorepo overview: `open-source/elevenlabs/README.md`
+- Client SDK: `open-source/elevenlabs/packages/client/README.md`
+- Agents CLI status: `open-source/elevenlabs/packages/agents-cli/README.md` (deprecated)
 
-## Reading Order
-
-- Start with `01_CURRENT_PRODUCT_SCOPE.md`
-- Then `02_WEB_CONVERSATION_PATTERNS.md`
-- Use `03_SCRIBE_REALTIME_STT_PATTERNS.md` if you need low-latency transcripts/subtitles
-- Use `04_REACT_NATIVE_IMPLEMENTATION_NOTES.md` for mobile
-- Keep `05_SECURITY_AND_DEPLOYMENT_CHECKLIST.md` open during production hardening
+## Important scope note
+For realtime STT + translation pipelines, this pack treats the **Client SDK Scribe section** as the practical source of truth for SDK behavior (events, commit strategies, token flow, and options).
