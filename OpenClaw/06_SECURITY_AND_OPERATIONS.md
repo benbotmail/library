@@ -20,7 +20,8 @@ Primary controls:
 - cadence default: `30m` (or `1h` for Anthropic OAuth/setup-token mode)
 - `target` default: `none`
 - `directPolicy` default: `allow`
-- `directPolicy: "block"` prevents direct/DM heartbeat delivery but still runs the turn
+- `directPolicy: "block"` prevents direct/DM heartbeat delivery but still runs the heartbeat turn
+- channel heartbeat visibility defaults: `showOk: false`, `showAlerts: true`, `useIndicator: false`
 - `HEARTBEAT_OK` is treated as an ack contract in heartbeat context
 
 ## Telegram defaults relevant to security/routing

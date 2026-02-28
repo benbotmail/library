@@ -29,9 +29,11 @@ Allowed values:
 - `off` (default)
 - `partial`
 - `block`
-- `progress` (compat alias; mapped to partial behavior on Telegram)
+- `progress` (compat alias; maps to partial behavior on Telegram)
 
-Legacy `streamMode` and boolean `streaming` forms are auto-migrated, but new config should use the canonical key/value set above.
+Notes:
+- Legacy `streamMode` and boolean `streaming` forms are auto-migrated.
+- Preview streaming (`streaming`) and block streaming (`blockStreaming`) are separate; when block streaming is active, preview streaming is skipped to avoid double-streaming.
 
 ## Routing incident checklist
 1. `openclaw status --deep`
