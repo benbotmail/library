@@ -16,6 +16,12 @@ This collection is a practical, retrieval-friendly guide to working with the Tri
 - `26_BUILD_INSTALL_DECISION_TREE.md` — Fast strategy selector for MPI/non-MPI, package scope, and escalation paths.
 - `28_CI_AND_LOCAL_BUILD_TIME_REDUCTION_GUIDE.md` — Practical lane and workflow tactics to reduce build/test turnaround.
 - `29_INSTALL_VERIFICATION_CHECKLIST.md` — Post-install acceptance checklist for downstream readiness.
+- `30_CMAKE_CONFIGURE_SCRIPT_TEMPLATE_LIBRARY.md` — Reusable `do-configure` templates for common build scenarios.
+- `31_TPL_DISCOVERY_AND_PATH_HINTS.md` — Practical path-hint and triage guide for missing/partial TPL detection.
+- `32_30_MINUTE_FIRST_SUCCESS_PATH.md` — Time-boxed first-success route from clean setup to downstream smoke validation.
+- `33_BUILD_AND_INSTALL_COMMAND_CHEATSHEET.md` — Copy/paste command patterns for common configure/build/install scenarios.
+- `34_BUILD_INSTALL_DOC_NAVIGATION_MAP.md` — Intent-to-document router for fast navigation across build/install docs.
+- `35_PRECONFIGURE_ENVIRONMENT_CHECKLIST.md` — Preflight checks to reduce avoidable configure/build failures.
 - `09_TPL_BASELINE_AND_ACCELERATOR_SIGNALS.md` — Dependency/TPL readiness and accelerator-related TPL signals.
 - `17_PACKAGE_SELECTION_STRATEGY.md` — Framework for choosing initial package sets before expansion.
 
