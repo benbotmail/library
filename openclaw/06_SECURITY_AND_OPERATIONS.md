@@ -21,7 +21,7 @@ Primary controls:
 - `target` default: `none`
 - `directPolicy` default: `allow`
 - `directPolicy: "block"` prevents direct/DM heartbeat delivery but still runs the heartbeat turn
-- channel heartbeat visibility defaults: `showOk: false`, `showAlerts: true`, `useIndicator: false`
+- channel heartbeat visibility defaults: `showOk: false`, `showAlerts: true`, `useIndicator: true`
 - `HEARTBEAT_OK` is treated as an ack contract in heartbeat context
 
 ## Telegram defaults relevant to security/routing
@@ -30,7 +30,7 @@ Primary controls:
 - `channels.telegram.streaming`: `off` (default)
 - canonical streaming values: `off | partial | block | progress` (`progress` maps to partial behavior)
 - legacy `streamMode`/boolean `streaming` forms are compatibility-migrated; canonical key is `channels.telegram.streaming`
-- `channels.telegram.replyToMode`: `off` (default)
+- `channels.telegram.replyToMode`: `first` (default)
 - `channels.telegram.reactionNotifications`: `own` (default)
 
 ## Operator hygiene

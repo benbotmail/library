@@ -20,15 +20,15 @@ Primary refs:
 
 ## Heartbeat keys that matter most
 - `agents.defaults.heartbeat.every`
-- `agents.defaults.heartbeat.target` (`none` default; `last` to route to most recent external contact)
-- `agents.defaults.heartbeat.to` (explicit recipient with channel target)
+- `agents.defaults.heartbeat.target` (`none` default; `last` routes to most recent external contact)
+- `agents.defaults.heartbeat.to` (explicit recipient with explicit channel target)
 - `agents.defaults.heartbeat.directPolicy` (`allow` default; `block` suppresses DM/direct delivery)
-- `agents.defaults.heartbeat.accountId` (multi-account channel targeting)
+- `agents.defaults.heartbeat.accountId` (multi-account targeting)
 - `agents.defaults.heartbeat.prompt`
 - `channels.defaults.heartbeat.{showOk,showAlerts,useIndicator}`
 
 Operational note:
-- If `showOk`, `showAlerts`, and `useIndicator` are all false, OpenClaw skips the heartbeat run entirely.
+- If `showOk`, `showAlerts`, and `useIndicator` are all false, OpenClaw skips heartbeat model execution.
 
 ## Compaction defaults that matter operationally
 - Auto-compaction is enabled under model pressure.
