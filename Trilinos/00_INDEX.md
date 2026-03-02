@@ -13,6 +13,9 @@ This collection is a practical, retrieval-friendly guide to working with the Tri
 - `04_BUILD_INSTALL_PLAYBOOK.md` — Quick configure/build/install paths (MPI and non-MPI).
 - `13_CMAKE_FLAG_QUICK_REFERENCE.md` — High-utility CMake flag reference.
 - `14_BUILD_PROFILES_MINIMAL_TO_ADVANCED.md` — Build profile templates from minimal to broad coverage.
+- `26_BUILD_INSTALL_DECISION_TREE.md` — Fast strategy selector for MPI/non-MPI, package scope, and escalation paths.
+- `28_CI_AND_LOCAL_BUILD_TIME_REDUCTION_GUIDE.md` — Practical lane and workflow tactics to reduce build/test turnaround.
+- `29_INSTALL_VERIFICATION_CHECKLIST.md` — Post-install acceptance checklist for downstream readiness.
 - `09_TPL_BASELINE_AND_ACCELERATOR_SIGNALS.md` — Dependency/TPL readiness and accelerator-related TPL signals.
 - `17_PACKAGE_SELECTION_STRATEGY.md` — Framework for choosing initial package sets before expansion.
 
@@ -23,7 +26,10 @@ This collection is a practical, retrieval-friendly guide to working with the Tri
 - `19_CROSS_REFERENCE_MATRIX.md` — Task-to-document matrix with primary and secondary references.
 - `21_CANONICAL_WORKFLOWS_BY_USER_GOAL.md` — Goal-based workflow sequences for install, package selection, troubleshooting, integration, and contribution paths.
 - `22_FREQUENT_BUILD_QUESTIONS.md` — FAQ-style quick answers for recurring Trilinos build and configuration decisions.
+- `27_DOWNSTREAM_INTEGRATION_FAILURE_PATTERNS.md` — Symptom-to-fix router for downstream CMake integration and linking/runtime failures.
 - `23_REFERENCE_LINKS_AND_ANCHORS.md` — Central link and anchor index for authoritative Trilinos web and repository references.
+- `24_LINK_INTEGRITY_VALIDATION.md` — Validation report confirming internal local-link integrity across the Trilinos docs pack.
+- `25_PROVENANCE_COVERAGE_AUDIT.md` — Audit report confirming provenance-section coverage across docs pages.
 
 ## Package and ownership references
 - `03_PACKAGE_CATALOG.md` — Package directory catalog with CODEOWNERS mapping where available.
