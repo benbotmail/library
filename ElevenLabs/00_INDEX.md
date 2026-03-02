@@ -1,6 +1,6 @@
 # ElevenLabs JS/TS SDK — Current-State Reference
 
-Last validated against upstream `elevenlabs/packages` commit: `f61e7282529a92f7f3332cf1cb3d8fe2fe480df4`.
+Last validated against upstream `elevenlabs/packages` commit: `d4a4a3becd7514eb3da57b9f3281a793e8678263`.
 
 This pack documents **how the current ElevenLabs JavaScript/TypeScript SDK behaves now** (not a changelog).
 

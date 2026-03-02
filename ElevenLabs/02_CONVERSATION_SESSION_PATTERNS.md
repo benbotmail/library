@@ -59,6 +59,29 @@ Why this matters:
 - Wake lock reduces session drop from screen sleep
 - Explicit status/error hooks prevent silent failure
 
+## Agent selection UX pattern (current upstream example)
+
+The current `examples/agent-testbench` index flow uses a **dropdown selector** for agents (rather than rendering a full horizontal button list). This scales better when agent counts grow.
+
+```tsx
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">Select Agent</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    {agents.map(agent => (
+      <DropdownMenuItem key={agent.agentId} asChild>
+        <Link to={`/agents/$agentId`} params={{ agentId: agent.agentId }}>
+          {agent.name}
+        </Link>
+      </DropdownMenuItem>
+    ))}
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
+Use this in operator/testbench UIs where account users may have many configured agents.
+
 ## Text-first or hybrid modes
 
 - Full voice+text: default session

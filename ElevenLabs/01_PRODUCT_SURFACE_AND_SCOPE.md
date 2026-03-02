@@ -18,7 +18,7 @@ Use this for:
 These are convenience/integration layers over client capabilities.
 
 ### 3) Package-surface freshness note
-In the currently tracked upstream commit (`f61e728...`), `packages/agents-cli` is no longer present in this monorepo.
+In the currently tracked upstream commit (`d4a4a3b...`), `packages/agents-cli` is no longer present in this monorepo.
 Treat any older references to `@elevenlabs/agents-cli` here as historical only.
 
 ---
