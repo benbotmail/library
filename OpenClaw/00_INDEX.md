@@ -1,10 +1,10 @@
 # OpenClaw Docs Pack (Current-State, LLM-Ready)
 
-This pack summarizes **current OpenClaw behavior** (not release/changelog narration).
+This pack summarizes **current OpenClaw behavior** (not changelog narration).
 
 - Upstream source repo: `openclaw-src`
-- Upstream commit processed: `fca0467082cba7004ad80503b5c141ea2bbfae59`
-- Refresh date (UTC): 2026-02-28
+- Upstream commit processed: `87bd6226bd2d5e5ff49626633a8ad75823e5151d`
+- Refresh date (UTC): 2026-03-02
 
 ## Read order
 1. `01_PROJECT_OVERVIEW.md`
@@ -22,7 +22,7 @@ This pack summarizes **current OpenClaw behavior** (not release/changelog narrat
 - `openclaw-src/docs/channels/telegram.md`
 - `openclaw-src/docs/gateway/heartbeat.md`
 - `openclaw-src/docs/gateway/security/index.md`
-- `openclaw-src/docs/concepts/compaction.md`
+- `openclaw-src/docs/channels/channel-routing.md`
 
 ## Usage notes
 - Prefer local docs in `openclaw-src/docs/*` before any mirror.

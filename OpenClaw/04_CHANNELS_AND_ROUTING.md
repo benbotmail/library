@@ -2,7 +2,7 @@
 
 Primary refs:
 - `openclaw-src/docs/channels/telegram.md`
-- `openclaw-src/docs/channels/group-messages.md`
+- `openclaw-src/docs/channels/channel-routing.md`
 - `openclaw-src/docs/gateway/configuration-reference.md` (Channels)
 
 ## Global defaults to remember
@@ -20,20 +20,21 @@ Primary refs:
 - `channels.telegram.dmPolicy`: `pairing | allowlist | open | disabled` (default `pairing`).
 - `channels.telegram.groupPolicy`: `open | allowlist | disabled` (default `allowlist`).
 - Group/topic routing is isolated by session key (`group:<chatId>` and `:topic:<threadId>`).
-- `groupAllowFrom` is sender filter for group execution; if omitted, fallback can use `allowFrom`.
+- Security boundary: DM pairing approvals do not grant group sender access; use `groupAllowFrom` / per-group allowlists.
 
-## Telegram streaming key (canonical)
+## Telegram streaming (canonical key)
 Use `channels.telegram.streaming`.
 
 Allowed values:
 - `off` (default)
 - `partial`
 - `block`
-- `progress` (compat alias; maps to partial behavior on Telegram)
+- `progress` (compat alias; maps to Telegram partial-preview behavior)
 
 Notes:
-- Legacy `streamMode` and boolean `streaming` forms are auto-migrated.
-- Preview streaming (`streaming`) and block streaming (`blockStreaming`) are separate; when block streaming is active, preview streaming is skipped to avoid double-streaming.
+- Legacy `streamMode` and boolean `streaming` forms are compatibility-mapped.
+- Preview stream updates use Telegram message edits.
+- If block-streaming is enabled, preview streaming is skipped to avoid double-streaming.
 
 ## Routing incident checklist
 1. `openclaw status --deep`
