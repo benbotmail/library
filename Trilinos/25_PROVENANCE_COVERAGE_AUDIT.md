@@ -12,7 +12,7 @@ A page passes if it contains one of:
 `00_INDEX.md` is treated as a navigational index and excluded from the requirement.
 
 ## Results
-- Pages checked (excluding index): **24**
+- Pages checked (excluding index): **45**
 - Pages missing provenance section: **0**
 - Overall status: **PASS**
 

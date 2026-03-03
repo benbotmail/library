@@ -9,14 +9,13 @@ Validation pass to ensure `00_INDEX.md` lists every documentation page in `libra
 - Compare actual file set vs indexed set.
 
 ## Findings
-- Initial check found one missing index entry:
-  - `07_BUILDING_DOWNSTREAM_APPS_WITH_TRILINOS.md`
-- Index updated to include the missing page.
+- Coverage check executed after recent build/install troubleshooting additions.
+- No missing or stale index entries detected.
 
 ## Final result
 - **Status:** PASS
-- **Actual docs (excluding index):** 37
-- **Indexed docs:** 37
+- **Actual docs (excluding index):** 45
+- **Indexed docs:** 45
 - **Missing entries:** 0
 - **Stale entries:** 0
 

@@ -25,6 +25,7 @@ This collection is a practical, retrieval-friendly guide to working with the Tri
 - `34_BUILD_INSTALL_DOC_NAVIGATION_MAP.md` — Intent-to-document router for fast navigation across build/install docs.
 - `41_RETRIEVAL_ENTRYPOINTS_BUILD_INSTALL.md` — Query-cue entrypoints for fast LLM retrieval on build/install intents.
 - `42_BUILD_INSTALL_MINIMUM_CONTEXT_SCHEMA.md` — Minimal intake schema for accurate, low-assumption build/install guidance.
+- `43_BUILD_INSTALL_LOG_CAPTURE_AND_MIN_REPRO_TEMPLATE.md` — Standardized log-capture bundle and minimal-repro template for faster troubleshooting handoffs.
 - `35_PRECONFIGURE_ENVIRONMENT_CHECKLIST.md` — Preflight checks to reduce avoidable configure/build failures.
 - `36_CONFIGURE_FAILURE_TRIAGE_PLAYBOOK.md` — Step-by-step configure-stage failure isolation and recovery flow.
 - `37_LLM_BUILD_INSTALL_PROMPT_TEMPLATES.md` — Reusable prompt templates for high-quality LLM build/install and triage outputs.
@@ -40,6 +41,9 @@ This collection is a practical, retrieval-friendly guide to working with the Tri
 - `22_FREQUENT_BUILD_QUESTIONS.md` — FAQ-style quick answers for recurring Trilinos build and configuration decisions.
 - `27_DOWNSTREAM_INTEGRATION_FAILURE_PATTERNS.md` — Symptom-to-fix router for downstream CMake integration and linking/runtime failures.
 - `39_INSTALL_AND_RUNTIME_FAILURE_ROUTER.md` — Post-build install/runtime failure routing for loader, ABI, and MPI consistency issues.
+- `44_MPI_WRAPPER_AND_ABI_CONSISTENCY_CHECKLIST.md` — Focused checklist for MPI wrapper/compiler/launcher alignment and ABI-consistency triage.
+- `45_BUILD_INSTALL_ESCALATION_HANDOFF_CHECKLIST.md` — Escalation packet checklist and template for unresolved build/install failures.
+- `46_COMPILER_AND_CXX_STANDARD_ALIGNMENT_GUIDE.md` — Practical checklist for compiler-family and C++ standard alignment across configure/build/downstream integration.
 - `23_REFERENCE_LINKS_AND_ANCHORS.md` — Central link and anchor index for authoritative Trilinos web and repository references.
 - `24_LINK_INTEGRITY_VALIDATION.md` — Validation report confirming internal local-link integrity across the Trilinos docs pack.
 - `25_PROVENANCE_COVERAGE_AUDIT.md` — Audit report confirming provenance-section coverage across docs pages.
