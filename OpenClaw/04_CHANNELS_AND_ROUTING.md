@@ -26,14 +26,15 @@ Primary refs:
 Use `channels.telegram.streaming`.
 
 Allowed values:
-- `off` (default)
-- `partial`
+- `off`
+- `partial` (default)
 - `block`
 - `progress` (compat alias; maps to Telegram partial-preview behavior)
 
 Notes:
 - Legacy `streamMode` and boolean `streaming` forms are compatibility-mapped.
-- Preview stream updates use Telegram message edits.
+- In DMs, partial preview uses native draft streaming (`sendMessageDraft`) when available; group/topic preview uses a message + edits.
+- `progress` is accepted for cross-channel compatibility and resolves to Telegram partial preview.
 - If block-streaming is enabled, preview streaming is skipped to avoid double-streaming.
 
 ## Routing incident checklist

@@ -20,18 +20,19 @@ Primary controls:
 - cadence default: `30m` (or `1h` for Anthropic OAuth/setup-token mode)
 - `target` default: `none`
 - `directPolicy` default: `allow`
-- `directPolicy: "block"` prevents direct/DM heartbeat delivery but still runs the heartbeat turn
+- `directPolicy: "block"` prevents direct/DM heartbeat delivery but still runs the heartbeat turn (emits `reason=dm-blocked` when direct delivery is suppressed)
 - channel heartbeat visibility defaults: `showOk: false`, `showAlerts: true`, `useIndicator: true`
 - `HEARTBEAT_OK` is treated as an ack contract in heartbeat context
 
 ## Telegram defaults relevant to security/routing
 - `channels.telegram.dmPolicy`: `pairing` (default)
 - `channels.telegram.groupPolicy`: `allowlist` (default)
-- `channels.telegram.streaming`: `off` (default)
+- `channels.telegram.streaming`: `partial` (default)
 - canonical streaming values: `off | partial | block | progress` (`progress` maps to partial behavior)
 - legacy `streamMode`/boolean `streaming` forms are compatibility-migrated; canonical key is `channels.telegram.streaming`
-- `channels.telegram.replyToMode`: `first` (default)
+- `channels.telegram.replyToMode`: `off` (default; explicit `[[reply_to_*]]` tags still work)
 - `channels.telegram.reactionNotifications`: `own` (default)
+- `channels.telegram.reactionLevel`: `minimal` (default)
 
 ## Operator hygiene
 1. `openclaw status` before changes
