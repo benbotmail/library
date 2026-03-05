@@ -4,13 +4,15 @@
 Validation pass over markdown documents in `library/Trilinos/` to confirm internal relative links resolve to existing local files.
 
 ## Method
-- Parse markdown links (`[text](target)`) in each `*.md` file.
+- Parse markdown inline-link syntax in each `*.md` file.
 - Exclude external URLs (`http://`, `https://`), in-page anchors (`#...`), and mailto links.
 - Resolve each relative target from the source file directory.
 - Check filesystem existence of the resolved target.
 
 ## Result
 - **Status:** PASS
+- **Docs scanned:** 48 (including index)
+- **Relative local links detected:** 0
 - **Missing local targets found:** 0
 
 ## Why this matters for LLM retrieval

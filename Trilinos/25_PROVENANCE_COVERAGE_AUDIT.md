@@ -8,11 +8,12 @@ A page passes if it contains one of:
 - `## Provenance`
 - `## Source provenance`
 - `## Sources`
+- `## Provenance notes`
 
 `00_INDEX.md` is treated as a navigational index and excluded from the requirement.
 
 ## Results
-- Pages checked (excluding index): **45**
+- Pages checked (excluding index): **52**
 - Pages missing provenance section: **0**
 - Overall status: **PASS**
 
@@ -21,4 +22,5 @@ A page passes if it contains one of:
 - Retrieval chains remain auditable when each page advertises where assertions came from.
 
 ## Provenance
-- Audit executed directly against local markdown files in `library/Trilinos/` in this workspace.
+- Audit executed against local markdown files in `library/Trilinos/` in this workspace.
+- Validation pass updated after adding `52_RUNTIME_LOADER_RPATH_TRIAGE.md`.

@@ -25,6 +25,12 @@ This collection is a practical, retrieval-friendly guide to working with the Tri
 - `34_BUILD_INSTALL_DOC_NAVIGATION_MAP.md` — Intent-to-document router for fast navigation across build/install docs.
 - `41_RETRIEVAL_ENTRYPOINTS_BUILD_INSTALL.md` — Query-cue entrypoints for fast LLM retrieval on build/install intents.
 - `42_BUILD_INSTALL_MINIMUM_CONTEXT_SCHEMA.md` — Minimal intake schema for accurate, low-assumption build/install guidance.
+- `49_BUILD_INSTALL_INTAKE_QUESTIONNAIRE.md` — Compact first-turn question set and template for high-signal build/install triage intake.
+- `50_FIRST_RESPONSE_TRIAGE_MACRO.md` — Deterministic first-turn response pattern for stage classification, minimal context request, and single-step routing.
+- `51_SHARED_STATIC_LINKAGE_CONSISTENCY_GUIDE.md` — Practical guidance for preventing and triaging shared/static linkage mismatches across Trilinos, TPLs, and downstream apps.
+- `52_RUNTIME_LOADER_RPATH_TRIAGE.md` — Deterministic runtime loader and RPATH troubleshooting flow for post-build startup failures.
+- `53_ENVIRONMENT_MODULES_AND_PATH_HYGIENE_GUIDE.md` — Clean-room path/module hygiene workflow to prevent mixed toolchain and prefix-shadowing build failures.
+- `54_CONFIGURE_LOG_SIGNAL_EXTRACTION_GUIDE.md` — Fast extraction of high-signal configure errors from large CMake logs, with deterministic next-step routing.
 - `43_BUILD_INSTALL_LOG_CAPTURE_AND_MIN_REPRO_TEMPLATE.md` — Standardized log-capture bundle and minimal-repro template for faster troubleshooting handoffs.
 - `35_PRECONFIGURE_ENVIRONMENT_CHECKLIST.md` — Preflight checks to reduce avoidable configure/build failures.
 - `36_CONFIGURE_FAILURE_TRIAGE_PLAYBOOK.md` — Step-by-step configure-stage failure isolation and recovery flow.
@@ -44,6 +50,8 @@ This collection is a practical, retrieval-friendly guide to working with the Tri
 - `44_MPI_WRAPPER_AND_ABI_CONSISTENCY_CHECKLIST.md` — Focused checklist for MPI wrapper/compiler/launcher alignment and ABI-consistency triage.
 - `45_BUILD_INSTALL_ESCALATION_HANDOFF_CHECKLIST.md` — Escalation packet checklist and template for unresolved build/install failures.
 - `46_COMPILER_AND_CXX_STANDARD_ALIGNMENT_GUIDE.md` — Practical checklist for compiler-family and C++ standard alignment across configure/build/downstream integration.
+- `47_CMAKE_CACHE_RESET_AND_RECONFIGURE_PROTOCOL.md` — Standard reset-and-reconfigure workflow to eliminate stale-cache-induced configure/build failures.
+- `48_TRIAGE_DECISION_ORDER_BUILD_INSTALL_ISSUES.md` — Ordered troubleshooting sequence to prioritize high-probability causes and improve escalation quality.
 - `23_REFERENCE_LINKS_AND_ANCHORS.md` — Central link and anchor index for authoritative Trilinos web and repository references.
 - `24_LINK_INTEGRITY_VALIDATION.md` — Validation report confirming internal local-link integrity across the Trilinos docs pack.
 - `25_PROVENANCE_COVERAGE_AUDIT.md` — Audit report confirming provenance-section coverage across docs pages.
