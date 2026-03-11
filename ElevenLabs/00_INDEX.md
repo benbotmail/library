@@ -1,6 +1,6 @@
 # ElevenLabs JS/TS SDK — Current-State Reference
 
-Last validated against upstream `elevenlabs/packages` commit: `d4a4a3becd7514eb3da57b9f3281a793e8678263`.
+Last validated against upstream `elevenlabs/packages` commit: `a00f0a4d276c9601e232794dae04987c6c0fabfd`.
 
 This pack documents **how the current ElevenLabs JavaScript/TypeScript SDK behaves now** (not a changelog).
 
@@ -9,6 +9,7 @@ This pack documents **how the current ElevenLabs JavaScript/TypeScript SDK behav
 - Scribe real-time STT via `@elevenlabs/client`
 - Practical patterns for low-latency conference subtitles + translation fan-out
 - Operational guardrails (tokens, auth boundaries, failure handling)
+- New multimodal client message path (`multimodal_message`) for text + file reference in a single turn
 
 ## Read order
 1. `01_PRODUCT_SURFACE_AND_SCOPE.md`
@@ -27,11 +28,11 @@ This pack documents **how the current ElevenLabs JavaScript/TypeScript SDK behav
 - React wrapper: `open-source/elevenlabs/packages/react/README.md`
 - React Native wrapper: `open-source/elevenlabs/packages/react-native/README.md`
 - Types package: `open-source/elevenlabs/packages/types/README.md`
-- Widgets packages (source/package metadata): `open-source/elevenlabs/packages/convai-widget-core/package.json`, `open-source/elevenlabs/packages/convai-widget-embed/package.json`
+- AsyncAPI contract: `open-source/elevenlabs/packages/types/schemas/agent.asyncapi.yaml`
 
 ## Freshness note
-- In this upstream revision, `packages/agents-cli` is removed from the monorepo.
-- Treat docs in this pack as aligned to the package surface listed above.
+- This upstream revision adds first-class `multimodal_message` support in client + types + schema.
+- Audio worklet resampling handling is now shared for input and output paths via a dedicated utility.
 
 ## Important scope note
 For realtime STT + translation pipelines, this pack treats the **Client SDK Scribe section** as the practical source of truth for SDK behavior (events, commit strategies, token flow, and options).

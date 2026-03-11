@@ -7,6 +7,7 @@ Use this for:
 - Conversational agent sessions (`Conversation.startSession`)
 - Realtime speech-to-text with Scribe (`Scribe.connect`)
 - Event-driven session control and audio/device management
+- Multimodal turn submission via `sendMultimodalMessage({ text?, fileId? })`
 
 ### 2) Framework + integration packages
 - `@elevenlabs/react`
@@ -18,8 +19,10 @@ Use this for:
 These are convenience/integration layers over client capabilities.
 
 ### 3) Package-surface freshness note
-In the currently tracked upstream commit (`d4a4a3b...`), `packages/agents-cli` is no longer present in this monorepo.
-Treat any older references to `@elevenlabs/agents-cli` here as historical only.
+In the currently tracked upstream commit (`a00f0a4...`), major surface-relevant changes are:
+- `multimodal_message` added to outbound conversation event contracts
+- React hook surface exposes `sendMultimodalMessage`
+- Audio resampling helper moved to shared utility (`addLibsamplerateModule`) and reused by input/output
 
 ---
 
@@ -41,6 +44,7 @@ Treat any older references to `@elevenlabs/agents-cli` here as historical only.
 ## Current constraints that matter in architecture
 
 - WebRTC conversation mode uses fixed `pcm_48000` behavior for input/output audio path details in device switching notes.
+- Browser/device sample-rate mismatch is now explicitly handled by loading libsamplerate worklet when needed.
 - Scribe `previousText` is only valid in the **first** audio chunk of a session.
 - For conference subtitles, treat partials as provisional and committed transcripts as authoritative.
 
@@ -49,6 +53,7 @@ Treat any older references to `@elevenlabs/agents-cli` here as historical only.
 ## Minimal decision matrix
 
 - Need full voice agent UX (turn-taking + TTS + tools): use `Conversation.startSession`
+- Need text+file turn handoff in one request: use `sendMultimodalMessage`
 - Need high-control realtime transcription feed: use `Scribe.connect`
 - Need browser frontend with strict key isolation: server-minted tokens only
 - Need embedded web widget UX: evaluate `convai-widget-*` packages
