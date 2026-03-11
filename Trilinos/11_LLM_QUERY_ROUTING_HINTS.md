@@ -17,11 +17,27 @@ Routing hints for mapping common Trilinos user questions to the most relevant do
 
 - **"How do I install/build Trilinos?"**
   - Primary: `04_BUILD_INSTALL_PLAYBOOK.md`
-  - Secondary: `09_TPL_BASELINE_AND_ACCELERATOR_SIGNALS.md`
+  - Secondary: `56_PLATFORM_BASELINE_AND_TOOLCHAIN_MINIMUMS.md`, `55_KNOWN_GOOD_STARTER_CONFIGS.md`
+
+- **"What should I check before first configure?"**
+  - Primary: `56_PLATFORM_BASELINE_AND_TOOLCHAIN_MINIMUMS.md`
+  - Secondary: `35_PRECONFIGURE_ENVIRONMENT_CHECKLIST.md`
 
 - **"Why does configure fail with missing dependencies?"**
   - Primary: `06_TROUBLESHOOTING_MATRIX_CONFIGURE_BUILD.md`
-  - Secondary: `09_TPL_BASELINE_AND_ACCELERATOR_SIGNALS.md`
+  - Secondary: `09_TPL_BASELINE_AND_ACCELERATOR_SIGNALS.md`, `31_TPL_DISCOVERY_AND_PATH_HINTS.md`
+
+- **"Give me the quickest diagnostic commands after a failed build"**
+  - Primary: `57_BUILD_FAILURE_FASTPATH_COMMAND_BUNDLE.md`
+  - Secondary: `54_CONFIGURE_LOG_SIGNAL_EXTRACTION_GUIDE.md`, `43_BUILD_INSTALL_LOG_CAPTURE_AND_MIN_REPRO_TEMPLATE.md`
+
+- **"How can I make configure/build settings reproducible across local and CI?" / "Should I use CMake presets?"**
+  - Primary: `58_CMAKE_PRESETS_ADOPTION_GUIDE.md`
+  - Secondary: `47_CMAKE_CACHE_RESET_AND_RECONFIGURE_PROTOCOL.md`, `55_KNOWN_GOOD_STARTER_CONFIGS.md`
+
+- **"Preset run fails" / "works locally but CI preset fails"**
+  - Primary: `59_CMAKE_PRESETS_FAILURE_PATTERNS.md`
+  - Secondary: `57_BUILD_FAILURE_FASTPATH_COMMAND_BUNDLE.md`, `44_MPI_WRAPPER_AND_ABI_CONSISTENCY_CHECKLIST.md`
 
 - **"How do I use Trilinos from my own CMake app?"**
   - Primary: `07_BUILDING_DOWNSTREAM_APPS_WITH_TRILINOS.md`

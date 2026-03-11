@@ -27,7 +27,9 @@ Provide a compact intake questionnaire to gather the minimum high-value context 
    - Any explicit TPL paths or known missing dependencies.
 7. **Cache freshness**
    - Was this attempted from a clean build directory after recent changes?
-8. **Repro status**
+8. **Preset context (if using presets)**
+   - Preset name(s) used (`configure`/`build`), and whether `CMakeUserPresets.json` or CI-only overrides are involved.
+9. **Repro status**
    - Can issue be reproduced with a reduced/minimal profile?
 
 ### One-message intake template
@@ -41,6 +43,8 @@ MPI wrappers (if used):
 Configure command/script:
 Profile/package scope:
 TPL/path hints used:
+Preset(s) used (configure/build):
+Any CMakeUserPresets.json or CI-only overrides? (yes/no + brief note)
 Clean build dir used after recent changes? (yes/no)
 Minimal reproducer available? (yes/no)
 ```
@@ -51,6 +55,9 @@ Minimal reproducer available? (yes/no)
 - Install/runtime loader/ABI issues → `39_INSTALL_AND_RUNTIME_FAILURE_ROUTER.md`
 - Need strict sequencing → `48_TRIAGE_DECISION_ORDER_BUILD_INSTALL_ISSUES.md`
 - Need escalation packet → `45_BUILD_INSTALL_ESCALATION_HANDOFF_CHECKLIST.md`
+- Need immediate post-failure diagnostics capture → `57_BUILD_FAILURE_FASTPATH_COMMAND_BUNDLE.md`
+- Need pre-configure baseline reset before retry → `56_PLATFORM_BASELINE_AND_TOOLCHAIN_MINIMUMS.md`
+- Need preset-specific failure routing (local/CI divergence) → `59_CMAKE_PRESETS_FAILURE_PATTERNS.md`
 
 ## Validation
 - Questionnaire captures stage, environment, command, and reproducibility context.

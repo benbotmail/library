@@ -20,8 +20,14 @@ When a query is short or ambiguous, this page selects the best first document to
 - **"MPI or non-MPI?" / "which packages first?"**
   - `26_BUILD_INSTALL_DECISION_TREE.md`
 
+- **"What should I verify before first configure?" / "baseline setup first"**
+  - `56_PLATFORM_BASELINE_AND_TOOLCHAIN_MINIMUMS.md`
+
 - **"Configure failed"**
   - `36_CONFIGURE_FAILURE_TRIAGE_PLAYBOOK.md`
+
+- **"Just give me the diagnostic commands" / "capture failure logs fast"**
+  - `57_BUILD_FAILURE_FASTPATH_COMMAND_BUNDLE.md`
 
 - **"Missing TPL / dependency not found"**
   - `31_TPL_DISCOVERY_AND_PATH_HINTS.md`
@@ -34,6 +40,18 @@ When a query is short or ambiguous, this page selects the best first document to
 
 - **"Need CI faster" / "builds take too long"**
   - `28_CI_AND_LOCAL_BUILD_TIME_REDUCTION_GUIDE.md`
+
+- **"How do I make configure commands reproducible across machines/CI?" / "use CMake presets"**
+  - `58_CMAKE_PRESETS_ADOPTION_GUIDE.md`
+
+- **"Preset run fails" / "local preset works but CI preset fails"**
+  - `59_CMAKE_PRESETS_FAILURE_PATTERNS.md`
+
+- **"Works for one shell/user but fails for another" / "module or PATH contamination"**
+  - `53_ENVIRONMENT_MODULES_AND_PATH_HYGIENE_GUIDE.md`
+
+- **"We have long ad-hoc cmake -D scripts; how do we migrate safely?"**
+  - `60_ADHOC_TO_PRESET_MIGRATION_CHECKLIST.md`
 
 ## Secondary fallback order (if first doc is insufficient)
 1. `34_BUILD_INSTALL_DOC_NAVIGATION_MAP.md`

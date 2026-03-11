@@ -32,6 +32,12 @@ Centralized reference links and anchor paths used repeatedly across this documen
 - `SECURITY.md`
 - `demos/simpleBuildAgainstTrilinos/README.md`
 
+### High-value local doc anchors (this pack)
+- `56_PLATFORM_BASELINE_AND_TOOLCHAIN_MINIMUMS.md` (pre-configure baseline)
+- `57_BUILD_FAILURE_FASTPATH_COMMAND_BUNDLE.md` (rapid post-failure capture)
+- `58_CMAKE_PRESETS_ADOPTION_GUIDE.md` (preset adoption workflow)
+- `59_CMAKE_PRESETS_FAILURE_PATTERNS.md` (preset-specific failure routing)
+
 ### Practical usage notes
 - Prefer official docs and in-repo maintained docs before community/wiki references.
 - Use repo anchor files for exact package/TPL naming and build flag verification.

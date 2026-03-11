@@ -13,7 +13,7 @@ A page passes if it contains one of:
 `00_INDEX.md` is treated as a navigational index and excluded from the requirement.
 
 ## Results
-- Pages checked (excluding index): **52**
+- Pages checked (excluding index): **60**
 - Pages missing provenance section: **0**
 - Overall status: **PASS**
 
@@ -23,4 +23,4 @@ A page passes if it contains one of:
 
 ## Provenance
 - Audit executed against local markdown files in `library/Trilinos/` in this workspace.
-- Validation pass updated after adding `52_RUNTIME_LOADER_RPATH_TRIAGE.md`.
+- Validation pass refreshed after inclusion of `60_ADHOC_TO_PRESET_MIGRATION_CHECKLIST.md`.

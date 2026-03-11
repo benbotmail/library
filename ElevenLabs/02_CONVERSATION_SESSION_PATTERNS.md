@@ -59,22 +59,6 @@ Why this matters:
 - Wake lock reduces session drop from screen sleep
 - Explicit status/error hooks prevent silent failure
 
-## Multimodal user turns (new canonical path)
-
-Current client surface supports sending a user turn with optional text plus optional file reference in one event (`type: "multimodal_message"`).
-
-```ts
-conversation.sendMultimodalMessage({
-  text: "Summarize this PDF in 5 bullets",
-  fileId: "file_abc123",
-});
-```
-
-Notes:
-- `text` and `fileId` are both optional; include at least one in practice.
-- Event contract maps to `{ type: "multimodal_message", text?: { type: "user_message", text }, file?: { type: "file_input", file_id } }`.
-- React wrapper now exposes the same method through `useConversation(...).sendMultimodalMessage(...)`.
-
 ## Agent selection UX pattern (current upstream example)
 
 The current `examples/agent-testbench` index flow uses a **dropdown selector** for agents (rather than rendering a full horizontal button list). This scales better when agent counts grow.

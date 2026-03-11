@@ -9,13 +9,13 @@ Validation pass to ensure `00_INDEX.md` lists every documentation page in `libra
 - Compare actual file set vs indexed set.
 
 ## Findings
-- Coverage check executed after recent build/install troubleshooting additions.
+- Coverage check executed after adding `60_ADHOC_TO_PRESET_MIGRATION_CHECKLIST.md`.
 - No missing or stale index entries detected.
 
 ## Final result
 - **Status:** PASS
-- **Actual docs (excluding index):** 45
-- **Indexed docs:** 45
+- **Actual docs (excluding index):** 60
+- **Indexed docs:** 60
 - **Missing entries:** 0
 - **Stale entries:** 0
 
@@ -25,3 +25,4 @@ Validation pass to ensure `00_INDEX.md` lists every documentation page in `libra
 
 ## Provenance
 - Audit executed directly against local files in `library/Trilinos/` and `library/Trilinos/00_INDEX.md`.
+- File-system and index comparison command executed in workspace shell (Node.js runtime).

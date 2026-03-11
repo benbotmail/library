@@ -31,6 +31,12 @@ This collection is a practical, retrieval-friendly guide to working with the Tri
 - `52_RUNTIME_LOADER_RPATH_TRIAGE.md` — Deterministic runtime loader and RPATH troubleshooting flow for post-build startup failures.
 - `53_ENVIRONMENT_MODULES_AND_PATH_HYGIENE_GUIDE.md` — Clean-room path/module hygiene workflow to prevent mixed toolchain and prefix-shadowing build failures.
 - `54_CONFIGURE_LOG_SIGNAL_EXTRACTION_GUIDE.md` — Fast extraction of high-signal configure errors from large CMake logs, with deterministic next-step routing.
+- `55_KNOWN_GOOD_STARTER_CONFIGS.md` — Conservative serial/MPI starter presets that minimize first-attempt configure failures and define safe expansion order.
+- `56_PLATFORM_BASELINE_AND_TOOLCHAIN_MINIMUMS.md` — Pre-configure baseline for toolchain consistency, MPI/non-MPI path choice, and first-success setup.
+- `57_BUILD_FAILURE_FASTPATH_COMMAND_BUNDLE.md` — Rapid command bundle to capture high-signal diagnostics after failed configure/build/install runs.
+- `58_CMAKE_PRESETS_ADOPTION_GUIDE.md` — Reproducible preset-based workflow for consistent local/CI configure intent and easier failure handoffs.
+- `59_CMAKE_PRESETS_FAILURE_PATTERNS.md` — Symptom-to-fix routing for preset-specific failures and local/CI divergence.
+- `60_ADHOC_TO_PRESET_MIGRATION_CHECKLIST.md` — Checklist for migrating ad-hoc configure commands into stable preset-based local/CI workflows.
 - `43_BUILD_INSTALL_LOG_CAPTURE_AND_MIN_REPRO_TEMPLATE.md` — Standardized log-capture bundle and minimal-repro template for faster troubleshooting handoffs.
 - `35_PRECONFIGURE_ENVIRONMENT_CHECKLIST.md` — Preflight checks to reduce avoidable configure/build failures.
 - `36_CONFIGURE_FAILURE_TRIAGE_PLAYBOOK.md` — Step-by-step configure-stage failure isolation and recovery flow.

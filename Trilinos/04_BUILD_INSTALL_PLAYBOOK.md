@@ -26,6 +26,18 @@ cmake <options> <path-to-trilinos-source>
 
 Keeping configure options in a reusable script (for example `do-configure`) improves repeatability.
 
+### Preset-first alternative (recommended for reproducibility)
+If `CMakePresets.json` is available, prefer preset-driven configure/build:
+
+```bash
+cmake --list-presets
+cmake --preset <configure-preset>
+cmake --build --preset <build-preset>
+cmake --install <build-dir>
+```
+
+Use this playbook for option intent, then encode stable workflows in presets (`58_CMAKE_PRESETS_ADOPTION_GUIDE.md`).
+
 ## Fast path A: MPI build (broad package enable)
 ```bash
 cmake \

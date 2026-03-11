@@ -83,6 +83,18 @@ Common configure/build/install failure patterns for Trilinos, with diagnosis and
 - **Fix:**
   - Follow `demos/simpleBuildAgainstTrilinos/README.md` integration pattern.
 
+### 8) CMake preset run behaves differently across users or CI
+- **Typical signal:** `cmake --preset <name>` passes locally but fails in CI (or another user shell) with different compiler/TPL/MPI detection.
+- **Likely cause:** hidden environment drift (`PATH`, module state), user overlay presets (`CMakeUserPresets.json`), or ad-hoc CI overrides not encoded in project presets.
+- **Quick checks:**
+  - Run `cmake --list-presets` in both environments.
+  - Compare high-signal cache keys (`CMAKE_*_COMPILER`, `CMAKE_INSTALL_PREFIX`, `TPL_ENABLE_MPI`, `Trilinos_ENABLE_*`).
+  - Check for active module differences and path shadowing.
+- **Fix:**
+  - Move required CI/local deltas into explicit inherited presets.
+  - Isolate build directories per preset family and reset cache when switching toolchain/MPI roots.
+  - Apply environment hygiene workflow before retry.
+
 ## Validation
 - Confirm fixes by re-running configure and build from a clean build directory when possible.
 - Preserve first failing error block before and after change to verify issue resolution.

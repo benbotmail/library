@@ -58,10 +58,25 @@ cmake \
   <path-to-trilinos-source>
 ```
 
+## Template D — Preset-based wrapper (local + CI parity)
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+cmake --preset <configure-preset>
+cmake --build --preset <build-preset>
+```
+
+Optional install step:
+```bash
+cmake --install <build-dir>
+```
+
 ## Template hygiene checklist
 - Keep compiler and MPI choices explicit.
 - Avoid switching major options within the same build tree.
 - Pair each template with a named build directory (`build-mpi-relwithdebinfo`, etc.).
+- Prefer preset inheritance over ad-hoc per-run `-D` overrides.
 - Record package rationale near template comments.
 
 ## Cross references
@@ -70,6 +85,8 @@ cmake \
 - `14_BUILD_PROFILES_MINIMAL_TO_ADVANCED.md`
 - `26_BUILD_INSTALL_DECISION_TREE.md`
 - `29_INSTALL_VERIFICATION_CHECKLIST.md`
+- `58_CMAKE_PRESETS_ADOPTION_GUIDE.md`
+- `59_CMAKE_PRESETS_FAILURE_PATTERNS.md`
 
 ## Provenance
 - `Trilinos/INSTALL.rst`

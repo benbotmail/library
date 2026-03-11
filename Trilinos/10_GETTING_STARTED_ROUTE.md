@@ -16,13 +16,15 @@ Entry-point navigation for new users who need to move from first read to first s
 ### Recommended reading order
 1. `02_SOURCE_OF_TRUTH_MAP.md`
    - Establishes source authority and confidence order.
-2. `04_BUILD_INSTALL_PLAYBOOK.md`
+2. `56_PLATFORM_BASELINE_AND_TOOLCHAIN_MINIMUMS.md`
+   - Sets a conservative pre-configure baseline (toolchain consistency, MPI choice, install prefix intent).
+3. `04_BUILD_INSTALL_PLAYBOOK.md`
    - Provides baseline configure/build/install flows.
-3. `09_TPL_BASELINE_AND_ACCELERATOR_SIGNALS.md`
+4. `09_TPL_BASELINE_AND_ACCELERATOR_SIGNALS.md`
    - Pre-checks environment and dependency expectations.
-4. `06_TROUBLESHOOTING_MATRIX_CONFIGURE_BUILD.md`
-   - Resolves common configure/build failures quickly.
-5. `07_BUILDING_DOWNSTREAM_APPS_WITH_TRILINOS.md`
+5. `57_BUILD_FAILURE_FASTPATH_COMMAND_BUNDLE.md`
+   - Provides immediate diagnostic capture commands if first attempts fail.
+6. `07_BUILDING_DOWNSTREAM_APPS_WITH_TRILINOS.md`
    - Integrates a separate CMake project with installed Trilinos.
 
 ### Task-based routing
@@ -36,6 +38,14 @@ Entry-point navigation for new users who need to move from first read to first s
   - Use `07_BUILDING_DOWNSTREAM_APPS_WITH_TRILINOS.md`.
 - **Need package ownership and package map:**
   - Use `03_PACKAGE_CATALOG.md` and `05_PACKAGE_ROUTING_AND_TIERS.md`.
+- **Need reproducible local+CI configure workflows:**
+  - Use `58_CMAKE_PRESETS_ADOPTION_GUIDE.md`.
+- **Preset workflow fails or local/CI preset behavior diverges:**
+  - Use `59_CMAKE_PRESETS_FAILURE_PATTERNS.md`.
+- **Need to migrate from long ad-hoc `cmake -D...` scripts to maintainable presets:**
+  - Use `60_ADHOC_TO_PRESET_MIGRATION_CHECKLIST.md`.
+- **Seeing user/shell-specific failures (modules, PATH shadowing, mixed environments):**
+  - Use `53_ENVIRONMENT_MODULES_AND_PATH_HYGIENE_GUIDE.md`.
 - **Need contribution/security process:**
   - Use `08_CONTRIBUTING_AND_SECURITY_WORKFLOW.md`.
 

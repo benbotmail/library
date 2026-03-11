@@ -16,18 +16,18 @@ Use two lock levels:
 
 ---
 
-## 2) Current upstream package snapshot (from tracked commit)
+## 2) Package matrix template (fill per project)
 
-| Layer | Package | Current version seen upstream | Notes |
-|---|---|---|---|
-| Core SDK | `@elevenlabs/client` | `0.15.1` | Adds multimodal message event plumbing |
-| React wrapper | `@elevenlabs/react` | `0.14.2` | Exposes `sendMultimodalMessage` in hook surface |
-| React Native wrapper | `@elevenlabs/react-native` | monorepo local package | Includes provider-side multimodal wiring |
-| Types | `@elevenlabs/types` | monorepo local package | AsyncAPI + generated outgoing types now include `multimodal_message` |
-| Widget core | `@elevenlabs/convai-widget-core` | `0.10.3` | Current embed baseline |
-| Widget embed | `@elevenlabs/convai-widget-embed` | `0.10.3` | Keep in sync with core |
+| Layer | Package | Pin strategy | Current pin (example) | Notes |
+|---|---|---|---|---|
+| Core SDK | `@elevenlabs/client` | exact | `x.y.z` | Primary runtime surface |
+| React wrapper | `@elevenlabs/react` | exact | `x.y.z` | Keep aligned with client major |
+| React Native wrapper | `@elevenlabs/react-native` | exact | `x.y.z` | Validate audio path behavior on target devices |
+| Types | `@elevenlabs/types` | exact | `x.y.z` | Shared contracts across services |
+| Widget core | `@elevenlabs/convai-widget-core` | exact | `x.y.z` | Optional, only if using embedded widgets |
+| Widget embed | `@elevenlabs/convai-widget-embed` | exact | `x.y.z` | Optional, browser embedding |
 
-> For app-level production pinning, still lock exact versions in your own `package.json` + lockfile.
+> Keep these pins in `package.json` + lockfile, and mirror the same values in release notes.
 
 ---
 
@@ -38,7 +38,6 @@ At each upgrade:
 - verify Scribe token flow unchanged (`single-use-token/realtime_scribe`)
 - replay reconnect tests and token-expiry tests
 - verify event names/shape used by your handlers
-- if using multimodal turns, validate both text-only and text+file payload paths
 
 If any of the above changes, classify as "integration-impacting" and block promotion until patched.
 
@@ -59,19 +58,19 @@ Recommended practice:
 
 ---
 
-## 5) Upstream freshness marker
+## 5) Upstream freshness and removed-package policy
 
 Current tracked upstream commit in this docs pack:
-- `a00f0a4d276c9601e232794dae04987c6c0fabfd`
+- `f61e7282529a92f7f3332cf1cb3d8fe2fe480df4`
 
-Observed surface change in this revision:
-- new outbound socket event: `multimodal_message`
-- new client method: `sendMultimodalMessage`
-- shared resampler module loading for input/output audio worklets
+Observed package-surface change in this revision:
+- `packages/agents-cli` is absent from the monorepo surface.
 
 Policy:
-- when event or session surface changes, update `02_CONVERSATION_SESSION_PATTERNS.md` first
-- then refresh this matrix so version/package expectations remain explicit
+- if a previously referenced package is removed/renamed upstream,
+  - remove it from decision matrices
+  - add a migration note in `01_PRODUCT_SURFACE_AND_SCOPE.md`
+  - record the commit hash where the change was observed
 
 ---
 

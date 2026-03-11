@@ -72,6 +72,33 @@ cmake \
 cmake --build . -j<n>
 ```
 
+## 6) Preset-based configure/build (reproducible local + CI)
+```bash
+# From repository containing CMakePresets.json
+cmake --preset <configure-preset>
+cmake --build --preset <build-preset>
+cmake --install <build-dir>
+```
+
+Example discovery:
+```bash
+cmake --list-presets
+```
+
+## 7) Fast failure capture bundle (after any failed run)
+```bash
+# From build dir
+cmake -N -LA . \
+  | grep -E 'CMAKE_(C|CXX|Fortran)_COMPILER|CMAKE_BUILD_TYPE|CMAKE_INSTALL_PREFIX|CMAKE_CXX_STANDARD|BUILD_SHARED_LIBS|Trilinos_ENABLE_|TPL_ENABLE_MPI|MPI_' \
+  > cache-signals.txt
+
+grep -nE 'CMake Error|error:|undefined reference|cannot find|No such file|not found|failed' configure.log build.log 2>/dev/null \
+  | head -n 80 > first-errors.txt
+
+tar -czf trilinos-fastpath-evidence.tgz cache-signals.txt first-errors.txt configure.log build.log install.log 2>/dev/null || true
+```
+Use this to prepare a minimal escalation artifact quickly.
+
 ## Quick flags to remember
 - Enable tests: `-DTrilinos_ENABLE_TESTS=ON`
 - Shared libs: `-DBUILD_SHARED_LIBS=ON`
@@ -84,6 +111,8 @@ cmake --build . -j<n>
 - `26_BUILD_INSTALL_DECISION_TREE.md`
 - `29_INSTALL_VERIFICATION_CHECKLIST.md`
 - `30_CMAKE_CONFIGURE_SCRIPT_TEMPLATE_LIBRARY.md`
+- `58_CMAKE_PRESETS_ADOPTION_GUIDE.md`
+- `59_CMAKE_PRESETS_FAILURE_PATTERNS.md`
 
 ## Provenance
 - `Trilinos/INSTALL.rst`

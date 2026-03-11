@@ -7,11 +7,31 @@ Single-page router that maps common build/install intents to the exact next docu
 
 - **I need the fastest first successful build/install path**
   - Primary: `32_30_MINUTE_FIRST_SUCCESS_PATH.md`
-  - Secondary: `04_BUILD_INSTALL_PLAYBOOK.md`, `29_INSTALL_VERIFICATION_CHECKLIST.md`
+  - Secondary: `55_KNOWN_GOOD_STARTER_CONFIGS.md`, `04_BUILD_INSTALL_PLAYBOOK.md`, `29_INSTALL_VERIFICATION_CHECKLIST.md`
+
+- **I want conservative starter presets that avoid first-attempt configure failures**
+  - Primary: `55_KNOWN_GOOD_STARTER_CONFIGS.md`
+  - Secondary: `56_PLATFORM_BASELINE_AND_TOOLCHAIN_MINIMUMS.md`, `14_BUILD_PROFILES_MINIMAL_TO_ADVANCED.md`, `26_BUILD_INSTALL_DECISION_TREE.md`
+
+- **I need a pre-configure baseline for toolchain, MPI choice, and install-prefix decisions**
+  - Primary: `56_PLATFORM_BASELINE_AND_TOOLCHAIN_MINIMUMS.md`
+  - Secondary: `35_PRECONFIGURE_ENVIRONMENT_CHECKLIST.md`, `40_BUILD_PROFILE_SELECTION_MATRIX.md`, `55_KNOWN_GOOD_STARTER_CONFIGS.md`
 
 - **I need executable command snippets right now**
   - Primary: `33_BUILD_AND_INSTALL_COMMAND_CHEATSHEET.md`
   - Secondary: `13_CMAKE_FLAG_QUICK_REFERENCE.md`, `30_CMAKE_CONFIGURE_SCRIPT_TEMPLATE_LIBRARY.md`
+
+- **I want reproducible CMake presets for local + CI consistency**
+  - Primary: `58_CMAKE_PRESETS_ADOPTION_GUIDE.md`
+  - Secondary: `60_ADHOC_TO_PRESET_MIGRATION_CHECKLIST.md`, `56_PLATFORM_BASELINE_AND_TOOLCHAIN_MINIMUMS.md`, `55_KNOWN_GOOD_STARTER_CONFIGS.md`
+
+- **I need to migrate existing ad-hoc `cmake -D...` scripts into presets**
+  - Primary: `60_ADHOC_TO_PRESET_MIGRATION_CHECKLIST.md`
+  - Secondary: `58_CMAKE_PRESETS_ADOPTION_GUIDE.md`, `47_CMAKE_CACHE_RESET_AND_RECONFIGURE_PROTOCOL.md`, `30_CMAKE_CONFIGURE_SCRIPT_TEMPLATE_LIBRARY.md`
+
+- **My preset run fails or local/CI preset behavior diverges**
+  - Primary: `59_CMAKE_PRESETS_FAILURE_PATTERNS.md`
+  - Secondary: `57_BUILD_FAILURE_FASTPATH_COMMAND_BUNDLE.md`, `47_CMAKE_CACHE_RESET_AND_RECONFIGURE_PROTOCOL.md`, `44_MPI_WRAPPER_AND_ABI_CONSISTENCY_CHECKLIST.md`
 
 - **I need to choose MPI vs non-MPI and package scope**
   - Primary: `26_BUILD_INSTALL_DECISION_TREE.md`
@@ -24,6 +44,10 @@ Single-page router that maps common build/install intents to the exact next docu
 - **I suspect stale configure state after changing compiler/MPI/TPL flags**
   - Primary: `47_CMAKE_CACHE_RESET_AND_RECONFIGURE_PROTOCOL.md`
   - Secondary: `35_PRECONFIGURE_ENVIRONMENT_CHECKLIST.md`, `36_CONFIGURE_FAILURE_TRIAGE_PLAYBOOK.md`
+
+- **I suspect mixed environment modules, PATH shadowing, or toolchain contamination**
+  - Primary: `53_ENVIRONMENT_MODULES_AND_PATH_HYGIENE_GUIDE.md`
+  - Secondary: `56_PLATFORM_BASELINE_AND_TOOLCHAIN_MINIMUMS.md`, `35_PRECONFIGURE_ENVIRONMENT_CHECKLIST.md`, `46_COMPILER_AND_CXX_STANDARD_ALIGNMENT_GUIDE.md`
 
 - **I’m seeing MPI wrapper/link/runtime inconsistencies**
   - Primary: `44_MPI_WRAPPER_AND_ABI_CONSISTENCY_CHECKLIST.md`
@@ -41,9 +65,13 @@ Single-page router that maps common build/install intents to the exact next docu
   - Primary: `48_TRIAGE_DECISION_ORDER_BUILD_INSTALL_ISSUES.md`
   - Secondary: `26_BUILD_INSTALL_DECISION_TREE.md`, `18_ERROR_PATTERN_ROUTER_BY_BUILD_STAGE.md`
 
+- **I need immediate post-failure diagnostic commands (fast capture before deep triage)**
+  - Primary: `57_BUILD_FAILURE_FASTPATH_COMMAND_BUNDLE.md`
+  - Secondary: `54_CONFIGURE_LOG_SIGNAL_EXTRACTION_GUIDE.md`, `36_CONFIGURE_FAILURE_TRIAGE_PLAYBOOK.md`, `45_BUILD_INSTALL_ESCALATION_HANDOFF_CHECKLIST.md`
+
 - **I need a complete log bundle + minimal reproducible case**
   - Primary: `43_BUILD_INSTALL_LOG_CAPTURE_AND_MIN_REPRO_TEMPLATE.md`
-  - Secondary: `37_LLM_BUILD_INSTALL_PROMPT_TEMPLATES.md`, `45_BUILD_INSTALL_ESCALATION_HANDOFF_CHECKLIST.md`
+  - Secondary: `57_BUILD_FAILURE_FASTPATH_COMMAND_BUNDLE.md`, `37_LLM_BUILD_INSTALL_PROMPT_TEMPLATES.md`, `45_BUILD_INSTALL_ESCALATION_HANDOFF_CHECKLIST.md`
 
 - **I need escalation-ready handoff content**
   - Primary: `45_BUILD_INSTALL_ESCALATION_HANDOFF_CHECKLIST.md`

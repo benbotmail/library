@@ -37,16 +37,23 @@ If this fails again, open:
 - `configure` → `36_CONFIGURE_FAILURE_TRIAGE_PLAYBOOK.md`
 - `build` → `06_TROUBLESHOOTING_MATRIX_CONFIGURE_BUILD.md`
 - `install`/`runtime` → `39_INSTALL_AND_RUNTIME_FAILURE_ROUTER.md`
-- unknown/ambiguous stage → `48_TRIAGE_DECISION_ORDER_BUILD_INSTALL_ISSUES.md`
+- `preset-specific` (local/CI divergence, preset not found, preset drift) → `59_CMAKE_PRESETS_FAILURE_PATTERNS.md`
+- unknown/ambiguous stage → `57_BUILD_FAILURE_FASTPATH_COMMAND_BUNDLE.md` (capture first, then route)
 
 ### Missing-context defaults
 If key context is absent, request only from:
 - `49_BUILD_INSTALL_INTAKE_QUESTIONNAIRE.md`
 - `42_BUILD_INSTALL_MINIMUM_CONTEXT_SCHEMA.md`
 
+Preset-aware minimum add-on (request only when presets are mentioned):
+- configure/build preset name(s)
+- whether `CMakeUserPresets.json` is present
+- whether CI injects extra `-D` overrides beyond project presets
+
 ### Guardrails
 - Avoid giving multiple speculative fixes in first response.
 - Prefer one reversible step over broad environment changes.
+- If stage is unclear, prefer diagnostic capture commands before prescribing fixes (`57_BUILD_FAILURE_FASTPATH_COMMAND_BUNDLE.md`).
 - Require clean-build reset when toolchain/MPI/TPL changed recently.
 
 ## Validation

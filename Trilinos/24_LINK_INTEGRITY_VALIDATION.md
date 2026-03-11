@@ -11,7 +11,7 @@ Validation pass over markdown documents in `library/Trilinos/` to confirm intern
 
 ## Result
 - **Status:** PASS
-- **Docs scanned:** 48 (including index)
+- **Docs scanned:** 61 (including index)
 - **Relative local links detected:** 0
 - **Missing local targets found:** 0
 
@@ -21,3 +21,4 @@ Validation pass over markdown documents in `library/Trilinos/` to confirm intern
 
 ## Provenance
 - Validation executed directly against local workspace files in `library/Trilinos/`.
+- Validation count refreshed after inclusion of preset workflow pages through `59_CMAKE_PRESETS_FAILURE_PATTERNS.md`, then rechecking full pack coverage.
