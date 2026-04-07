@@ -3,7 +3,19 @@
 ## Scope
 High-signal entrypoints for LLM retrieval when the user asks build/install questions with limited context.
 
-## Purpose
+## Audience
+- LLM systems retrieving Trilinos build/install guidance
+- Prompt engineers designing retrieval query patterns
+- Users needing fast document selection
+
+## Prerequisites
+- Access to Trilinos docs pack in `library/Trilinos/`
+- Familiarity with basic LLM retrieval concepts
+- Understanding of build/install query intent types
+
+## Content
+
+### Purpose
 When a query is short or ambiguous, this page selects the best first document to retrieve so answers stay fast and source-aligned.
 
 ## Query cue → first retrieval target
@@ -53,10 +65,15 @@ When a query is short or ambiguous, this page selects the best first document to
 - **"We have long ad-hoc cmake -D scripts; how do we migrate safely?"**
   - `60_ADHOC_TO_PRESET_MIGRATION_CHECKLIST.md`
 
-## Secondary fallback order (if first doc is insufficient)
+### Secondary fallback order (if first doc is insufficient)
 1. `34_BUILD_INSTALL_DOC_NAVIGATION_MAP.md`
 2. `19_CROSS_REFERENCE_MATRIX.md`
 3. `23_REFERENCE_LINKS_AND_ANCHORS.md`
+
+## Validation
+- Confirm all retrieval targets exist and are listed in `00_INDEX.md`.
+- Verify query cues match common user question patterns from support channels.
+- Re-check entrypoints when documents are renamed or renumbered.
 
 ## Provenance
 - Routing synthesized from existing build/install, troubleshooting, and navigation pages in `library/Trilinos/`.

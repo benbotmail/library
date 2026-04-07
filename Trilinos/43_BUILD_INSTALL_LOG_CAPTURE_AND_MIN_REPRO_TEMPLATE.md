@@ -58,7 +58,6 @@ Use this order to reduce noise while preserving failure behavior:
 5. Record the **smallest flag set** that still reproduces.
 
 ### Report template (copy/paste)
-```text
 Failure stage: [configure|build|install|runtime]
 Observed error (first decisive message):
   <paste exact message>
@@ -71,6 +70,12 @@ Environment:
 
 Configure command/script:
   <exact command or script body>
+
+Preset context (if used):
+  Configure preset:
+  Build preset:
+  CMakeUserPresets.json active? [yes/no]
+  CI-only overrides beyond presets:
 
 Key CMake options:
   Trilinos_ENABLE_*:

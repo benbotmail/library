@@ -3,15 +3,28 @@
 ## Scope
 Quick-reference guidance for making third-party libraries (TPLs) discoverable during Trilinos configure, with emphasis on reducing trial-and-error.
 
-## When to use
+## Audience
+- Engineers managing TPL dependencies
+- Build engineers configuring complex dependency stacks
+- LLM systems guiding TPL discovery workflows
+
+## Prerequisites
+- Trilinos source tree accessible
+- Familiarity with configure-time TPL detection patterns
+- Access to TPL install locations or package manager
+- Basic CMake dependency path concepts
+
+## Content
+
+### When to use
 Use this page when configure fails due to missing TPLs, unresolved include/library paths, or ambiguous dependency detection behavior.
 
-## Core principles
+### Core principles
 1. **Prefer explicit paths over implicit environment assumptions** for reproducibility.
 2. **Add TPLs incrementally** when possible; broad package enables can multiply TPL requirements.
 3. **Keep compiler/MPI consistency** across Trilinos and TPL builds to avoid ABI/link surprises.
 
-## Practical hint hierarchy
+### Practical hint hierarchy
 
 ### 1) Start from package scope
 - If only a subset of packages is needed, enable only those packages first.
@@ -28,7 +41,7 @@ Use this page when configure fails due to missing TPLs, unresolved include/libra
 ### 4) Escalate to broad enable only after baseline succeeds
 - Once core package/TPL combinations configure cleanly, widen package scope.
 
-## Common failure patterns
+### Common failure patterns
 
 ### Pattern A: “Required TPL not found” after enabling many packages
 - **Cause:** Package scope exceeded available local TPL set.
@@ -42,19 +55,24 @@ Use this page when configure fails due to missing TPLs, unresolved include/libra
 - **Cause:** Mixed MPI/non-MPI stacks or wrapper mismatch.
 - **First move:** Standardize toolchain and ensure MPI-aware dependencies are aligned.
 
-## Minimal TPL triage checklist
+### Minimal TPL triage checklist
 - Confirm required package list is intentional.
 - Confirm toolchain consistency (compiler + MPI mode).
 - Confirm install roots for required TPLs are reachable and explicit.
 - Reconfigure in a clean out-of-source build directory.
 - Expand scope only after a passing baseline configure.
 
-## Cross references
+### Cross references
 - `04_BUILD_INSTALL_PLAYBOOK.md`
 - `09_TPL_BASELINE_AND_ACCELERATOR_SIGNALS.md`
 - `13_CMAKE_FLAG_QUICK_REFERENCE.md`
 - `17_PACKAGE_SELECTION_STRATEGY.md`
 - `18_ERROR_PATTERN_ROUTER_BY_BUILD_STAGE.md`
+
+## Validation
+- Confirm failure patterns align with CMake/TriBITS TPL discovery behavior documented in `Trilinos/INSTALL.rst`.
+- Verify cross references resolve to existing files.
+- Re-check hint hierarchy against current CMake prefix-path and TPL root conventions.
 
 ## Provenance
 - `Trilinos/INSTALL.rst`

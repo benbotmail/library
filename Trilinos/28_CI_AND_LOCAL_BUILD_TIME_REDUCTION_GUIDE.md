@@ -3,11 +3,24 @@
 ## Scope
 Practical tactics to reduce configure/build/test turnaround time for Trilinos workflows in local development and CI.
 
-## Goals
+## Audience
+- Engineers optimizing local build iteration speed
+- DevOps engineers designing fast CI lanes
+- LLM systems generating build-time optimization guidance
+
+## Prerequisites
+- Familiarity with Trilinos configure/build flow
+- Access to CI pipeline configuration
+- Understanding of Ninja vs Make performance characteristics
+- Basic knowledge of test selection strategies
+
+## Content
+
+### Goals
 - Shorten iteration loops without losing key validation signal
 - Separate fast feedback paths from broad/nightly coverage
 
-## Fast-feedback strategy (local + PR)
+### Fast-feedback strategy (local + PR)
 1. **Start with targeted package enables**
    - Prefer `Trilinos_ENABLE_<Package>=ON` for active work area.
    - Avoid broad package enables during tight edit-compile-debug loops.
@@ -26,14 +39,14 @@ Practical tactics to reduce configure/build/test turnaround time for Trilinos wo
 5. **Cache configuration intent**
    - Keep `do-configure` scripts for each profile to reduce option drift and rework.
 
-## CI lane design pattern
+### CI lane design pattern
 - **Lane A (PR quick gate):** minimal required packages + key smoke tests
 - **Lane B (PR extended):** broader package set + integration tests
 - **Lane C (nightly/full):** wide package/TPL coverage + heavier validations
 
 This layered approach keeps PR cycle time reasonable while preserving high-confidence coverage over time.
 
-## Common time sinks and mitigations
+### Common time sinks and mitigations
 
 ### Repeated full reconfigure after small option changes
 - **Mitigation:** maintain stable configure scripts per profile; avoid unnecessary toggling in a single build tree.
@@ -53,12 +66,17 @@ This layered approach keeps PR cycle time reasonable while preserving high-confi
 - Downstream integration smoke check passes (if affected)
 - Then expand to broader package/test lanes
 
-## Cross references
+### Cross references
 - `04_BUILD_INSTALL_PLAYBOOK.md`
 - `14_BUILD_PROFILES_MINIMAL_TO_ADVANCED.md`
 - `17_PACKAGE_SELECTION_STRATEGY.md`
 - `21_CANONICAL_WORKFLOWS_BY_USER_GOAL.md`
 - `22_FREQUENT_BUILD_QUESTIONS.md`
+
+## Validation
+- Confirm lane design patterns align with actual CI workflow configuration in `.github/workflows/` or equivalent.
+- Verify cross references resolve to existing docs.
+- Re-evaluate time-sink mitigations when Trilinos CMake/TriBITS behavior or CI tooling changes.
 
 ## Provenance
 - `Trilinos/README.md`

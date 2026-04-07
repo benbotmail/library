@@ -51,9 +51,21 @@ Typical indicators:
 
 Route to:
 - `07_BUILDING_DOWNSTREAM_APPS_WITH_TRILINOS.md`
+- `27_DOWNSTREAM_INTEGRATION_FAILURE_PATTERNS.md`
 - `13_CMAKE_FLAG_QUICK_REFERENCE.md`
 
-### Stage 5: Ownership or contribution process blockers
+### Stage 5: Install/runtime failures (post-build)
+Typical indicators:
+- install-step path/permission issues
+- loader errors (`lib*.so not found`)
+- local runtime works but CI/other user fails
+
+Route to:
+- `39_INSTALL_AND_RUNTIME_FAILURE_ROUTER.md`
+- `52_RUNTIME_LOADER_RPATH_TRIAGE.md`
+- `29_INSTALL_VERIFICATION_CHECKLIST.md`
+
+### Stage 6: Ownership or contribution process blockers
 Typical indicators:
 - Unclear package owner
 - Questions about PR target branches or security disclosure path
@@ -77,3 +89,7 @@ Route to:
 - `library/Trilinos/13_CMAKE_FLAG_QUICK_REFERENCE.md`
 - `library/Trilinos/14_BUILD_PROFILES_MINIMAL_TO_ADVANCED.md`
 - `library/Trilinos/17_PACKAGE_SELECTION_STRATEGY.md`
+- `library/Trilinos/27_DOWNSTREAM_INTEGRATION_FAILURE_PATTERNS.md`
+- `library/Trilinos/29_INSTALL_VERIFICATION_CHECKLIST.md`
+- `library/Trilinos/39_INSTALL_AND_RUNTIME_FAILURE_ROUTER.md`
+- `library/Trilinos/52_RUNTIME_LOADER_RPATH_TRIAGE.md`

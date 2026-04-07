@@ -34,6 +34,18 @@ Route by stage first using `18_ERROR_PATTERN_ROUTER_BY_BUILD_STAGE.md`, then app
 ### Q7) How do I know if my toolchain is within supported expectations?
 Check documented compiler/MPI testing scope and support boundaries in `20_SUPPORT_AND_COMPATIBILITY_BOUNDARIES.md`.
 
+### Q8) Why does re-running cmake still show old errors?
+Stale CMake cache entries can persist. Use the reset protocol in `47_CMAKE_CACHE_RESET_AND_RECONFIGURE_PROTOCOL.md` to clear the build directory or delete `CMakeCache.txt` before reconfiguring.
+
+### Q9) How do I fix "library not found" at runtime despite successful build?
+Runtime loader issues usually stem from RPATH or shared/static mismatches. Follow `52_RUNTIME_LOADER_RPATH_TRIAGE.md` for deterministic diagnosis.
+
+### Q10) What if a TPL is detected but the wrong version is used?
+Check path hints and environment variables. Use `31_TPL_DISCOVERY_AND_PATH_HINTS.md` to force correct paths via `TPL_<NAME>_ROOT_DIR` or related CMake variables.
+
+### Q11) Should I use shared or static libraries?
+Match Trilinos linkage to your downstream app and TPLs. Mixed linkage causes subtle ABI issues. See `51_SHARED_STATIC_LINKAGE_CONSISTENCY_GUIDE.md` for consistency requirements.
+
 ## Validation
 - Reconfirm answers against current `INSTALL.rst`, package metadata, and troubleshooting pages after upstream changes.
 - Keep each FAQ answer aligned with linked primary docs.

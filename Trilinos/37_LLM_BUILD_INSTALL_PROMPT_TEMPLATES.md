@@ -3,10 +3,23 @@
 ## Scope
 Ready-to-use prompt templates for asking an LLM to produce reliable Trilinos build/install guidance with bounded assumptions and explicit provenance expectations.
 
-## Why this page exists
+## Audience
+- Engineers requesting Trilinos build/install help from LLMs
+- Prompt engineers designing LLM interaction patterns
+- LLM systems consuming prompt templates
+
+## Prerequisites
+- Familiarity with Trilinos build/install workflows
+- Understanding of prompt engineering basics
+- Access to this docs pack for routing
+- Ability to provide context (environment, errors, goals)
+
+## Content
+
+### Why this page exists
 Many weak answers come from underspecified prompts. These templates force critical context: toolchain mode, package scope, constraints, and required output format.
 
-## Template 1 — First-success setup request
+### Template 1 — First-success setup request
 ```text
 You are helping with Trilinos setup.
 Goal: produce a 30-minute first-success configure/build/install plan.
@@ -22,13 +35,14 @@ Output requirements:
 4) cite which Trilinos docs/pages each recommendation comes from.
 ```
 
-## Template 2 — Configure failure triage request
+### Template 2 — Configure failure triage request
 ```text
 I have a Trilinos CMake configure failure.
 Context:
 - Build profile: <MPI/non-MPI, Debug/Release>
 - Enabled packages: <list>
 - TPL hints provided: <list>
+- Preset context (if used): <configure preset, build preset, any CMakeUserPresets/CI overrides>
 - First decisive error block: <paste exact message>
 Tasks:
 1) classify likely root cause,
@@ -38,7 +52,7 @@ Tasks:
 Use stage-specific triage logic, not compile-stage advice.
 ```
 
-## Template 3 — Downstream integration request
+### Template 3 — Downstream integration request
 ```text
 I installed Trilinos and need to build a downstream CMake app.
 Provide:
@@ -47,10 +61,10 @@ Provide:
 3) checks for MPI/compiler consistency,
 4) runtime shared-library path guidance,
 5) symptom router for find/link/runtime failures.
-Keep the answer concise and command-first.
+Keep answer concise and command-first.
 ```
 
-## Template 4 — CI acceleration request
+### Template 4 — CI acceleration request
 ```text
 Design a Trilinos CI lane strategy with fast PR feedback and broader nightly coverage.
 Inputs:
@@ -64,19 +78,23 @@ Output:
 5) rollback criteria if signal quality drops.
 ```
 
-## Prompt hygiene checklist
+### Prompt hygiene checklist
 - Always specify MPI vs non-MPI intent.
 - Provide package scope explicitly.
 - Include first decisive error text for troubleshooting prompts.
 - Require command-first output plus verification steps.
 - Require provenance or explicit source references.
 
-## Cross references
+### Cross references
 - `11_LLM_QUERY_ROUTING_HINTS.md`
 - `26_BUILD_INSTALL_DECISION_TREE.md`
 - `32_30_MINUTE_FIRST_SUCCESS_PATH.md`
 - `36_CONFIGURE_FAILURE_TRIAGE_PLAYBOOK.md`
 - `27_DOWNSTREAM_INTEGRATION_FAILURE_PATTERNS.md`
 
+## Validation
+- Prompt patterns cover common build/install, triage, and routing scenarios.
+- Templates enforce bounded assumptions and provenance requirements.
+
 ## Provenance
-- Prompt patterns synthesized from recurrent guidance needs captured across local `library/Trilinos/` docs, especially build/install, triage, and routing pages.
+- Prompt patterns synthesized from recurring guidance needs captured across local `library/Trilinos/` docs, especially build/install, triage, and routing pages.

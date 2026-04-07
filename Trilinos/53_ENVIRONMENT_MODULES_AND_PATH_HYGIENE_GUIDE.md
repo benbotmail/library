@@ -1,12 +1,28 @@
 # Environment Modules & Path Hygiene Guide (Trilinos Build/Install)
 
-## Purpose
+## Scope
+Provide a deterministic checklist for avoiding and triaging build/install failures caused by mixed environment modules, shadowed toolchains, and stale path variables.
+
+## Audience
+- Engineers debugging environment-related build inconsistencies
+- DevOps engineers diagnosing CI/production failures
+- LLM systems guiding environment hygiene workflows
+
+## Prerequisites
+- Access to shell environment with modules (if used)
+- Familiarity with environment variables affecting CMake
+- Basic shell/module introspection commands
+- Ability to reset environment and reconfigure
+
+## Content
+
+### Purpose
 Provide a deterministic checklist for avoiding and triaging build/install failures caused by mixed environment modules, shadowed toolchains, and stale path variables.
 
 ## When to use this page
 Use this guide when configure/build behavior is inconsistent across shells, CI jobs, or nodes, especially when symptoms suggest the wrong compiler, MPI, or TPL is being picked.
 
-## High-signal symptoms
+### High-signal symptoms
 - `CMAKE_<LANG>_COMPILER` resolves to a different compiler than expected.
 - `find_package(MPI)` finds headers/libs from a different MPI than wrapper compilers.
 - Same CMake command succeeds in one shell and fails in another.
@@ -20,7 +36,7 @@ Use this guide when configure/build behavior is inconsistent across shells, CI j
 4. **Confirm intended Trilinos/TPL prefixes and remove competing paths.**
 5. **Reconfigure from clean cache with explicit hints.**
 
-## Minimal command bundle (Linux)
+### Minimal command bundle (Linux)
 ```bash
 # 1) Module state (if module command exists)
 module list 2>&1 || true
@@ -46,7 +62,7 @@ env | grep -E '^(PATH|LD_LIBRARY_PATH|LIBRARY_PATH|CPATH|CMAKE_PREFIX_PATH|PKG_C
 - Treat `LD_LIBRARY_PATH` as a temporary diagnostic tool, not a permanent fix for wrong build configuration.
 - Use separate build directories for distinct toolchains/profiles.
 
-## Clean-room reconfigure protocol (recommended)
+### Clean-room reconfigure protocol (recommended)
 1. Start a fresh shell (or unload all modules).
 2. Load only the intended compiler/MPI modules.
 3. Verify wrapper/compiler identity with `which` and `--version`.
@@ -63,13 +79,13 @@ cmake -S ../Trilinos -B . \
   -DTrilinos_ENABLE_TESTS=OFF
 ```
 
-## Common failure patterns → likely cause
+### Common failure patterns → likely cause
 - Compiler shown by `which` differs from cache value → stale cache or changed module stack after first configure.
 - `mpicxx` points to MPI A, `mpirun` from MPI B → mixed runtime/launcher environment.
 - TPL found from old prefix despite explicit new one → competing entries in `CMAKE_PREFIX_PATH`/module-provided variables.
 - Runtime loader resolves wrong `.so` path → environment/path shadowing plus missing/incorrect RPATH policy.
 
-## Escalation packet additions
+### Escalation packet additions
 Include these alongside normal build logs:
 - `module list` output
 - `which` output for compiler/MPI tools
@@ -83,7 +99,12 @@ Include these alongside normal build logs:
 - `47_CMAKE_CACHE_RESET_AND_RECONFIGURE_PROTOCOL.md`
 - `52_RUNTIME_LOADER_RPATH_TRIAGE.md`
 
-## Provenance notes
+## Validation
+- Confirm command snippets work on common Linux distributions with environment modules.
+- Verify module/shell introspection patterns match current module tool behavior.
+- Re-check cross references when companion docs are updated.
+
+## Provenance
 - Aligns with Trilinos build guidance emphasizing coherent toolchain selection and explicit CMake configuration.
 - Consolidates recurring triage practices from existing local docs in this pack:
   - preconfigure checks,

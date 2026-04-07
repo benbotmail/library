@@ -38,6 +38,15 @@ These markers are useful routing/build metadata signals. Treat them as internal 
 - **Missing TPL failure**: Configure-time error caused by unresolved third-party dependencies.
 - **Toolchain mismatch**: Inconsistent compiler or MPI wrapper selection between Trilinos build and downstream/app build.
 - **Install prefix**: Path where Trilinos is installed and where CMake package config files are expected.
+- **RPATH**: Runtime library search path embedded in executables/shared libraries; critical for correct loader behavior.
+- **ABI compatibility**: Binary interface consistency required when mixing shared libraries built with different compilers/settings.
+- **CMake cache staleness**: Old variable values in `CMakeCache.txt` that persist across reconfigure attempts.
+
+### CMake and build terms
+- **Configure stage**: CMake generates build system; detects dependencies and sets options.
+- **Build stage**: Compilation and linking of Trilinos libraries from configured sources.
+- **Install stage**: Copying of headers, libraries, and CMake package files to the install prefix.
+- **Clean reconfigure**: Deleting `CMakeCache.txt` and `CMakeFiles/` before re-running cmake.
 
 ## Validation
 - Re-check marker and term usage against active revision metadata files.

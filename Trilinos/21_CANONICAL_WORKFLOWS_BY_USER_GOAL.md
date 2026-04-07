@@ -49,6 +49,18 @@ Canonical workflow paths mapped to common user goals, so users and LLM systems c
 3. `47_CMAKE_CACHE_RESET_AND_RECONFIGURE_PROTOCOL.md`
 4. `44_MPI_WRAPPER_AND_ABI_CONSISTENCY_CHECKLIST.md`
 
+### Goal: Migrate long ad-hoc configure scripts to stable presets
+1. `60_ADHOC_TO_PRESET_MIGRATION_CHECKLIST.md`
+2. `58_CMAKE_PRESETS_ADOPTION_GUIDE.md`
+3. `30_CMAKE_CONFIGURE_SCRIPT_TEMPLATE_LIBRARY.md`
+4. `47_CMAKE_CACHE_RESET_AND_RECONFIGURE_PROTOCOL.md`
+
+### Goal: Eliminate environment/module/PATH drift before retrying builds
+1. `53_ENVIRONMENT_MODULES_AND_PATH_HYGIENE_GUIDE.md`
+2. `56_PLATFORM_BASELINE_AND_TOOLCHAIN_MINIMUMS.md`
+3. `35_PRECONFIGURE_ENVIRONMENT_CHECKLIST.md`
+4. `46_COMPILER_AND_CXX_STANDARD_ALIGNMENT_GUIDE.md`
+
 ### Goal: Understand support boundaries and risk posture
 1. `20_SUPPORT_AND_COMPATIBILITY_BOUNDARIES.md`
 2. `02_SOURCE_OF_TRUTH_MAP.md`

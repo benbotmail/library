@@ -54,6 +54,10 @@ Quick-reference list of high-utility CMake flags used in common Trilinos configu
 3. Enable tests after baseline configure/build succeeds.
 4. Keep configure command in script form for repeatable iteration.
 
+### Preset-era guidance
+When using `CMakePresets.json`, treat these flags as the values that should live in preset `cacheVariables` instead of ad-hoc shell history.
+Capture preset context in triage/escalation (`configure`/`build` preset names + any CI-only overrides) when failures occur.
+
 ## Validation
 - Confirm flag behavior against active `INSTALL.rst` guidance.
 - Confirm selected package flags map to valid package names from `PackagesList.cmake`.

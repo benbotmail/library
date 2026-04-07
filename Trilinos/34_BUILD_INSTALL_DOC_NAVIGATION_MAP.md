@@ -3,7 +3,18 @@
 ## Scope
 Single-page router that maps common build/install intents to the exact next document to open in this Trilinos docs pack.
 
-## Intent → primary doc → secondary docs
+## Audience
+- Engineers navigating build/install documentation
+- LLM systems routing build/install queries
+- New users seeking entry points into Trilinos docs
+
+## Prerequisites
+- Familiarity with build/install intent (configure, build, install, troubleshooting)
+- Access to the Trilinos docs pack in `library/Trilinos/`
+
+## Content
+
+### Intent → primary doc → secondary docs
 
 - **I need the fastest first successful build/install path**
   - Primary: `32_30_MINUTE_FIRST_SUCCESS_PATH.md`
@@ -81,13 +92,18 @@ Single-page router that maps common build/install intents to the exact next docu
   - Primary: `28_CI_AND_LOCAL_BUILD_TIME_REDUCTION_GUIDE.md`
   - Secondary: `14_BUILD_PROFILES_MINIMAL_TO_ADVANCED.md`, `21_CANONICAL_WORKFLOWS_BY_USER_GOAL.md`
 
-## Recommended reading sequence (new user)
+### Recommended reading sequence (new user)
 1. `10_GETTING_STARTED_ROUTE.md`
 2. `26_BUILD_INSTALL_DECISION_TREE.md`
 3. `32_30_MINUTE_FIRST_SUCCESS_PATH.md`
 4. `33_BUILD_AND_INSTALL_COMMAND_CHEATSHEET.md`
 5. `29_INSTALL_VERIFICATION_CHECKLIST.md`
 6. `34_BUILD_INSTALL_DOC_NAVIGATION_MAP.md`
+
+## Validation
+- Confirm all primary and secondary doc references exist in `00_INDEX.md`.
+- Verify navigation intent entries align with user goals reported in support channels.
+- Re-check doc references when files are renamed or renumbered.
 
 ## Provenance
 - Navigation synthesized from existing `library/Trilinos/` build/install and troubleshooting docs in this workspace.

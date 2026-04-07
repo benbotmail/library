@@ -3,10 +3,22 @@
 ## Scope
 Fast decision tree for selecting a Trilinos configure/build/install path with minimal rework.
 
-## When to use this page
+## Audience
+- Engineers selecting build/install strategy
+- New users deciding on MPI/non-MPI and package scope
+- LLM systems generating decision-based guidance
+
+## Prerequisites
+- Familiarity with basic Trilinos build concepts
+- Understanding of downstream MPI requirements
+- Access to Trilinos source tree
+
+## Content
+
+### When to use this page
 Use this when you need to quickly choose **which build strategy to start with** (MPI vs non-MPI, minimal vs broad package set, debug vs release), before consulting deeper references.
 
-## Decision tree
+### Decision tree
 
 1. **Do you need MPI in downstream runs?**
    - **Yes** → Start with `-DTPL_ENABLE_MPI=ON` and consistent MPI wrappers.
@@ -32,22 +44,32 @@ Use this when you need to quickly choose **which build strategy to start with** 
    - **Yes** → Set stable `CMAKE_INSTALL_PREFIX`, install, then validate against `demos/simpleBuildAgainstTrilinos`.
    - **No** → A local build-only flow may be sufficient for immediate experiments.
 
-## Recommended starting profiles
+7. **Do you need reproducibility across local + CI/users?**
+   - **Yes** → Encode chosen path in CMake presets and use preset names as the primary run interface.
+   - **No** → Ad-hoc commands are acceptable for one-off experiments, but migrate if iteration begins to drift.
+
+### Recommended starting profiles
 - **Safe first success:** non-MPI + minimal package set + Debug
 - **Common HPC baseline:** MPI + selected package set + RelWithDebInfo
 - **Broad validation pass:** MPI + wider package coverage after TPL readiness confirmed
 
-## Escalation triggers (switch strategy)
+### Escalation triggers (switch strategy)
 - Configure fails on missing TPLs repeatedly → reduce package scope and add TPLs incrementally.
 - MPI link/compiler mismatch errors → standardize on MPI wrapper compilers.
 - Build time too high for iteration needs → reduce enabled packages and disable tests temporarily.
 
-## Cross references
+### Cross references
 - Build execution details: `04_BUILD_INSTALL_PLAYBOOK.md`
 - CMake toggles and flags: `13_CMAKE_FLAG_QUICK_REFERENCE.md`
 - Profile templates: `14_BUILD_PROFILES_MINIMAL_TO_ADVANCED.md`
 - Package-selection strategy: `17_PACKAGE_SELECTION_STRATEGY.md`
 - Stage-based failure routing: `18_ERROR_PATTERN_ROUTER_BY_BUILD_STAGE.md`
+
+## Validation
+- Confirm decision-tree branches remain aligned with current CMake/TriBITS behavior after upstream updates.
+- Verify cross-referenced documents exist and contain expected content.
+- Test recommended starting profiles on a clean environment periodically.
+- Re-validate escalation triggers against recent failure patterns in `06_TROUBLESHOOTING_MATRIX_CONFIGURE_BUILD.md`.
 
 ## Provenance
 - `Trilinos/INSTALL.rst`

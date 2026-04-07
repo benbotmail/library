@@ -95,6 +95,13 @@ Common configure/build/install failure patterns for Trilinos, with diagnosis and
   - Isolate build directories per preset family and reset cache when switching toolchain/MPI roots.
   - Apply environment hygiene workflow before retry.
 
+## Minimal evidence bundle (for deterministic triage)
+Capture these artifacts before applying fixes so comparisons stay objective:
+- Original configure command (or preset name) and full CMake configure output.
+- First failing build command and first compiler/linker error block.
+- Key cache values: `CMAKE_<LANG>_COMPILER`, `CMAKE_INSTALL_PREFIX`, `TPL_ENABLE_MPI`, selected `Trilinos_ENABLE_*` toggles.
+- Build directory identity (path + generator) to avoid cross-directory cache confusion.
+
 ## Validation
 - Confirm fixes by re-running configure and build from a clean build directory when possible.
 - Preserve first failing error block before and after change to verify issue resolution.

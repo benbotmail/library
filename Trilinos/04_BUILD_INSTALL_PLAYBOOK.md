@@ -38,6 +38,13 @@ cmake --install <build-dir>
 
 Use this playbook for option intent, then encode stable workflows in presets (`58_CMAKE_PRESETS_ADOPTION_GUIDE.md`).
 
+## First-success strategy (recommended order)
+1. Start with a focused package set (avoid `Trilinos_ENABLE_ALL_PACKAGES=ON` initially).
+2. Get one clean configure + build + install result.
+3. Expand package scope incrementally and revalidate after each expansion.
+
+This order minimizes multi-cause failures and shortens time-to-first-working-install.
+
 ## Fast path A: MPI build (broad package enable)
 ```bash
 cmake \

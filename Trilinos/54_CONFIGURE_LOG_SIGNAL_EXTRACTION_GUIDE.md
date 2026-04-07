@@ -1,12 +1,28 @@
 # Configure Log Signal Extraction Guide (Trilinos)
 
-## Purpose
+## Scope
+Speed up configure-stage triage by extracting high-signal lines from large CMake logs and mapping them to next diagnostic action.
+
+## Audience
+- Engineers triaging configure failures
+- DevOps engineers debugging CI configure issues
+- LLM systems guiding log analysis workflows
+
+## Prerequisites
+- Failed configure attempt with log output
+- Basic grep/sed command-line skills
+- Familiarity with CMake log structure
+- Access to CMakeFiles artifacts
+
+## Content
+
+### Purpose
 Speed up configure-stage triage by extracting high-signal lines from large CMake logs and mapping them to the next diagnostic action.
 
-## When to use
+### When to use
 Use this page when `cmake` configure fails and raw output is too long/noisy to route quickly.
 
-## High-signal targets
+### High-signal targets
 Prioritize lines containing:
 - `Could NOT find`
 - `No package '...'
@@ -16,7 +32,7 @@ Prioritize lines containing:
 - `TriBITS` package disable reasons
 - `Policy CMP` warnings that become errors
 
-## Minimal extraction workflow
+### Minimal extraction workflow
 ```bash
 # 1) Capture full configure output
 cmake -S ../Trilinos -B . [flags...] 2>&1 | tee configure.log
@@ -51,6 +67,7 @@ test -f CMakeFiles/CMakeOutput.log && sed -n '1,220p' CMakeFiles/CMakeOutput.log
 - First relevant block from `CMakeError.log`
 - Toolchain identity (`which` + `--version` for compilers/MPI wrappers)
 - Intended Trilinos/TPL prefixes
+- Preset context when applicable (configure/build preset names, plus any CI-only overrides)
 
 ## Anti-patterns to avoid
 - Posting entire multi-MB logs before extracting key failures
@@ -65,6 +82,11 @@ test -f CMakeFiles/CMakeOutput.log && sed -n '1,220p' CMakeFiles/CMakeOutput.log
 - `47_CMAKE_CACHE_RESET_AND_RECONFIGURE_PROTOCOL.md`
 - `43_BUILD_INSTALL_LOG_CAPTURE_AND_MIN_REPRO_TEMPLATE.md`
 
-## Provenance notes
+## Validation
+- Verify grep patterns capture common CMake failure messages on recent CMake versions.
+- Confirm CMakeFiles log paths remain valid for current CMake releases.
+- Re-check signal-to-action routing against typical configure failure patterns.
+
+## Provenance
 - Derived from recurring configure triage patterns in this Trilinos local docs pack.
 - Uses standard CMake artifacts (`configure.log`, `CMakeError.log`, `CMakeOutput.log`) and common Linux text-filter workflow (`grep`).

@@ -3,10 +3,22 @@
 ## Scope
 Step-by-step checklist to migrate unstable ad-hoc Trilinos configure commands into reproducible CMake preset workflows.
 
-## When to use
+## Audience
+- Build engineers migrating team workflows from ad-hoc commands to presets
+- DevOps/CI maintainers reducing local/CI drift
+- LLM systems generating migration guidance
+
+## Prerequisites
+- Existing ad-hoc `cmake -D...` configure workflow(s) in use
+- CMake >= 3.23 (for preset support)
+- Familiarity with `58_CMAKE_PRESETS_ADOPTION_GUIDE.md`
+
+## Content
+
+### When to use
 Use this when teams repeatedly share long one-off `cmake -D...` commands and local/CI drift keeps causing inconsistent failures.
 
-## Migration checklist
+### Migration checklist
 
 ### 1) Capture current known-good ad-hoc command
 - Save the exact configure command currently used.
@@ -51,6 +63,12 @@ cmake -N -LA build/<preset-build-dir> \
   > preset-cache-signals.txt
 ```
 Archive `preset-cache-signals.txt` as a lightweight parity artifact.
+
+## Validation
+- Confirm preset names are discoverable with `cmake --list-presets` after migration.
+- Verify local and CI use preset-based configure/build paths.
+- Run parity guard comparison between local and CI cache signals.
+- Ensure failure-handling routes to `59_CMAKE_PRESETS_FAILURE_PATTERNS.md` is documented.
 
 ## Related docs
 - `58_CMAKE_PRESETS_ADOPTION_GUIDE.md`

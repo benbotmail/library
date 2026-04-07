@@ -33,6 +33,7 @@ Escalate when one or more are true:
    - MPI implementation/wrapper identity (if relevant)
 3. **Reproducer definition**
    - Exact configure command (or `do-configure` script)
+   - Preset context when applicable (configure/build preset names, `CMakeUserPresets.json` use, CI-only overrides)
    - Minimal flag set that still fails
    - Last known working variant (if known)
 4. **Artifacts bundle**

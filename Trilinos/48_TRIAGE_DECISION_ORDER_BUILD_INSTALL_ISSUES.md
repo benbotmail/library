@@ -18,13 +18,15 @@ Define a strict decision order for diagnosing Trilinos build/install problems so
    - Confirm compiler, CMake, and MPI wrapper identity.
 2. **Cache freshness**
    - Reset stale build directory when major settings changed.
-3. **Package/profile scope**
+3. **Preset context sanity (if using presets)**
+   - Confirm exact configure/build preset names and whether user/CI overlays alter effective flags.
+4. **Package/profile scope**
    - Reduce to minimal package/profile to isolate failure domain.
-4. **TPL and path resolution**
+5. **TPL and path resolution**
    - Verify dependency discovery and explicit path hints.
-5. **Stage-specific failure routing**
+6. **Stage-specific failure routing**
    - Classify failure as configure/build/install/runtime and apply the matching router.
-6. **Escalation readiness**
+7. **Escalation readiness**
    - If unresolved, produce minimal repro + escalation handoff packet.
 
 ### Why this order works
