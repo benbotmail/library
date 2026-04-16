@@ -20,12 +20,12 @@ Use two lock levels:
 
 | Layer | Package | Current version seen upstream | Notes |
 |---|---|---|---|
-| Core SDK | `@elevenlabs/client` | `0.15.2` | Adds `multimodal_message` WebSocket event |
-| React wrapper | `@elevenlabs/react` | `0.14.3` | Exposes `sendMultimodalMessage` in hook surface |
-| React Native wrapper | `@elevenlabs/react-native` | `0.5.12` | Includes provider-side multimodal wiring |
-| Types | `@elevenlabs/types` | `0.6.1` | AsyncAPI + generated outgoing types include `multimodal_message` |
-| Widget core | `@elevenlabs/convai-widget-core` | `0.10.5` | Audio tag stripping fix; branding update |
-| Widget embed | `@elevenlabs/convai-widget-embed` | `0.10.5` | Keep in sync with core |
+| Core SDK | `@elevenlabs/client` | `1.2.1` | New `onConversationCreated` lifecycle hook; race-free connect ordering |
+| React wrapper | `@elevenlabs/react` | `1.1.1` | Stale-session protection; `conversationRef` set in `onConversationCreated`; `onConnect` fires after ref |
+| React Native wrapper | `@elevenlabs/react-native` | `1.1.1` | Keep in sync with client |
+| Types | `@elevenlabs/types` | `0.9.1` | Enhanced with type discriminants; new WebSocket message types |
+| Widget core | `@elevenlabs/convai-widget-core` | `0.11.4` | Keep in sync |
+| Widget embed | `@elevenlabs/convai-widget-embed` | `0.11.4` | Keep in sync with core |
 
 > For app-level production pinning, still lock exact versions in your own `package.json` + lockfile.
 
@@ -39,7 +39,9 @@ At each upgrade:
 - replay reconnect tests and token-expiry tests
 - verify event names/shape used by your handlers
 - if using multimodal turns, validate both text-only and text+file payload paths
-- **NEW**: check for type discriminants on `TextConversation` vs `VoiceConversation`
+- **NEW**: check tool mocking configuration and agent response patterns
+- **NEW**: verify auto-language selection from browser locale works as expected
+- **NEW**: validate `guardrail_triggered` event handling for compliance monitoring
 
 If any of the above changes, classify as "integration-impacting" and block promotion until patched.
 
@@ -63,28 +65,42 @@ Recommended practice:
 ## 5) Upstream freshness marker
 
 Current tracked upstream commit in this docs pack:
-- `64b7d69b88a31b2f0d97b90d7175b24aad487981`
+- `1a5c902d10bd88e3aed89d58b544deff7fb07af9`
 
 Observed surface changes in this revision:
-- new outbound socket event: `multimodal_message`
-- new client method: `sendMultimodalMessage`
-- type discriminants added to conversation classes
-- widget audio tag stripping scoped to voice transcripts only
-- widget branding updated
-- ESLint configs migrated to ESM (.mjs)
+- **v1.2.1 client**: New `onConversationCreated` callback fires before `onConnect`; `ConversationLifecycleOptions` type exported; `markConnected()` separates status update from constructor
+- **v1.1.1 react**: Monotonic `startSessionId` prevents stale async handlers; `conversationRef` populated in `onConversationCreated` (no more race with `onConnect`); error path clears ref
+- **v1.1.1 react-native**: Version bump
+- **v0.11.4 widget-core/embed**: Version bump
 
 Policy:
 - when event or session surface changes, update `02_CONVERSATION_SESSION_PATTERNS.md` first
 - then refresh this matrix so version/package expectations remain explicit
+- **CRITICAL**: For major version changes (v1.0+), mandatory review of migration guide
 
 ---
 
 ## 6) Upgrade runbook (short)
 
 1. Bump pins in a dedicated branch
-2. Rebuild + run smoke tests
-3. Execute realtime QA suite (latency + reliability + quality)
-4. Compare metrics vs prior baseline
-5. Promote only if thresholds remain within accepted bounds
+2. Review migration guide for breaking changes
+3. Rebuild + run smoke tests
+4. Execute realtime QA suite (latency + reliability + quality)
+5. Compare metrics vs prior baseline
+6. **NEW**: Validate tool mocking behavior
+7. **NEW**: Test auto-language selection functionality
+8. Promote only if thresholds remain within accepted bounds
 
 This keeps upgrades explicit, reversible, and measurable.
+
+---
+
+## 7) Migration warnings
+
+⚠️ **v0.x to v1.0 MIGRATION REQUIRED**
+- React Native SDK: Switch from ElevenLabsProvider to modular imports
+- Client SDK: Enhanced WebSocket event structure
+- Types: Updated discrimination patterns
+- Breaking changes in conversation state management
+
+⚠️ **Action Required**: Follow migration guide in `10_SDK_MIGRATION_V1_PREVIEW.md` before upgrading to v1.0+ packages.
