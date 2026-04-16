@@ -3,10 +3,22 @@
 ## Scope
 Preflight checks to run before Trilinos CMake configure, aimed at preventing avoidable configure/build failures.
 
-## Use case
+## Audience
+- Engineers setting up new Trilinos build environments
+- DevOps engineers configuring container images
+- LLM systems generating pre-configure validation guidance
+
+## Prerequisites
+- CMake, compilers, and optional MPI installation
+- Trilinos source tree accessible
+- Familiarity with basic CMake configure workflow
+
+## Content
+
+### Use case
 Run this checklist on a new machine, fresh container, or after major toolchain updates.
 
-## Preflight checklist
+### Preflight checklist
 
 1. **CMake version is supported**
    - Confirm CMake is at least the minimum required by Trilinos docs (`>= 3.23.0`).
@@ -31,28 +43,37 @@ Run this checklist on a new machine, fresh container, or after major toolchain u
    - If selected packages require TPLs, confirm install roots are known.
    - Plan to pass explicit hints/paths in configure script.
 
-7. **Configure script is captured**
+7. **Preset context is verified (if using presets)**
+   - Run `cmake --list-presets` from repo root and confirm intended preset names.
+   - Check for `CMakeUserPresets.json` and CI-only overrides that may alter effective configure flags.
+
+8. **Configure script is captured**
    - Store configure invocation in a reusable script (`do-configure`) for reproducibility.
 
-8. **Parallel build plan is set**
+9. **Parallel build plan is set**
    - Choose build generator (`Ninja` or Make) and safe parallelism level.
 
-9. **Post-install validation step is planned**
+10. **Post-install validation step is planned**
    - Include downstream smoke build in acceptance criteria before declaring success.
 
-## Quick go/no-go
+### Quick go/no-go
 Proceed to configure only when:
 - Toolchain choice is clear,
 - package scope is bounded,
 - build/install paths are ready,
 - and required dependency hints are identified.
 
-## Cross references
+### Cross references
 - `04_BUILD_INSTALL_PLAYBOOK.md`
 - `26_BUILD_INSTALL_DECISION_TREE.md`
 - `29_INSTALL_VERIFICATION_CHECKLIST.md`
 - `30_CMAKE_CONFIGURE_SCRIPT_TEMPLATE_LIBRARY.md`
 - `31_TPL_DISCOVERY_AND_PATH_HINTS.md`
+
+## Validation
+- Re-check CMake minimum version against current `INSTALL.rst` after upstream updates.
+- Confirm checklist items remain relevant to common failure patterns seen in CI.
+- Verify cross-referenced docs exist and cover the pre-configure concerns mentioned.
 
 ## Provenance
 - `Trilinos/INSTALL.rst`

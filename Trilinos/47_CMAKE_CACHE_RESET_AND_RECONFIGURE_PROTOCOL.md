@@ -49,9 +49,16 @@ cd build
 ### Escalation trigger
 If failures persist after a clean reset and minimal configuration, move to minimal-repro and escalation-handoff workflows.
 
+### See also
+- `36_CONFIGURE_FAILURE_TRIAGE_PLAYBOOK.md` — Configure failure isolation and recovery flow
+- `43_BUILD_INSTALL_LOG_CAPTURE_AND_MIN_REPRO_TEMPLATE.md` — Log capture and minimal repro template
+- `45_BUILD_INSTALL_ESCALATION_HANDOFF_CHECKLIST.md` — Escalation handoff when reset doesn't resolve
+- `57_BUILD_FAILURE_FASTPATH_COMMAND_BUNDLE.md` — Rapid diagnostic commands for post-reset validation
+
 ## Validation
 - Procedure isolates stale cache effects from genuine toolchain/package issues.
 - Steps are compatible with existing configure/build and escalation docs.
+- Cross-references validated against existing docs pack (2026-04-13).
 
 ## Provenance
 - `library/Trilinos/04_BUILD_INSTALL_PLAYBOOK.md`

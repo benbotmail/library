@@ -3,17 +3,30 @@
 ## Scope
 A compact command bundle to collect high-signal diagnostics for Trilinos configure/build/install failures before deep triage.
 
-## When to use
+## Audience
+- Engineers collecting failure diagnostics for escalation
+- DevOps engineers debugging CI failures
+- LLM systems guiding users through diagnostic capture
+
+## Prerequisites
+- Failed configure/build/install attempt
+- Access to build directory
+- Basic shell and grep command-line skills
+- Tar/gzip for bundling evidence
+
+## Content
+
+### When to use
 Use immediately after a failed configure/build/install run to capture reproducible context and avoid back-and-forth.
 
-## Output goals
+### Output goals
 Capture:
 - toolchain identity
 - generator/build metadata
 - first failing log signals
 - cache and install-path state
 
-## Fastpath bundle
+### Fastpath bundle
 Run from your build directory unless noted.
 
 ### 1) Toolchain and environment identity
@@ -30,6 +43,8 @@ env | grep -E '^(CC|CXX|FC|CFLAGS|CXXFLAGS|LDFLAGS|PATH|LD_LIBRARY_PATH|CMAKE_PR
 ```bash
 # If you used CMake presets:
 cmake --list-presets || true
+# Capture active preset names you actually ran (fill in values used)
+printf '%s\n' "configure_preset=<name>" "build_preset=<name>" > preset-context.txt
 
 # Cache highlights (trim to high-signal keys)
 cmake -N -LA . | grep -E 'CMAKE_(C|CXX|Fortran)_COMPILER|CMAKE_BUILD_TYPE|CMAKE_INSTALL_PREFIX|CMAKE_CXX_STANDARD|BUILD_SHARED_LIBS|Trilinos_ENABLE_|TPL_ENABLE_MPI|MPI_' || true
@@ -66,7 +81,7 @@ Optional loader check for a failing downstream binary:
 ldd <downstream-binary> | grep -E 'not found|trilinos|mpi' || true
 ```
 
-## Packaging for escalation
+### Packaging for escalation
 Include these files/snippets in handoff:
 - `configure.log` (or first 200 lines around first error)
 - `build.log` first error block
@@ -86,13 +101,18 @@ tar -czf trilinos-triage-bundle.tgz triage-bundle
 ```
 Use `trilinos-triage-bundle.tgz` as the default attachment for escalations.
 
-## Routing after capture
+### Routing after capture
 - Configure detection/TPL issues → `36_CONFIGURE_FAILURE_TRIAGE_PLAYBOOK.md`
 - Preset-specific failures / local-vs-CI preset divergence → `59_CMAKE_PRESETS_FAILURE_PATTERNS.md`
 - MPI/toolchain mismatch → `44_MPI_WRAPPER_AND_ABI_CONSISTENCY_CHECKLIST.md`
 - Compiler/C++ standard mismatch → `46_COMPILER_AND_CXX_STANDARD_ALIGNMENT_GUIDE.md`
 - Runtime loader/RPATH failures → `52_RUNTIME_LOADER_RPATH_TRIAGE.md`
 - Full escalation packet → `45_BUILD_INSTALL_ESCALATION_HANDOFF_CHECKLIST.md`
+
+## Validation
+- Confirm command snippets work on common Linux distributions.
+- Verify tar bundle paths remain valid after CMake version updates.
+- Re-check routing references when companion docs are renamed.
 
 ## Provenance
 - `Trilinos/README.md`

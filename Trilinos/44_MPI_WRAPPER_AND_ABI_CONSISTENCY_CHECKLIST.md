@@ -65,9 +65,16 @@ Configure flags for compilers/MPI:
 First decisive link/runtime error:
 ```
 
+### See also
+- `46_COMPILER_AND_CXX_STANDARD_ALIGNMENT_GUIDE.md` — Compiler family and C++ standard alignment
+- `53_ENVIRONMENT_MODULES_AND_PATH_HYGIENE_GUIDE.md` — Environment module and PATH contamination triage
+- `47_CMAKE_CACHE_RESET_AND_RECONFIGURE_PROTOCOL.md` — Clean reconfigure workflow for environment changes
+- `56_PLATFORM_BASELINE_AND_TOOLCHAIN_MINIMUMS.md` — Pre-configure toolchain baseline
+
 ## Validation
 - Checklist isolates wrapper/compiler/launcher mismatches before deeper package-level debugging.
 - Steps are compatible with configure/build/runtime triage flow.
+- Cross-references validated against existing docs pack (2026-04-13).
 
 ## Provenance
 - `library/Trilinos/04_BUILD_INSTALL_PLAYBOOK.md`

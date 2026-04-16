@@ -54,9 +54,21 @@ Quick-reference list of high-utility CMake flags used in common Trilinos configu
 3. Enable tests after baseline configure/build succeeds.
 4. Keep configure command in script form for repeatable iteration.
 
+### Preset-era guidance
+When using `CMakePresets.json`, treat these flags as the values that should live in preset `cacheVariables` instead of ad-hoc shell history.
+Capture preset context in triage/escalation (`configure`/`build` preset names + any CI-only overrides) when failures occur.
+
+### See also
+- `30_CMAKE_CONFIGURE_SCRIPT_TEMPLATE_LIBRARY.md` — Ready-made configure script templates using these flags
+- `40_BUILD_PROFILE_SELECTION_MATRIX.md` — Goal-to-profile matrix with concrete flag combinations
+- `14_BUILD_PROFILES_MINIMAL_TO_ADVANCED.md` — Detailed profile templates and flag rationale
+- `58_CMAKE_PRESETS_ADOPTION_GUIDE.md` — Migrating these flags into `CMakePresets.json`
+- `33_BUILD_AND_INSTALL_COMMAND_CHEATSHEET.md` — Copy/paste command bundles for common scenarios
+
 ## Validation
 - Confirm flag behavior against active `INSTALL.rst` guidance.
 - Confirm selected package flags map to valid package names from `PackagesList.cmake`.
+- Cross-references validated against existing docs pack (2026-04-13).
 
 ## Provenance
 - `Trilinos/INSTALL.rst`

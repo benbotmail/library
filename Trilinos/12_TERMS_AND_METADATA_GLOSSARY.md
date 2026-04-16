@@ -38,10 +38,27 @@ These markers are useful routing/build metadata signals. Treat them as internal 
 - **Missing TPL failure**: Configure-time error caused by unresolved third-party dependencies.
 - **Toolchain mismatch**: Inconsistent compiler or MPI wrapper selection between Trilinos build and downstream/app build.
 - **Install prefix**: Path where Trilinos is installed and where CMake package config files are expected.
+- **RPATH**: Runtime library search path embedded in executables/shared libraries; critical for correct loader behavior.
+- **ABI compatibility**: Binary interface consistency required when mixing shared libraries built with different compilers/settings.
+- **CMake cache staleness**: Old variable values in `CMakeCache.txt` that persist across reconfigure attempts.
+
+### CMake and build terms
+- **Configure stage**: CMake generates build system; detects dependencies and sets options.
+- **Build stage**: Compilation and linking of Trilinos libraries from configured sources.
+- **Install stage**: Copying of headers, libraries, and CMake package files to the install prefix.
+- **Clean reconfigure**: Deleting `CMakeCache.txt` and `CMakeFiles/` before re-running cmake.
+
+### See also
+- `02_SOURCE_OF_TRUTH_MAP.md` — Authority order for Trilinos sources when claims conflict
+- `09_TPL_BASELINE_AND_ACCELERATOR_SIGNALS.md` — TPL dependency and accelerator signal details
+- `03_PACKAGE_CATALOG.md` — Package directory with CODEOWNERS mapping
+- `05_PACKAGE_ROUTING_AND_TIERS.md` — Package-family routing and tier classification
+- `01_DOCUMENTATION_CONVENTIONS.md` — Documentation standards for this pack
 
 ## Validation
 - Re-check marker and term usage against active revision metadata files.
 - Keep glossary definitions aligned with current docs in this collection.
+- Cross-references validated against existing docs pack (2026-04-13).
 
 ## Provenance
 - `Trilinos/README.md`

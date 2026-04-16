@@ -18,13 +18,15 @@ Define a strict decision order for diagnosing Trilinos build/install problems so
    - Confirm compiler, CMake, and MPI wrapper identity.
 2. **Cache freshness**
    - Reset stale build directory when major settings changed.
-3. **Package/profile scope**
+3. **Preset context sanity (if using presets)**
+   - Confirm exact configure/build preset names and whether user/CI overlays alter effective flags.
+4. **Package/profile scope**
    - Reduce to minimal package/profile to isolate failure domain.
-4. **TPL and path resolution**
+5. **TPL and path resolution**
    - Verify dependency discovery and explicit path hints.
-5. **Stage-specific failure routing**
+6. **Stage-specific failure routing**
    - Classify failure as configure/build/install/runtime and apply the matching router.
-6. **Escalation readiness**
+7. **Escalation readiness**
    - If unresolved, produce minimal repro + escalation handoff packet.
 
 ### Why this order works
@@ -45,9 +47,17 @@ Define a strict decision order for diagnosing Trilinos build/install problems so
 Stage=<...>; Toolchain=<...>; CacheReset=<yes/no>; MinimalProfile=<...>; TPLCheck=<pass/fail>; NextAction=<...>
 ```
 
+### See also
+- `18_ERROR_PATTERN_ROUTER_BY_BUILD_STAGE.md` — Stage-based error pattern router
+- `06_TROUBLESHOOTING_MATRIX_CONFIGURE_BUILD.md` — Configure/build failure matrix with fixes
+- `47_CMAKE_CACHE_RESET_AND_RECONFIGURE_PROTOCOL.md` — Cache reset and reconfigure workflow
+- `45_BUILD_INSTALL_ESCALATION_HANDOFF_CHECKLIST.md` — Escalation handoff checklist
+- `50_FIRST_RESPONSE_TRIAGE_MACRO.md` — Deterministic first-response triage pattern
+
 ## Validation
 - Decision order is consistent with existing playbooks and routers.
 - Checklist is concise enough for repeated heartbeat-driven execution.
+- Cross-references validated against existing docs pack (2026-04-13).
 
 ## Provenance
 - `library/Trilinos/26_BUILD_INSTALL_DECISION_TREE.md`

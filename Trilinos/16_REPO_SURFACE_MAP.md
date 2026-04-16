@@ -22,11 +22,28 @@ Top-level map of the Trilinos repository to help route users and LLM systems to 
 - `packages/` — primary package tree; core of Trilinos functionality.
 - `sampleScripts/` — platform/configuration-oriented build script examples.
 
+### Key top-level files (quick reference)
+- `CMakeLists.txt` — main project entry point; TriBITS bootstrapping and global options.
+- `PackagesList.cmake` — canonical list of enabled packages and their repository sources.
+- `TPLsList.cmake` — third-party library (TPL) declarations and version requirements.
+- `Version.cmake` — Trilinos version metadata for releases and snapshots.
+- `LICENSE` — licensing terms (typically BSD/LGPL depending on package composition).
+- `CONTRIBUTING.md` — contribution workflow, DCO requirements, and PR guidelines.
+- `CHANGELOG.md` — notable changes per release (if present).
+
 ### Practical routing rules
 - For package behavior and ownership questions, start in `packages/` then cross-check CODEOWNERS/package docs.
 - For configure flags and dependency issues, start in `cmake/`, `INSTALL.rst`, and `TPLsList.cmake`.
 - For build-against-installed patterns, start in `demos/simpleBuildAgainstTrilinos/`.
 - For CI/contribution-policy context, inspect `.github/` plus `CONTRIBUTING.md`.
+
+### Typical package subdirectory layout
+Most packages under `packages/<Package>/` follow a common structure:
+- `CMakeLists.txt` — package-specific configure and build logic.
+- `src/` — implementation sources.
+- `test/` — unit and integration tests.
+- `example/` — usage examples (optional).
+- `doc/` — package-level documentation (optional).
 
 ### Suggested retrieval anchors
 - `README.md`
@@ -36,9 +53,17 @@ Top-level map of the Trilinos repository to help route users and LLM systems to 
 - `demos/simpleBuildAgainstTrilinos/README.md`
 - `.github/CODEOWNERS`
 
+### See also
+- `03_PACKAGE_CATALOG.md` — Package directory catalog with CODEOWNERS mapping
+- `02_SOURCE_OF_TRUTH_MAP.md` — Authority order for conflicting Trilinos sources
+- `09_TPL_BASELINE_AND_ACCELERATOR_SIGNALS.md` — TPL declarations from `TPLsList.cmake`
+- `07_BUILDING_DOWNSTREAM_APPS_WITH_TRILINOS.md` — Downstream integration using `demos/` patterns
+- `08_CONTRIBUTING_AND_SECURITY_WORKFLOW.md` — Contribution flow tied to `.github/` and `CONTRIBUTING.md`
+
 ## Validation
 - Re-check top-level directory map after upstream updates.
 - Re-validate routing rules when directory names or ownership metadata change.
+- Cross-references validated against existing docs pack (2026-04-13).
 
 ## Provenance
 - `Trilinos/README.md`

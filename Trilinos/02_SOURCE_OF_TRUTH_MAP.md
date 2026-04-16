@@ -37,6 +37,19 @@ Use this order when sources conflict or when confidence must be ranked:
 - `sampleScripts/`
 - `.github/CODEOWNERS`
 
+### Conflict resolution examples
+| Scenario | Resolution |
+|---|---|
+| Wiki says enable `Foo` but `INSTALL.rst` says `Bar` | Prefer `INSTALL.rst` (level 2) over wiki (level 5) |
+| `PackagesList.cmake` lists package dependency differently than a blog post | Prefer `PackagesList.cmake` (level 3) |
+| Official docs portal and `README.md` disagree on CMake minimum | Prefer official docs portal (level 1); file an issue if discrepancy is real |
+| Package-local `README` conflicts with top-level `INSTALL.rst` | Prefer top-level `INSTALL.rst` for global workflow; package docs for package-specific details |
+
+### When to flag uncertainty
+- Claim appears only in community/wiki sources (level 5) without level 1–3 corroboration
+- Conflicting information exists at the same authority level
+- Upstream documentation is outdated or missing for a known feature
+
 ### Practical usage rule
 For non-trivial guidance, use at least one source from levels 1–3, and list it in page provenance.
 

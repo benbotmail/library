@@ -64,9 +64,22 @@ Total packages detected under `packages/`: **43**
 | `zoltan` | @trilinos/zoltan |
 | `zoltan2` | @trilinos/zoltan2 |
 
+## Owner mapping interpretation (routing policy)
+- Treat CODEOWNERS as the **review-routing hint**, not strict package authority metadata.
+- If a package is `(not mapped)`, route by nearest maintained package family first, then confirm maintainers via recent commits/PR history.
+- When owner and package signal conflict, prefer explicit path matches in `.github/CODEOWNERS` over inferred team names.
+
+### See also
+- `05_PACKAGE_ROUTING_AND_TIERS.md` — Package-family routing and tier classification
+- `16_REPO_SURFACE_MAP.md` — Repository directory map and navigation
+- `17_PACKAGE_SELECTION_STRATEGY.md` — Framework for choosing initial package sets
+- `12_TERMS_AND_METADATA_GLOSSARY.md` — Glossary for package and TPL terminology
+
 ## Validation
 - Recompute package list from `packages/` when repository updates.
 - Re-read `.github/CODEOWNERS` because ownership entries can change independently of package paths.
+- For `(not mapped)` entries, verify whether ownership moved to broader wildcard patterns in CODEOWNERS before escalation.
+- Cross-references validated against existing docs pack (2026-04-13).
 
 ## Provenance
 - `Trilinos/packages/`

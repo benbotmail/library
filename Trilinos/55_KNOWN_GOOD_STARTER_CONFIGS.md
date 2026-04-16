@@ -7,10 +7,19 @@ Quick-start configuration baselines with minimal assumptions, intended to reduce
 - Engineers who want a reliable first build before tuning options
 - LLM agents that need deterministic starter recommendations
 
-## When to use this page
+## Prerequisites
+- CMake >= 3.23 installed
+- C/C++ compilers available (Fortran optional)
+- MPI installation if using MPI-based starter
+- Ninja or Make build tool
+- Trilinos source tree accessible
+
+## Content
+
+### When to use this page
 Use these presets when you need a conservative first pass. After a successful build/install, expand package scope and performance flags incrementally.
 
-## Starter A: Minimal serial baseline (no MPI)
+### Starter A: Minimal serial baseline (no MPI)
 Use this when you want the lowest-friction initial success path.
 
 ```bash
@@ -29,12 +38,12 @@ ninja -j<n>
 ninja install
 ```
 
-### Why this works
+#### Why this works (Starter A)
 - Keeps dependency surface small
 - Disables optional fan-out that often triggers missing TPL failures
 - Produces a valid install usable for downstream smoke checks
 
-## Starter B: Conservative MPI baseline
+### Starter B: Conservative MPI baseline
 Use this when MPI is required, while keeping package/TPL pressure controlled.
 
 ```bash
@@ -54,11 +63,23 @@ ninja -j<n>
 ninja install
 ```
 
-### Why this works
+#### Why this works (Starter B)
 - Preserves MPI requirement while avoiding broad package explosion
 - Reduces early failures from optional TPL discovery
 
-## Expansion order after first success
+### Preset mapping (recommended)
+Encode these starters as presets to reduce local/CI drift:
+- Starter A → `serial-release-min`
+- Starter B → `mpi-release-min`
+
+Then run:
+```bash
+cmake --preset <configure-preset>
+cmake --build --preset <build-preset>
+cmake --install <build-dir>
+```
+
+### Expansion order after first success
 1. Add one required Trilinos package at a time.
 2. Reconfigure and rebuild after each addition.
 3. Only then enable tests/examples for target packages.
@@ -69,11 +90,16 @@ ninja install
 - Keep compiler family and C++ standard consistent between Trilinos and downstream apps.
 - If configure cache becomes noisy or contradictory, reset cache before reconfigure.
 
-## Related pages
+### Related pages
 - `04_BUILD_INSTALL_PLAYBOOK.md`
 - `14_BUILD_PROFILES_MINIMAL_TO_ADVANCED.md`
 - `31_TPL_DISCOVERY_AND_PATH_HINTS.md`
 - `47_CMAKE_CACHE_RESET_AND_RECONFIGURE_PROTOCOL.md`
+
+## Validation
+- Test starter configs on clean environments to confirm they produce valid installs.
+- Verify CMake flag names against current Trilinos release.
+- Confirm preset mapping aligns with `CMakePresets.json` structure if used.
 
 ## Provenance
 - `Trilinos/INSTALL.rst`

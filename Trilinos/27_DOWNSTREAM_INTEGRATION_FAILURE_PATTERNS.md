@@ -5,9 +5,17 @@ Quick router for common failures when building a downstream CMake project agains
 
 ## Audience
 - Engineers integrating Trilinos into external applications
-- LLM agents answering “why can’t my app find/link Trilinos?” questions
+- LLM agents answering "why can't my app find/link Trilinos?" questions
 
-## Symptom → probable cause → first fix
+## Prerequisites
+- Downstream CMake project requiring Trilinos
+- Completed Trilinos build and install
+- Access to install prefix directory
+- Familiarity with CMake find_package usage
+
+## Content
+
+### Symptom → probable cause → first fix
 
 ### 1) `Could not find TrilinosConfig.cmake`
 **Probable cause**
@@ -68,18 +76,33 @@ Quick router for common failures when building a downstream CMake project agains
 - Inspect installed Trilinos CMake config files directly in the install tree.
 - Base downstream logic on exported metadata from the installed version, not assumptions.
 
-## Minimal downstream checklist
+---
+
+### 7) Local downstream integration works, CI (or another user) fails with same intent
+**Probable cause**
+- Effective Trilinos/toolchain configuration differs due to preset overlays (`CMakeUserPresets.json`) or CI-only overrides.
+
+**First fix**
+- Record and compare configure/build preset names and override sources.
+- Verify downstream `Trilinos_DIR`/`CMAKE_PREFIX_PATH` points to the same install prefix across environments.
+
+### Minimal downstream checklist
 1. Confirm install prefix is correct and complete.
 2. Configure downstream with explicit `Trilinos_DIR` or `CMAKE_PREFIX_PATH`.
 3. Keep compiler/MPI toolchain consistent.
 4. Verify required Trilinos packages were enabled at Trilinos build time.
 5. Validate runtime library path/rpath for shared-library installs.
 
-## Cross references
+### Cross references
 - `07_BUILDING_DOWNSTREAM_APPS_WITH_TRILINOS.md`
 - `04_BUILD_INSTALL_PLAYBOOK.md`
 - `13_CMAKE_FLAG_QUICK_REFERENCE.md`
 - `18_ERROR_PATTERN_ROUTER_BY_BUILD_STAGE.md`
+
+## Validation
+- Confirm each failure pattern maps to documented fixes in `06_TROUBLESHOOTING_MATRIX_CONFIGURE_BUILD.md` or runtime triage docs.
+- Verify cross references resolve to existing files.
+- Re-check patterns against recent downstream integration issues reported in Trilinos repo or community channels.
 
 ## Provenance
 - `Trilinos/demos/simpleBuildAgainstTrilinos/README.md`

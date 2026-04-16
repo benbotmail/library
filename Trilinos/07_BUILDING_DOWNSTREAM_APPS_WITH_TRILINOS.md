@@ -74,10 +74,19 @@ and tested with:
 ctest -j4 -R TrilinosInstallTests
 ```
 
+### See also
+- `27_DOWNSTREAM_INTEGRATION_FAILURE_PATTERNS.md` — Symptom-to-fix router for downstream integration failures
+- `51_SHARED_STATIC_LINKAGE_CONSISTENCY_GUIDE.md` — Shared/static linkage consistency guidance
+- `39_INSTALL_AND_RUNTIME_FAILURE_ROUTER.md` — Post-install runtime failure routing
+- `29_INSTALL_VERIFICATION_CHECKLIST.md` — Post-install acceptance checklist
+- `61_HELLO_WORLD_MINIMAL_EXAMPLE.md` — Complete minimal working example with downstream app
+- `13_CMAKE_FLAG_QUICK_REFERENCE.md` — CMake flag reference for configure options
+
 ## Validation
 - Confirm installed prefix contains `TrilinosConfig.cmake`.
 - Confirm downstream configure resolves `find_package(Trilinos ...)` without manual path hacks beyond `CMAKE_PREFIX_PATH`.
 - Confirm at least one downstream test runs under the intended MPI/runtime setup.
+- Cross-references validated against existing docs pack (2026-04-13).
 
 ## Provenance
 - `Trilinos/demos/simpleBuildAgainstTrilinos/README.md`

@@ -2,7 +2,22 @@
 
 This collection is a practical, retrieval-friendly guide to working with the Trilinos repository.
 
-## Core orientation
+## Scope
+Navigation hub and orientation guide for the Trilinos LLM-friendly documentation pack. Maps user intents to specific documentation pages and provides entry points for common workflows.
+
+## Audience
+- Engineers seeking Trilinos build, configuration, or integration guidance
+- LLM systems retrieving context for Trilinos-related queries
+- Contributors locating documentation standards and reference materials
+
+## Prerequisites
+- Basic familiarity with Trilinos purpose and architecture
+- Access to the Trilinos repository or official documentation
+- Understanding of CMake build systems (for build/install pages)
+
+## Content
+
+### Core orientation
 - `01_DOCUMENTATION_CONVENTIONS.md` — Documentation rules for structure, claim grounding, and provenance.
 - `02_SOURCE_OF_TRUTH_MAP.md` — Authority order for Trilinos sources when claims conflict.
 - `10_GETTING_STARTED_ROUTE.md` — Task-based starting route from first install to downstream use.
@@ -37,12 +52,19 @@ This collection is a practical, retrieval-friendly guide to working with the Tri
 - `58_CMAKE_PRESETS_ADOPTION_GUIDE.md` — Reproducible preset-based workflow for consistent local/CI configure intent and easier failure handoffs.
 - `59_CMAKE_PRESETS_FAILURE_PATTERNS.md` — Symptom-to-fix routing for preset-specific failures and local/CI divergence.
 - `60_ADHOC_TO_PRESET_MIGRATION_CHECKLIST.md` — Checklist for migrating ad-hoc configure commands into stable preset-based local/CI workflows.
+- `61_HELLO_WORLD_MINIMAL_EXAMPLE.md` — Complete minimal working example demonstrating Trilinos installation and downstream usage with concrete code.
 - `43_BUILD_INSTALL_LOG_CAPTURE_AND_MIN_REPRO_TEMPLATE.md` — Standardized log-capture bundle and minimal-repro template for faster troubleshooting handoffs.
 - `35_PRECONFIGURE_ENVIRONMENT_CHECKLIST.md` — Preflight checks to reduce avoidable configure/build failures.
 - `36_CONFIGURE_FAILURE_TRIAGE_PLAYBOOK.md` — Step-by-step configure-stage failure isolation and recovery flow.
 - `37_LLM_BUILD_INSTALL_PROMPT_TEMPLATES.md` — Reusable prompt templates for high-quality LLM build/install and triage outputs.
 - `09_TPL_BASELINE_AND_ACCELERATOR_SIGNALS.md` — Dependency/TPL readiness and accelerator-related TPL signals.
 - `17_PACKAGE_SELECTION_STRATEGY.md` — Framework for choosing initial package sets before expansion.
+
+## Preset and reproducibility fast lane
+- `58_CMAKE_PRESETS_ADOPTION_GUIDE.md` — Start here to adopt reproducible preset-based configure/build workflows.
+- `59_CMAKE_PRESETS_FAILURE_PATTERNS.md` — Diagnose preset-specific failures and local/CI divergence quickly.
+- `60_ADHOC_TO_PRESET_MIGRATION_CHECKLIST.md` — Migrate long ad-hoc `cmake -D...` command flows into maintainable presets.
+- `53_ENVIRONMENT_MODULES_AND_PATH_HYGIENE_GUIDE.md` — Eliminate module/PATH/toolchain contamination that causes cross-shell or cross-user drift.
 
 ## Troubleshooting and routing
 - `06_TROUBLESHOOTING_MATRIX_CONFIGURE_BUILD.md` — Configure/build failure matrix with fixes.
@@ -75,3 +97,15 @@ This collection is a practical, retrieval-friendly guide to working with the Tri
 ## Primary external references
 - Upstream repo: <https://github.com/trilinos/Trilinos>
 - Official docs index: <https://trilinos.github.io/documentation.html>
+
+## Validation
+- Confirm all referenced documentation files exist in the pack
+- Verify link targets are accessible and current
+- Ensure section organization matches common retrieval patterns
+- Check that new pages are indexed under appropriate categories
+
+## Provenance
+- `Trilinos/README.md`
+- `Trilinos/INSTALL.rst`
+- Official docs index: <https://trilinos.github.io/documentation.html>
+- Repository: <https://github.com/trilinos/Trilinos>

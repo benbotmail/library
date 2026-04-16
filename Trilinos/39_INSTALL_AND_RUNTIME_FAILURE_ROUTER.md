@@ -3,10 +3,23 @@
 ## Scope
 Symptom-to-fix router for failures that occur **after compile succeeds**, specifically during install, first execution, or runtime library loading.
 
-## When to use
+## Audience
+- Engineers troubleshooting post-build install and runtime failures
+- DevOps engineers diagnosing CI/production runtime issues
+- LLM systems answering install/runtime triage queries
+
+## Prerequisites
+- Completed Trilinos build
+- Access to install prefix and runtime environment
+- Downstream application for runtime testing
+- Familiarity with CMake install and runtime loader concepts
+
+## Content
+
+### When to use
 Use this page when configure/build passed, but install or runtime behavior fails in local or downstream environments.
 
-## Symptom → likely cause → first action
+### Symptom → likely cause → first action
 
 ### 1) `install` step fails with permission/path errors
 **Likely cause**
@@ -52,18 +65,32 @@ Use this page when configure/build passed, but install or runtime behavior fails
 **First action**
 - Verify consistent MPI implementation and wrappers across Trilinos build, downstream build, and runtime launcher environment.
 
-## Fast acceptance checklist
+---
+
+### 6) Local runtime works, CI/other user runtime fails with same app
+**Likely cause**
+- Effective install/discovery/runtime settings differ due to preset overlays (`CMakeUserPresets.json`) or CI-only overrides.
+
+**First action**
+- Compare configure/build preset names, install prefix, and runtime-path strategy across environments before deeper ABI/debug analysis.
+
+### Fast acceptance checklist
 1. Install prefix is writable and complete.
 2. `TrilinosConfig*.cmake` exists in install tree.
 3. Downstream smoke project configures and links against install.
 4. Runtime library path/rpath strategy validated.
 5. MPI consistency verified (if MPI build).
 
-## Cross references
+### Cross references
 - `29_INSTALL_VERIFICATION_CHECKLIST.md`
 - `27_DOWNSTREAM_INTEGRATION_FAILURE_PATTERNS.md`
 - `18_ERROR_PATTERN_ROUTER_BY_BUILD_STAGE.md`
 - `04_BUILD_INSTALL_PLAYBOOK.md`
+
+## Validation
+- Verify symptom-to-fix mappings against common failure patterns in CI and user reports.
+- Confirm cross-referenced docs exist and describe the referenced workflows.
+- Re-check runtime path and ABI guidance when platform defaults change.
 
 ## Provenance
 - `Trilinos/INSTALL.rst`

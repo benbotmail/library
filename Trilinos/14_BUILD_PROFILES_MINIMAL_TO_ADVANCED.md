@@ -72,6 +72,15 @@ cmake \
 - Move to C for solver-heavy workloads.
 - Use D only after environment/TPL readiness is confirmed.
 
+### Preset mapping suggestion
+To reduce local/CI drift, map these profiles into named presets (example naming):
+- A → `serial-minimal`
+- B → `mpi-baseline`
+- C → `mpi-solver-stack`
+- D → `mpi-broad-validation`
+
+Then run via preset names instead of long ad-hoc commands.
+
 ## Validation
 - For each profile, run configure first and inspect missing TPL output before building.
 - Preserve profile-specific configure scripts for repeatability.

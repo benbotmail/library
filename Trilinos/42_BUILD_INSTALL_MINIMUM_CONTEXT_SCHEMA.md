@@ -3,10 +3,22 @@
 ## Scope
 Minimal input schema for collecting the **least information required** to provide accurate Trilinos build/install guidance.
 
-## Why this matters
+## Audience
+- LLM systems requiring build/install context intake
+- Prompt engineers designing questionnaires for build/install queries
+- Engineers providing minimal viable context for LLM guidance
+
+## Prerequisites
+- Familiarity with Trilinos build/install concepts
+- Understanding of JSON schema format
+- Access to platform/toolchain environment details
+
+## Content
+
+### Why this matters
 Build advice quality drops sharply when key context is missing. This schema standardizes intake so LLM responses remain actionable and low-risk.
 
-## Required fields (minimum viable context)
+### Required fields (minimum viable context)
 1. **Goal**
    - `first_success` | `mpi_integration` | `downstream_build` | `troubleshoot_configure` | `troubleshoot_runtime` | `ci_speedup`
 
@@ -25,10 +37,14 @@ Build advice quality drops sharply when key context is missing. This schema stan
 5. **Install target**
    - intended install prefix path
 
-## Conditionally required fields
+### Conditionally required fields
 - If troubleshooting configure/build:
   - first decisive error block (exact text)
   - configure command used
+- If using CMake presets:
+  - configure/build preset names used
+  - whether `CMakeUserPresets.json` is active
+  - whether CI injects extra `-D` overrides outside project presets
 - If downstream integration:
   - downstream `find_package`/configure snippet
   - how Trilinos discovery path is being passed (`Trilinos_DIR`/`CMAKE_PREFIX_PATH`)
@@ -36,7 +52,7 @@ Build advice quality drops sharply when key context is missing. This schema stan
   - exact runtime error text
   - shared/static build mode if known
 
-## JSON example
+### JSON example
 ```json
 {
   "goal": "first_success",
@@ -55,19 +71,24 @@ Build advice quality drops sharply when key context is missing. This schema stan
 }
 ```
 
-## Output contract (recommended)
+### Output contract (recommended)
 When this schema is complete, responses should return:
 1. command-first plan,
 2. smallest safe fallback if step fails,
 3. verification/acceptance checks,
 4. next-step expansion path.
 
-## Cross references
+### Cross references
 - `26_BUILD_INSTALL_DECISION_TREE.md`
 - `32_30_MINUTE_FIRST_SUCCESS_PATH.md`
 - `36_CONFIGURE_FAILURE_TRIAGE_PLAYBOOK.md`
 - `39_INSTALL_AND_RUNTIME_FAILURE_ROUTER.md`
 - `41_RETRIEVAL_ENTRYPOINTS_BUILD_INSTALL.md`
+
+## Validation
+- Verify schema fields cover the minimum context needed for accurate build/install responses.
+- Confirm JSON example parses correctly and matches field definitions.
+- Re-check conditional requirements against common troubleshooting scenarios.
 
 ## Provenance
 - Intake requirements synthesized from recurring dependencies in local `library/Trilinos/` build/install and troubleshooting documents.

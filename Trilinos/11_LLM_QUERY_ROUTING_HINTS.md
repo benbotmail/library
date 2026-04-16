@@ -39,6 +39,14 @@ Routing hints for mapping common Trilinos user questions to the most relevant do
   - Primary: `59_CMAKE_PRESETS_FAILURE_PATTERNS.md`
   - Secondary: `57_BUILD_FAILURE_FASTPATH_COMMAND_BUNDLE.md`, `44_MPI_WRAPPER_AND_ABI_CONSISTENCY_CHECKLIST.md`
 
+- **"How do I migrate long ad-hoc cmake -D scripts into maintainable presets?"**
+  - Primary: `60_ADHOC_TO_PRESET_MIGRATION_CHECKLIST.md`
+  - Secondary: `58_CMAKE_PRESETS_ADOPTION_GUIDE.md`, `30_CMAKE_CONFIGURE_SCRIPT_TEMPLATE_LIBRARY.md`
+
+- **"Why does it fail in one shell/user but work in another?" / "module/PATH contamination"**
+  - Primary: `53_ENVIRONMENT_MODULES_AND_PATH_HYGIENE_GUIDE.md`
+  - Secondary: `56_PLATFORM_BASELINE_AND_TOOLCHAIN_MINIMUMS.md`, `35_PRECONFIGURE_ENVIRONMENT_CHECKLIST.md`
+
 - **"How do I use Trilinos from my own CMake app?"**
   - Primary: `07_BUILDING_DOWNSTREAM_APPS_WITH_TRILINOS.md`
 

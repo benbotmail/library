@@ -3,10 +3,22 @@
 ## Scope
 Practical guidance for introducing CMake Presets into Trilinos build workflows to improve reproducibility, reduce command drift, and speed up troubleshooting handoffs.
 
-## When to use this page
+## Audience
+- Build engineers adopting preset-based workflows
+- CI/CD maintainers reducing local/CI divergence
+- LLM systems generating preset adoption guidance
+
+## Prerequisites
+- CMake >= 3.23 (preset support required)
+- Familiarity with Trilinos configure/build flow
+- Understanding of `04_BUILD_INSTALL_PLAYBOOK.md` basics
+
+## Content
+
+### When to use this page
 Use when configure commands are repeatedly copied/edited across machines, CI jobs, or team members, and failures are hard to reproduce.
 
-## Why presets help
+### Why presets help
 - Keep configure intent in versioned JSON instead of shell history.
 - Reduce typo/flag drift between local and CI runs.
 - Make escalation easier by sharing preset name + overrides.
@@ -93,6 +105,12 @@ Use this as a shape/template, then add Trilinos package/TPL toggles from your kn
 - Preset-specific failure routing: `59_CMAKE_PRESETS_FAILURE_PATTERNS.md`
 - Ad-hoc-to-preset migration path: `60_ADHOC_TO_PRESET_MIGRATION_CHECKLIST.md`
 - Cache reset discipline: `47_CMAKE_CACHE_RESET_AND_RECONFIGURE_PROTOCOL.md`
+
+## Validation
+- Confirm preset file exists at repo root and is discoverable via `cmake --list-presets`.
+- Verify baseline presets (serial-release-min, mpi-release-min) configure successfully on clean build directories.
+- Test that inherited presets correctly override parent values without conflicting cache entries.
+- Validate local and CI parity using cache signal comparison from `60_ADHOC_TO_PRESET_MIGRATION_CHECKLIST.md`.
 
 ## Provenance
 - `Trilinos/README.md`

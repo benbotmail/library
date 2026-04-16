@@ -16,18 +16,18 @@ Use two lock levels:
 
 ---
 
-## 2) Current upstream package snapshot (from tracked commit)
+## 2) Package matrix template (fill per project)
 
-| Layer | Package | Current version seen upstream | Notes |
-|---|---|---|---|
-| Core SDK | `@elevenlabs/client` | `1.2.1` | New `onConversationCreated` lifecycle hook; race-free connect ordering |
-| React wrapper | `@elevenlabs/react` | `1.1.1` | Stale-session protection; `conversationRef` set in `onConversationCreated`; `onConnect` fires after ref |
-| React Native wrapper | `@elevenlabs/react-native` | `1.1.1` | Keep in sync with client |
-| Types | `@elevenlabs/types` | `0.9.1` | Enhanced with type discriminants; new WebSocket message types |
-| Widget core | `@elevenlabs/convai-widget-core` | `0.11.4` | Keep in sync |
-| Widget embed | `@elevenlabs/convai-widget-embed` | `0.11.4` | Keep in sync with core |
+| Layer | Package | Pin strategy | Current pin (example) | Notes |
+|---|---|---|---|---|
+| Core SDK | `@elevenlabs/client` | exact | `x.y.z` | Primary runtime surface |
+| React wrapper | `@elevenlabs/react` | exact | `x.y.z` | Keep aligned with client major |
+| React Native wrapper | `@elevenlabs/react-native` | exact | `x.y.z` | Validate audio path behavior on target devices |
+| Types | `@elevenlabs/types` | exact | `x.y.z` | Shared contracts across services |
+| Widget core | `@elevenlabs/convai-widget-core` | exact | `x.y.z` | Optional, only if using embedded widgets |
+| Widget embed | `@elevenlabs/convai-widget-embed` | exact | `x.y.z` | Optional, browser embedding |
 
-> For app-level production pinning, still lock exact versions in your own `package.json` + lockfile.
+> Keep these pins in `package.json` + lockfile, and mirror the same values in release notes.
 
 ---
 
@@ -38,10 +38,6 @@ At each upgrade:
 - verify Scribe token flow unchanged (`single-use-token/realtime_scribe`)
 - replay reconnect tests and token-expiry tests
 - verify event names/shape used by your handlers
-- if using multimodal turns, validate both text-only and text+file payload paths
-- **NEW**: check tool mocking configuration and agent response patterns
-- **NEW**: verify auto-language selection from browser locale works as expected
-- **NEW**: validate `guardrail_triggered` event handling for compliance monitoring
 
 If any of the above changes, classify as "integration-impacting" and block promotion until patched.
 
@@ -62,45 +58,28 @@ Recommended practice:
 
 ---
 
-## 5) Upstream freshness marker
+## 5) Upstream freshness and removed-package policy
 
 Current tracked upstream commit in this docs pack:
-- `1a5c902d10bd88e3aed89d58b544deff7fb07af9`
+- `f61e7282529a92f7f3332cf1cb3d8fe2fe480df4`
 
-Observed surface changes in this revision:
-- **v1.2.1 client**: New `onConversationCreated` callback fires before `onConnect`; `ConversationLifecycleOptions` type exported; `markConnected()` separates status update from constructor
-- **v1.1.1 react**: Monotonic `startSessionId` prevents stale async handlers; `conversationRef` populated in `onConversationCreated` (no more race with `onConnect`); error path clears ref
-- **v1.1.1 react-native**: Version bump
-- **v0.11.4 widget-core/embed**: Version bump
+Observed package-surface change in this revision:
+- `packages/agents-cli` is absent from the monorepo surface.
 
 Policy:
-- when event or session surface changes, update `02_CONVERSATION_SESSION_PATTERNS.md` first
-- then refresh this matrix so version/package expectations remain explicit
-- **CRITICAL**: For major version changes (v1.0+), mandatory review of migration guide
+- if a previously referenced package is removed/renamed upstream,
+  - remove it from decision matrices
+  - add a migration note in `01_PRODUCT_SURFACE_AND_SCOPE.md`
+  - record the commit hash where the change was observed
 
 ---
 
 ## 6) Upgrade runbook (short)
 
 1. Bump pins in a dedicated branch
-2. Review migration guide for breaking changes
-3. Rebuild + run smoke tests
-4. Execute realtime QA suite (latency + reliability + quality)
-5. Compare metrics vs prior baseline
-6. **NEW**: Validate tool mocking behavior
-7. **NEW**: Test auto-language selection functionality
-8. Promote only if thresholds remain within accepted bounds
+2. Rebuild + run smoke tests
+3. Execute realtime QA suite (latency + reliability + quality)
+4. Compare metrics vs prior baseline
+5. Promote only if thresholds remain within accepted bounds
 
 This keeps upgrades explicit, reversible, and measurable.
-
----
-
-## 7) Migration warnings
-
-⚠️ **v0.x to v1.0 MIGRATION REQUIRED**
-- React Native SDK: Switch from ElevenLabsProvider to modular imports
-- Client SDK: Enhanced WebSocket event structure
-- Types: Updated discrimination patterns
-- Breaking changes in conversation state management
-
-⚠️ **Action Required**: Follow migration guide in `10_SDK_MIGRATION_V1_PREVIEW.md` before upgrading to v1.0+ packages.

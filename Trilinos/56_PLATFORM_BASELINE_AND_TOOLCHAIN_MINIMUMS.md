@@ -3,10 +3,23 @@
 ## Scope
 A conservative baseline for first-attempt Trilinos configure/build success, focused on avoiding mixed-toolchain and missing-compiler failures.
 
-## When to use this page
+## Audience
+- Engineers preparing for first Trilinos build
+- Build engineers establishing team toolchain standards
+- LLM systems generating environment validation guidance
+
+## Prerequisites
+- CMake >= 3.23 installed
+- C/C++ compilers available (Fortran optional)
+- MPI installation if planning MPI builds
+- Trilinos source tree accessible
+
+## Content
+
+### When to use this page
 Use this before the first configure when you want to minimize avoidable failures.
 
-## Baseline checklist (pre-configure)
+### Baseline checklist (pre-configure)
 
 ### 1) Choose one compiler family and stick to it
 - Keep `CC`, `CXX`, and (if needed) `FC` in the same family/toolchain.
@@ -37,7 +50,7 @@ Use this before the first configure when you want to minimize avoidable failures
 - Ensure preset-selected compiler/MPI intent matches your chosen baseline path.
 - Avoid hidden divergence from `CMakeUserPresets.json` unless intentionally documented.
 
-## Minimal first-success command pattern (shape, not a full preset)
+### Minimal first-success command pattern (shape, not a full preset)
 ```bash
 cmake -S <trilinos-src> -B <build-dir> \
   -G Ninja \
@@ -55,7 +68,7 @@ cmake --build <build-dir> -j
 cmake --install <build-dir>
 ```
 
-## Fast failure triage if baseline still fails
+### Fast failure triage if baseline still fails
 1. Capture the **first** real configure error block (not the final summary line).
 2. Route by stage:
    - configure detection failures → `36_CONFIGURE_FAILURE_TRIAGE_PLAYBOOK.md`
@@ -64,11 +77,16 @@ cmake --install <build-dir>
    - stale cache suspicion → `47_CMAKE_CACHE_RESET_AND_RECONFIGURE_PROTOCOL.md`
 3. If unresolved, prepare escalation packet: `45_BUILD_INSTALL_ESCALATION_HANDOFF_CHECKLIST.md`.
 
-## Related docs
+### Related docs
 - `04_BUILD_INSTALL_PLAYBOOK.md`
 - `35_PRECONFIGURE_ENVIRONMENT_CHECKLIST.md`
 - `40_BUILD_PROFILE_SELECTION_MATRIX.md`
 - `55_KNOWN_GOOD_STARTER_CONFIGS.md`
+
+## Validation
+- Confirm baseline checklist items against current Trilinos testing practices.
+- Verify command patterns work with recent CMake versions.
+- Re-check cross references when companion docs are updated.
 
 ## Provenance
 - `Trilinos/README.md`

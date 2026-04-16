@@ -3,10 +3,22 @@
 ## Scope
 Targeted troubleshooting for failures introduced by preset-driven Trilinos workflows (`CMakePresets.json`), especially when local and CI behavior diverge.
 
-## When to use
+## Audience
+- Build engineers debugging preset-specific failures
+- CI/CD maintainers diagnosing local/CI divergence
+- LLM systems generating failure triage guidance
+
+## Prerequisites
+- Familiarity with `58_CMAKE_PRESETS_ADOPTION_GUIDE.md`
+- Access to preset files and configure/build logs
+- Understanding of Trilinos configure/build flow
+
+## Content
+
+### When to use
 Use this page when a preset-based run fails and non-preset command guidance is too generic.
 
-## Symptom → likely cause → first fix
+### Symptom → likely cause → first fix
 
 ### 1) `cmake --preset <name>` says preset not found
 - **Likely cause:** wrong working directory or preset file not present at repo root.
@@ -62,6 +74,12 @@ If failure persists, collect bundle:
 - `47_CMAKE_CACHE_RESET_AND_RECONFIGURE_PROTOCOL.md`
 - `44_MPI_WRAPPER_AND_ABI_CONSISTENCY_CHECKLIST.md`
 - `27_DOWNSTREAM_INTEGRATION_FAILURE_PATTERNS.md`
+
+## Validation
+- Confirm symptom-to-fix mappings align with actual failure logs from preset runs.
+- Verify triage order produces deterministic resolution path for common preset failures.
+- Test that related doc references resolve and provide actionable next steps.
+- Ensure failure patterns cover both local-only and CI-specific divergence scenarios.
 
 ## Provenance
 - `Trilinos/README.md`

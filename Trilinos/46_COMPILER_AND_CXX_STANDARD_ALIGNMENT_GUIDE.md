@@ -55,9 +55,16 @@ First decisive compiler/language error:
 Minimal configuration that reproduces:
 ```
 
+### See also
+- `44_MPI_WRAPPER_AND_ABI_CONSISTENCY_CHECKLIST.md` — MPI wrapper and ABI alignment checklist
+- `56_PLATFORM_BASELINE_AND_TOOLCHAIN_MINIMUMS.md` — Pre-configure toolchain baseline and minimums
+- `47_CMAKE_CACHE_RESET_AND_RECONFIGURE_PROTOCOL.md` — Clean reconfigure after toolchain changes
+- `53_ENVIRONMENT_MODULES_AND_PATH_HYGIENE_GUIDE.md` — Environment and module path hygiene
+
 ## Validation
 - Checklist covers configure, build, and downstream compatibility touchpoints.
 - Guidance emphasizes explicit settings and clean-cache reconfiguration.
+- Cross-references validated against existing docs pack (2026-04-13).
 
 ## Provenance
 - `library/Trilinos/04_BUILD_INSTALL_PLAYBOOK.md`

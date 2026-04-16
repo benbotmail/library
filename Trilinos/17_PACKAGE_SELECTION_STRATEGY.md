@@ -45,6 +45,34 @@ Use for discretization, assembly, and coupled simulation workflows.
 ### Anti-pattern to avoid
 - Enabling `Trilinos_ENABLE_ALL_PACKAGES=ON` before validating toolchain, MPI mode, and TPL readiness.
 
+### Quick decision checklist
+Use this checklist to select a starting package set in under 60 seconds:
+
+1. **Do you need distributed-memory parallelism?**
+   - Yes → Include `Tpetra`, `Belos`, `Ifpack2` (MPI required)
+   - No → Serial/shared-memory builds may omit MPI-dependent packages
+
+2. **Is your primary goal linear algebra only?**
+   - Yes → Start with `Teuchos`, `Tpetra` (or `Epetra` for legacy)
+   - No → Add solver packages (`Belos`, `Amesos2`, `MueLu`) as needed
+
+3. **Do you need discretization/FE support?**
+   - Yes → Include `Intrepid2`, `Phalanx`, `STK`
+   - No → Skip these to reduce TPL dependencies
+
+4. **Are you integrating with an existing application?**
+   - Yes → Match packages to what your app actually calls via `find_package(Trilinos ...)`
+   - No → Start minimal and expand incrementally
+
+### Common starting combinations
+| Use case | Recommended packages |
+|---|---|
+| Minimal smoke test | `Teuchos` |
+| Basic linear algebra | `Teuchos`, `Tpetra` |
+| Iterative solvers | `Teuchos`, `Tpetra`, `Belos`, `Ifpack2` |
+| Direct solvers | Add `Amesos2` (requires TPL like SuperLU) |
+| Multigrid preconditioning | Add `MueLu` |
+
 ### Cross-reference map
 - Build mechanics: `04_BUILD_INSTALL_PLAYBOOK.md`
 - TPL readiness: `09_TPL_BASELINE_AND_ACCELERATOR_SIGNALS.md`

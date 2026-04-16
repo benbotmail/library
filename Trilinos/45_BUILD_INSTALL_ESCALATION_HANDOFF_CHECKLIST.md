@@ -33,6 +33,7 @@ Escalate when one or more are true:
    - MPI implementation/wrapper identity (if relevant)
 3. **Reproducer definition**
    - Exact configure command (or `do-configure` script)
+   - Preset context when applicable (configure/build preset names, `CMakeUserPresets.json` use, CI-only overrides)
    - Minimal flag set that still fails
    - Last known working variant (if known)
 4. **Artifacts bundle**
@@ -83,9 +84,16 @@ Notes:
   Any CI/local differences, package scope notes, or likely boundary conditions.
 ```
 
+### See also
+- `43_BUILD_INSTALL_LOG_CAPTURE_AND_MIN_REPRO_TEMPLATE.md` — Log capture bundle and minimal-repro template
+- `57_BUILD_FAILURE_FASTPATH_COMMAND_BUNDLE.md` — Rapid diagnostic capture commands
+- `48_TRIAGE_DECISION_ORDER_BUILD_INSTALL_ISSUES.md` — Ordered triage sequence before escalation
+- `47_CMAKE_CACHE_RESET_AND_RECONFIGURE_PROTOCOL.md` — Clean reconfigure protocol
+
 ## Validation
 - Checklist includes both technical packet requirements and pre-send quality gates.
 - Template aligns with stage-based troubleshooting and minimal-repro workflows.
+- Cross-references validated against existing docs pack (2026-04-13).
 
 ## Provenance
 - `library/Trilinos/36_CONFIGURE_FAILURE_TRIAGE_PLAYBOOK.md`

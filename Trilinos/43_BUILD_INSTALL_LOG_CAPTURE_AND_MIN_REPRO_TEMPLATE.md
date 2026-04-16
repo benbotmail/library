@@ -58,7 +58,6 @@ Use this order to reduce noise while preserving failure behavior:
 5. Record the **smallest flag set** that still reproduces.
 
 ### Report template (copy/paste)
-```text
 Failure stage: [configure|build|install|runtime]
 Observed error (first decisive message):
   <paste exact message>
@@ -71,6 +70,12 @@ Environment:
 
 Configure command/script:
   <exact command or script body>
+
+Preset context (if used):
+  Configure preset:
+  Build preset:
+  CMakeUserPresets.json active? [yes/no]
+  CI-only overrides beyond presets:
 
 Key CMake options:
   Trilinos_ENABLE_*:
@@ -99,10 +104,17 @@ Escalate after one full reduction pass if:
 
 When escalating, include the template above and link to relevant troubleshooting pages for stage-based routing.
 
+### See also
+- `57_BUILD_FAILURE_FASTPATH_COMMAND_BUNDLE.md` — Rapid diagnostic command bundle for post-failure capture
+- `45_BUILD_INSTALL_ESCALATION_HANDOFF_CHECKLIST.md` — Escalation handoff checklist and packet
+- `54_CONFIGURE_LOG_SIGNAL_EXTRACTION_GUIDE.md` — High-signal error extraction from large CMake logs
+- `47_CMAKE_CACHE_RESET_AND_RECONFIGURE_PROTOCOL.md` — Clean reconfigure protocol for repro attempts
+
 ## Validation
 - Template includes configure/build/install/runtime stages explicitly.
 - Captured artifacts align with CMake/TriBITS troubleshooting expectations.
 - Reduction workflow narrows variables before escalation.
+- Cross-references validated against existing docs pack (2026-04-13).
 
 ## Provenance
 - `library/Trilinos/04_BUILD_INSTALL_PLAYBOOK.md`

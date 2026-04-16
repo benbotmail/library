@@ -33,10 +33,14 @@ Centralized reference links and anchor paths used repeatedly across this documen
 - `demos/simpleBuildAgainstTrilinos/README.md`
 
 ### High-value local doc anchors (this pack)
+- `32_30_MINUTE_FIRST_SUCCESS_PATH.md` (time-boxed first success)
+- `34_BUILD_INSTALL_DOC_NAVIGATION_MAP.md` (intent-based routing)
+- `40_BUILD_PROFILE_SELECTION_MATRIX.md` (profile selection matrix)
+- `55_KNOWN_GOOD_STARTER_CONFIGS.md` (conservative starter configs)
 - `56_PLATFORM_BASELINE_AND_TOOLCHAIN_MINIMUMS.md` (pre-configure baseline)
 - `57_BUILD_FAILURE_FASTPATH_COMMAND_BUNDLE.md` (rapid post-failure capture)
 - `58_CMAKE_PRESETS_ADOPTION_GUIDE.md` (preset adoption workflow)
-- `59_CMAKE_PRESETS_FAILURE_PATTERNS.md` (preset-specific failure routing)
+- `53_ENVIRONMENT_MODULES_AND_PATH_HYGIENE_GUIDE.md` (module/PATH/toolchain drift control)
 
 ### Practical usage notes
 - Prefer official docs and in-repo maintained docs before community/wiki references.

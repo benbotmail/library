@@ -3,16 +3,28 @@
 ## Scope
 Reusable configure-script templates for common Trilinos build scenarios, designed to reduce option drift and improve reproducibility.
 
-## Why this page exists
+## Audience
+- Engineers managing multiple Trilinos build profiles
+- DevOps engineers standardizing CI configure commands
+- LLM systems generating configure scripts
+
+## Prerequisites
+- Familiarity with CMake configure syntax
+- Understanding of compiler and MPI wrapper paths
+- Bash shell scripting basics
+
+## Content
+
+### Why this page exists
 Repeated ad-hoc CMake command editing is a frequent source of build churn. Stable `do-configure` templates make local and CI builds easier to reproduce and debug.
 
-## Template usage pattern
+### Template usage pattern
 - Copy the template matching your scenario.
 - Fill placeholders (`<...>`).
 - Keep one script per profile/build directory.
 - Commit or archive scripts with build notes for team reuse.
 
-## Template A — Minimal non-MPI debug bootstrap
+### Template A — Minimal non-MPI debug bootstrap
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
@@ -27,7 +39,7 @@ cmake \
   <path-to-trilinos-source>
 ```
 
-## Template B — MPI-focused package set
+### Template B — MPI-focused package set
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
@@ -43,7 +55,7 @@ cmake \
   <path-to-trilinos-source>
 ```
 
-## Template C — Broad validation profile (use after TPL readiness)
+### Template C — Broad validation profile (use after TPL readiness)
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
@@ -58,7 +70,7 @@ cmake \
   <path-to-trilinos-source>
 ```
 
-## Template D — Preset-based wrapper (local + CI parity)
+### Template D — Preset-based wrapper (local + CI parity)
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
@@ -87,6 +99,11 @@ cmake --install <build-dir>
 - `29_INSTALL_VERIFICATION_CHECKLIST.md`
 - `58_CMAKE_PRESETS_ADOPTION_GUIDE.md`
 - `59_CMAKE_PRESETS_FAILURE_PATTERNS.md`
+
+## Validation
+- Test each template on a clean build directory before committing to team/CI use.
+- Verify placeholder substitutions produce working configure commands.
+- Confirm cross references remain valid after doc reorganization.
 
 ## Provenance
 - `Trilinos/INSTALL.rst`

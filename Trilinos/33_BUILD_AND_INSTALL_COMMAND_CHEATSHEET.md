@@ -7,7 +7,15 @@ Copy/paste command patterns for common Trilinos configure/build/install workflow
 - Engineers who need quick command recall
 - LLM agents that should return concise executable snippets first
 
-## 1) Minimal non-MPI bootstrap
+## Prerequisites
+- CMake >= 3.23 installed
+- C/C++ compilers available (Fortran optional)
+- MPI installation if using MPI-based patterns
+- Ninja or Make build tool
+
+## Content
+
+### 1) Minimal non-MPI bootstrap
 ```bash
 mkdir -p <build-dir> && cd <build-dir>
 cmake -GNinja \
@@ -21,7 +29,7 @@ cmake -GNinja \
 ninja install
 ```
 
-## 2) MPI-focused selected-package build
+### 2) MPI-focused selected-package build
 ```bash
 mkdir -p <build-dir> && cd <build-dir>
 cmake -GNinja \
@@ -36,7 +44,7 @@ cmake -GNinja \
 ninja install
 ```
 
-## 3) Broad package validation build (after TPL readiness)
+### 3) Broad package validation build (after TPL readiness)
 ```bash
 mkdir -p <build-dir> && cd <build-dir>
 cmake -GNinja \
@@ -50,7 +58,7 @@ cmake -GNinja \
 ninja install
 ```
 
-## 4) Make-based equivalent (if Ninja unavailable)
+### 4) Make-based equivalent (if Ninja unavailable)
 ```bash
 mkdir -p <build-dir> && cd <build-dir>
 cmake \
@@ -62,7 +70,7 @@ cmake \
 make -j<n> install
 ```
 
-## 5) Downstream project configure against installed Trilinos
+### 5) Downstream project configure against installed Trilinos
 ```bash
 mkdir -p <downstream-build-dir> && cd <downstream-build-dir>
 cmake \
@@ -72,7 +80,7 @@ cmake \
 cmake --build . -j<n>
 ```
 
-## 6) Preset-based configure/build (reproducible local + CI)
+### 6) Preset-based configure/build (reproducible local + CI)
 ```bash
 # From repository containing CMakePresets.json
 cmake --preset <configure-preset>
@@ -85,7 +93,7 @@ Example discovery:
 cmake --list-presets
 ```
 
-## 7) Fast failure capture bundle (after any failed run)
+### 7) Fast failure capture bundle (after any failed run)
 ```bash
 # From build dir
 cmake -N -LA . \
@@ -99,13 +107,13 @@ tar -czf trilinos-fastpath-evidence.tgz cache-signals.txt first-errors.txt confi
 ```
 Use this to prepare a minimal escalation artifact quickly.
 
-## Quick flags to remember
+### Quick flags to remember
 - Enable tests: `-DTrilinos_ENABLE_TESTS=ON`
 - Shared libs: `-DBUILD_SHARED_LIBS=ON`
 - Disable Fortran: `-DTrilinos_ENABLE_Fortran=OFF`
 - Enable one package: `-DTrilinos_ENABLE_<Package>=ON`
 
-## Cross references
+### Cross references
 - `04_BUILD_INSTALL_PLAYBOOK.md`
 - `13_CMAKE_FLAG_QUICK_REFERENCE.md`
 - `26_BUILD_INSTALL_DECISION_TREE.md`
@@ -113,6 +121,11 @@ Use this to prepare a minimal escalation artifact quickly.
 - `30_CMAKE_CONFIGURE_SCRIPT_TEMPLATE_LIBRARY.md`
 - `58_CMAKE_PRESETS_ADOPTION_GUIDE.md`
 - `59_CMAKE_PRESETS_FAILURE_PATTERNS.md`
+
+## Validation
+- Confirm command snippets remain valid against current CMake/TriBITS behavior after upstream updates.
+- Verify cross references resolve to existing files.
+- Re-test snippets periodically on clean environments to catch deprecated flags or path changes.
 
 ## Provenance
 - `Trilinos/INSTALL.rst`

@@ -13,7 +13,7 @@ Common configure/build/install failure patterns for Trilinos, with diagnosis and
 
 ## Content
 
-## How to use this matrix
+### How to use this matrix
 1. Match the observed error pattern to the closest row.
 2. Run the listed quick checks.
 3. Apply the shortest safe fix path.
@@ -95,9 +95,26 @@ Common configure/build/install failure patterns for Trilinos, with diagnosis and
   - Isolate build directories per preset family and reset cache when switching toolchain/MPI roots.
   - Apply environment hygiene workflow before retry.
 
+## Minimal evidence bundle (for deterministic triage)
+Capture these artifacts before applying fixes so comparisons stay objective:
+- Original configure command (or preset name) and full CMake configure output.
+- First failing build command and first compiler/linker error block.
+- Key cache values: `CMAKE_<LANG>_COMPILER`, `CMAKE_INSTALL_PREFIX`, `TPL_ENABLE_MPI`, selected `Trilinos_ENABLE_*` toggles.
+- Build directory identity (path + generator) to avoid cross-directory cache confusion.
+
+### See also
+- `18_ERROR_PATTERN_ROUTER_BY_BUILD_STAGE.md` — Stage-based error routing for deeper triage
+- `36_CONFIGURE_FAILURE_TRIAGE_PLAYBOOK.md` — Step-by-step configure failure isolation
+- `09_TPL_BASELINE_AND_ACCELERATOR_SIGNALS.md` — TPL dependency readiness signals
+- `44_MPI_WRAPPER_AND_ABI_CONSISTENCY_CHECKLIST.md` — MPI wrapper and ABI alignment
+- `07_BUILDING_DOWNSTREAM_APPS_WITH_TRILINOS.md` — Downstream CMake integration guidance
+- `58_CMAKE_PRESETS_ADOPTION_GUIDE.md` — Preset-based reproducible workflows
+- `57_BUILD_FAILURE_FASTPATH_COMMAND_BUNDLE.md` — Rapid diagnostic capture commands
+
 ## Validation
 - Confirm fixes by re-running configure and build from a clean build directory when possible.
 - Preserve first failing error block before and after change to verify issue resolution.
+- Cross-references validated against existing docs pack (2026-04-13).
 
 ## Provenance
 - `Trilinos/INSTALL.rst`

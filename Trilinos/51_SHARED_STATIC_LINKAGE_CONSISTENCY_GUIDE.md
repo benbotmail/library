@@ -50,9 +50,16 @@ Install prefix in use:
 First decisive link/runtime error:
 ```
 
+### See also
+- `39_INSTALL_AND_RUNTIME_FAILURE_ROUTER.md` — Post-install runtime failure routing for loader/RPATH issues
+- `52_RUNTIME_LOADER_RPATH_TRIAGE.md` — RPATH and runtime loader troubleshooting
+- `27_DOWNSTREAM_INTEGRATION_FAILURE_PATTERNS.md` — Downstream integration symptom-to-fix router
+- `47_CMAKE_CACHE_RESET_AND_RECONFIGURE_PROTOCOL.md` — Clean reconfigure workflow for strategy changes
+
 ## Validation
 - Guidance covers both build-time and runtime consequences of linkage mismatch.
 - Recovery path is deterministic and cache-safe.
+- Cross-references validated against existing docs pack (2026-04-13).
 
 ## Provenance
 - `library/Trilinos/04_BUILD_INSTALL_PLAYBOOK.md`
