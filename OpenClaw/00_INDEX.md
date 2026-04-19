@@ -1,95 +1,79 @@
-# OpenClaw LLM Documentation Pack
+---
+summary: "OpenClaw docs pack - current release behavior (not changelog)"
+read_when:
+  - Working on OpenClaw configuration or integration
+  - Need current command reference or tool guidance
+title: "OpenClaw Documentation Pack"
+sidebarTitle: "Current Docs"
+---
 
-This collection is a practical, retrieval-friendly guide to understanding, configuring, and troubleshooting OpenClaw — a self-hosted multi-channel AI assistant gateway.
+# OpenClaw Docs Pack (Current-State, LLM-Ready)
 
-## Core orientation
-- `01_ARCHITECTURE_OVERVIEW.md` — System architecture, components, and data flows.
-- `02_CONCEPTS_AND_TERMINOLOGY.md` — Core concepts (Gateway, agents, sessions, nodes, plugins) and their relationships.
-- `03_SOURCE_OF_TRUTH_MAP.md` — Authority order for OpenClaw sources (docs, code, schema, community) when claims conflict.
-- `04_DOCUMENTATION_CONVENTIONS.md` — Documentation rules for structure, claim grounding, and provenance.
-- `05_CONFIGURATION_LANDSCAPE.md` — Configuration file locations, precedence, and hot-reload behavior.
+This pack summarizes **current OpenClaw behavior** (not changelog narration).
 
-## Quick start and onboarding
-- `10_GETTING_STARTED_ROUTE.md` — End-to-end setup from first install to messaging an agent.
-- `11_ONBOARDING_WORKFLOWS.md` — Onboarding paths: CLI wizard vs. Control UI vs. manual config.
-- `12_PLATFORM_SPECIFIC_SETUP.md` — Setup nuances for macOS, Linux, Windows (WSL2), Docker, and Nix.
+## Current Status
+- **Upstream source repo:** `openclaw-src`
+- **Upstream commit processed:** bd3ad3436e
+- **Processed on:** 2026-04-19
+- **Status:** ✅ Fully regenerated from current source
 
-## Gateway core
-- `20_GATEWAY_COMPONENTS.md` — Gateway architecture: entry points, routing engine, session management, plugins.
-- `21_SESSION_MODEL.md` — Session lifecycle: creation, isolation, persistence, sub-agents, and cleanup.
-- `22_ROUTING_AND_DISPATCH.md` — Request routing: channel → agent → tools, with multi-agent patterns.
-- `23_CONFIGURATION_SCHEMA_REFERENCE.md` — Core config schema sections with examples for common patterns.
-- `24_HOT_RELOAD_AND_RESTART.md` — Config hot-reload, daemon restarts, and state preservation rules.
+## Documentation Structure
 
-## Channels and messaging
-- `30_CHANNEL_OVERVIEW.md` — All supported channels (WhatsApp, Telegram, Discord, etc.) and their patterns.
-- `31_CHANNEL_SETUP_CHECKLISTS.md` — Per-channel setup: authentication, permissions, webhooks, pairing.
-- `32_DM_AND_GROUP_POLICIES.md` — `dmPolicy` and `groupPolicy`: allowlist, pairing, open, mention patterns.
-- `33_MESSAGE_FORMATS_AND_RENDERING.md` — Text, media, reactions, mentions, buttons, and platform quirks.
-- `34_MEDIAPHANDLING.md` — Image/audio/document upload/download, transcoding, and limits.
+- **[01_PROJECT_OVERVIEW.md](./01_PROJECT_OVERVIEW.md)** - Project overview and architecture
+- **[02_ARCHITECTURE_AND_RUNTIME.md](./02_ARCHITECTURE_AND_RUNTIME.md)** - Gateway architecture and runtime components
+- **[03_CLI_SURFACE_MAP.md](./03_CLI_SURFACE_MAP.md)** - Complete CLI command reference
+- **[04_CHANNELS_AND_ROUTING.md](./04_CHANNELS_AND_ROUTING.md)** - Channel configurations and routing
+- **[05_TOOLS_AND_AUTOMATION.md](./05_TOOLS_AND_AUTOMATION.md)** - Tool profiles and automation
+- **[06_SECURITY_AND_OPERATIONS.md](./06_SECURITY_AND_OPERATIONS.md)** - Security model and operations
+- **[07_AGENT_WORKSPACE_MEMORY_SKILLS.md](./07_AGENT_WORKSPACE_MEMORY_SKILLS.md)** - Agent workspace, memory, and skills
+- **[08_QUICK_TASK_ROUTER.md](./08_QUICK_TASK_ROUTER.md)** - Quick task routing guide
 
-## Agents and LLM integration
-- `40_AGENT_RUNTIME.md` — Agent execution: main sessions, sub-agents, ACP harnesses, and agent IDs.
-- `41_MODEL_CONFIGURATION.md` — Model selection, aliases, fallbacks, failover, and custom providers.
-- `42_THINKING_AND_REASONING_MODES.md` — Thinking levels, reasoning toggles, and model overrides.
-- `43_MULTI_AGENT_ROUTING.md` — Per-agent sessions, workspace isolation, routing rules, and escalation.
-- `44_MEMORY_AND_CONTEXT.md` — MEMORY.md, daily memory files, context windows, and retrieval patterns.
+## Key Current Features
 
-## Tools and capabilities
-- `50_TOOL_SYSTEM_OVERVIEW.md` — Tool execution model: permissions, approvals, sandboxing, and tool availability.
-- `51_BUILT_IN_TOOLS_REFERENCE.md` — Core tools: exec, browser, web_search, message, sessions_spawn, cron, etc.
-- `52_EXEC_SECURITY_AND_APPROVALS.md` — Elevated commands, approval flows, dangerous patterns, and best practices.
-- `53_BROWSER_CONTROL.md` — Browser automation: openclaw, user-browser, Chrome extension, and remote targets.
-- `54_NODE_PAIRING_AND_CANVAS.md` — Mobile nodes, pairing, Canvas rendering, camera, and device actions.
+### 🦞 Core Architecture
+- WebSocket gateway serving all messaging surfaces
+- Control-plane clients (CLI, macOS app, web UI, automations) via WebSocket
+- Node connections (macOS/iOS/Android/headless) with explicit roles/caps
+- One Gateway per host (owns WhatsApp session)
+- Bundled plugin system: channels, providers, browser, and capabilities ship as plugins
 
-## Plugins and extensions
-- `60_PLUGIN_ARCHITECTURE.md` — Plugin system: entry points, config schemas, providers, and channels.
-- `61_CORE_PLUGINS_REFERENCE.md` — Built-in plugins: brave-search, github, weather, gh-issues, coding-agent, etc.
-- `62_CUSTOM_PLUGIN_DEVELOPMENT.md` — Writing plugins: SDK, manifest, tools, channels, providers.
-- `63_SKILLS_SYSTEM.md` — Skills: discovery, SKILL.md conventions, conditional logic, and skill-creator workflow.
+### 📱 Supported Channels
+- WhatsApp (via Baileys), Telegram (via grammY), Slack (Socket Mode + HTTP), Discord, Signal, iMessage (BlueBubbles recommended)
+- Matrix (E2EE with SSSS bootstrap, bundled plugin), Google Chat, MS Teams, IRC, Nostr, LINE, QQ, Zalo, Feishu, BlueBubbles
+- Nextcloud Talk, Mattermost, Synology Chat, Tlon, Twitch
+- WeChat (external plugin `@tencent-weixin/openclaw-weixin`, QR login, direct chats)
+- WebChat (embedded in Control UI)
 
-## Automation and workflows
-- `70_CRON_AND_SCHEDULING.md` — Cron jobs: schedules, payloads, delivery modes, wake events, and reminders.
-- `71_HOOKS_AND_AUTOMATION.md` — Hooks: before/after agent turns, system events, and custom workflows.
-- `72_WEBHOOK_AND_EVENT_DELIVERY.md` — Webhook payloads, event types, signatures, and integration patterns.
-- `73_AUTO_REPLY_PATTERNS.md` — Auto-reply rules: triggers, templates, channel filters, and limits.
+### 🛠️ Tool Profiles
+- **minimal**: Basic file operations
+- **coding**: Development tools (read, write, edit, exec, code_execution, web_search)
+- **full**: All tools including browser, media, TTS, nodes, canvas, sessions
 
-## Networking and remote access
-- `80_LOCALHOST_AND_PORTS.md` — Default ports, port binding, and firewall considerations.
-- `81_SSH_AND_REMOTE_SETUP.md` — Remote Gateway access via SSH tunneling, systemd, and systemd user services.
-- `82_TAILSCALE_AND_VPN_ACCESS.md` — Tailscale integration, node discovery, and tailnet routing.
-- `83_REVERSE_TUNNELS_AND_RELAYS.md` — Cloudflare tunnel, ngrok, and NAT traversal patterns.
+### 🌐 Browser
+- Bundled plugin with isolated managed browser (`openclaw` profile)
+- Multi-profile support (`openclaw`, `user`, `work`, `remote`, etc.)
+- Direct WebSocket CDP discovery for hosted browser providers
+- SSRF guard with `dangerouslyAllowPrivateNetwork` opt-in
+- Node browser proxy for zero-config remote gateway setups
+- `browserless` and `browserbase` hosted CDP support
 
-## Security and permissions
-- `90_SECURITY_MODEL.md` — Token storage, allowlists, pairing codes, and isolation boundaries.
-- `91_PERMISSIONS_AND_SANDBOXING.md` — Filesystem access, network boundaries, container isolation, and host access.
-- `92_SECRET_MANAGEMENT.md` — Environment variables, secret injection, secret rotation, and .secrets.baseline.
-- `93_AUDIT_AND_LOGGING.md` — Audit trails, logging levels, log aggregation, and retention policies.
+### 🔒 Security
+- SecretRef credential resolution (env vars, file-based, inline)
+- SSRF guard on browser, MCP, and media paths
+- Exec approvals with per-channel DM delivery (Discord, Slack)
+- SendPolicy deny suppresses delivery (not inbound processing)
+- Config mutation guards on dangerous writes
+- OAuth/auth hardening for Codex CLI bridge and concurrent agent auth
 
-## Development and debugging
-- `100_DEVELOPMENT_SETUP.md` — Local dev: repo clone, pnpm setup, hot-reload, and test patterns.
-- `101_TESTING_STRATEGIES.md` — Unit tests, e2e tests, channel fixtures, and integration testing.
-- `102_DEBUGGING_TECHNIQUES.md` — Debug mode, verbose logging, breakpoints, and common failure modes.
-- `103_DIAGNOSTICS_AND_HEALTH.md` — `openclaw doctor`, `openclaw health`, and diagnostic data collection.
+### 🧠 Memory & Active Memory
+- Memory search with embedding providers (OpenAI, Gemini, Ollama, GitHub Copilot, Voyage, Bedrock, LMStudio, Mistral)
+- Embedding providers now individual extensions (not memory-host-sdk)
+- Active Memory plugin: hidden prompt prefix injection before main reply
+- Dreaming: automated memory consolidation (storage.mode defaults to "separate")
+- QMD manager with session files support
 
-## Troubleshooting and escalation
-- `110_TROUBLESHOOTING_ENTRY_POINTS.md` — Symptom-based routing: installation, channels, agents, tools, networking.
-- `111_COMMON_ERROR_PATTERNS.md` — Error messages and their causes: config validation, auth failures, rate limits, etc.
-- `112_LOG_ANALYSIS_GUIDE.md` — Interpreting Gateway logs, agent logs, and channel logs.
-- `113_ESCALATION_HANDOFF.md` — When and how to escalate: bug reports, feature requests, community support.
-
-## Migration and upgrade paths
-- `120_VERSIONING_AND_CHANNELS.md` — Stable, beta, dev channels, release tags, and upgrade strategies.
-- `121_MIGRATION_GUIDES.md` — Config migrations, channel migrations, and breaking changes.
-- `122_BACKUP_AND_RESTORE.md` — Config backup, workspace backup, and disaster recovery.
-
-## Reference materials
-- `130_COMMAND_LINE_REFERENCE.md` — All CLI commands: gateway, agent, channels, config, doctor, etc.
-- `131_CONFIG_SCHEMA_INDEX.md` — Dot-notation index for all config paths with types and defaults.
-- `132_ENVIRONMENT_VARIABLES.md` — Environment variable overrides and their config equivalents.
-- `133_PROVENANCE_COVERAGE.md` — Audit report confirming source references across docs pages.
-
-## External references
-- Upstream repo: <https://github.com/openclaw/openclaw>
-- Official docs: <https://docs.openclaw.ai>
-- Community Discord: <https://discord.gg/clawd>
+### 🤖 Model Providers
+- 40+ providers including OpenAI, Anthropic, Google/Gemini, Azure, Ollama, OpenRouter, Together, Fireworks, Groq, DeepSeek, Mistral, xAI, Z.AI
+- Google Gemini transport moved into dedicated plugin
+- Per-channel model overrides with topic-level keys for Telegram
+- Model failover with auth rotation
