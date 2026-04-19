@@ -33,7 +33,7 @@ Configuration under `agents.defaults.memorySearch`:
   agents: {
     defaults: {
       memorySearch: {
-        provider: "openai",     // openai | gemini | ollama | (auto-detected)
+        provider: "openai",     // openai | gemini | ollama | voyage | bedrock | lmstudio | mistral | copilot
         model: "text-embedding-3-small",
         fallback: "gemini",     // optional provider failover
       },
@@ -42,12 +42,15 @@ Configuration under `agents.defaults.memorySearch`:
 }
 ```
 
-Embedding providers:
+Embedding providers (now individual extensions, not memory-host-sdk):
 - **OpenAI**: `text-embedding-3-small` (recommended)
 - **Gemini**: `gemini-embedding-001`
 - **Ollama**: `nomic-embed-text` (local)
-- **GitHub Copilot**: New embedding provider for memory search
-- **LanceDB**: Cloud storage support for memory-lancedb
+- **GitHub Copilot**: embedding access
+- **Voyage**: voyage-3 embeddings
+- **Bedrock**: AWS Bedrock embeddings
+- **LMStudio**: local model studio embeddings
+- **Mistral**: Mistral embeddings
 
 Session memory search (experimental): `agents.defaults.memorySearch.experimental.sessionMemory`
 
@@ -79,8 +82,9 @@ Key points:
 - Runs only on eligible interactive persistent chat sessions
 - Model resolution: explicit → session model → agent model → fallback
 - `persistTranscripts: true` keeps blocking sub-agent transcripts for debugging
-- Speed tip: use a dedicated fast model like `cerebras/gpt-oss-120b` for lower latency
+- Speed tip: use a dedicated fast model for lower latency
 - Session toggle: `/active-memory on|off|status`
+- **Timeout schema fix**: active memory timeout properly validated and enforced
 
 ### Dreaming
 Automated memory consolidation via the `memory-core` plugin.
@@ -104,7 +108,6 @@ Automated memory consolidation via the `memory-core` plugin.
 }
 ```
 
-Key changes:
 - `storage.mode` defaults to `"separate"` — dreaming phase blocks no longer pollute daily memory files
 - Dreaming uses ingestion date (not file date) for dayBucket
 - Self-ingestion is blocked (dreaming won't ingest its own output)
@@ -117,9 +120,21 @@ Skills provide specialized instructions for specific tasks. Loaded on demand fro
 
 Agent filter controls which agents can access which skills. Skills are injected into the system prompt when relevant.
 
-### Skill Types
-- **Bundled**: Ship with OpenClaw (weather, github, coding-agent, etc.)
-- **Custom**: Created by users or agents
+### Skill Configuration
+```json5
+{
+  agents: {
+    defaults: {
+      skills: ["github", "weather"],  // shared baseline
+    },
+    list: [
+      { id: "writer" },                           // inherits defaults
+      { id: "docs", skills: ["docs-search"] },    // replaces defaults
+      { id: "locked-down", skills: [] },           // no skills
+    ],
+  },
+}
+```
 
 ## Agent Configuration
 
@@ -130,19 +145,19 @@ Agent filter controls which agents can access which skills. Skills are injected 
     defaults: {
       model: {
         primary: "openai/gpt-4.1",
-        fallback: "openai/gpt-4.1-mini",
+        fallbacks: ["openai/gpt-4.1-mini"],
       },
     },
   },
 }
 ```
 
-Model selection resolution chain: explicit override → agent primary → fallback.
+Model selection resolution: explicit override → agent primary → fallback chain.
 
 ### Thinking Levels
 `off` | `minimal` | `low` | `medium` | `high` | `xhigh` | `adaptive`
 
-Default thinking varies by model. Per-model thinking defaults are maintained.
+Google Gemini thinking config moved into dedicated plugin transport. Per-model thinking defaults maintained.
 
 ### Agent Scope
 Agent scope config controls which agents have access to what:
@@ -176,9 +191,6 @@ Opt-in preview surfaces behind explicit flags. Shape may change.
   },
 }
 ```
-
-### Local Model Lean Mode
-Trims heavyweight default tools (browser, cron, message) so the prompt is smaller for small-context or stricter backends. Not the normal path — leave off if your backend handles the full runtime.
 
 ## QMD Manager
 Handles `.qmd` (quantized markdown) memory files:

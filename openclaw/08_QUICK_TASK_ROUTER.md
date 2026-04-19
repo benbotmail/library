@@ -22,6 +22,8 @@ title: "Quick Task Router"
 
 3. Restart: `openclaw gateway restart`
 
+For WeChat: `openclaw plugins install "@tencent-weixin/openclaw-weixin"` then `openclaw channels login --channel openclaw-weixin`
+
 ## "Enable streaming replies"
 
 Telegram:
@@ -92,7 +94,7 @@ Cron jobs are managed via the `cron` tool or chat commands.
 One-shot reminder:
 ```json5
 {
-  schedule: { kind: "at", at: "2026-04-16T15:00:00Z" },
+  schedule: { kind: "at", at: "2026-04-19T15:00:00Z" },
   payload: { kind: "systemEvent", text: "Reminder: team standup in 5 minutes" },
   sessionTarget: "main",
 }
@@ -116,26 +118,14 @@ Recurring task:
       memorySearch: {
         provider: "openai",
         model: "text-embedding-3-small",
-        fallback: "gemini",  // optional failover
+        fallback: "gemini",
       },
     },
   },
 }
 ```
 
-For local models:
-```json5
-{
-  agents: {
-    defaults: {
-      memorySearch: {
-        provider: "ollama",
-        model: "nomic-embed-text",
-      },
-    },
-  },
-}
-```
+Alternative providers: `ollama` (local), `voyage`, `bedrock`, `lmstudio`, `mistral`, `copilot`.
 
 Check health: `openclaw memory status --deep`
 
@@ -163,8 +153,8 @@ Check health: `openclaw memory status --deep`
     telegram: {
       sendPolicy: {
         deny: [
-          { chatType: "group" },         // block all groups
-          { keyPrefix: "-100123" },       // block specific chat prefix
+          { chatType: "group" },
+          { keyPrefix: "-100123" },
         ],
       },
     },
@@ -184,7 +174,7 @@ Note: `sendPolicy` deny suppresses delivery, not inbound processing.
         config: {
           dreaming: {
             enabled: true,
-            storage: { mode: "separate" },  // default: phase blocks separate from daily files
+            storage: { mode: "separate" },
           },
         },
       },
@@ -208,9 +198,7 @@ Note: `sendPolicy` deny suppresses delivery, not inbound processing.
   },
   agents: {
     defaults: {
-      experimental: {
-        localModelLean: true,  // trim tools for small contexts
-      },
+      experimental: { localModelLean: true },
     },
   },
 }
@@ -231,3 +219,65 @@ Note: `sendPolicy` deny suppresses delivery, not inbound processing.
 ```
 
 Providers: `openai`, `elevenlabs`, `gemini`, `microsoft` (no API key needed), `minimax`.
+
+## "Set up browser"
+
+```json5
+{
+  browser: {
+    enabled: true,
+    defaultProfile: "openclaw",
+    profiles: {
+      openclaw: { cdpPort: 18800, color: "#FF4500" },
+      remote: { cdpUrl: "wss://production-sfo.browserless.io?token=<KEY>" },
+    },
+  },
+}
+```
+
+- Local: `openclaw browser start`
+- Remote CDP: set `cdpUrl` in profile config
+- Node proxy: zero-config if node host is on browser machine
+- Browserless/Browserbase: use WSS URL as `cdpUrl`
+
+## "Override model per channel/topic"
+
+```json5
+{
+  channels: {
+    modelByChannel: {
+      telegram: {
+        "-1001234567890": "openai/gpt-4.1-mini",
+        "-1001234567890:topic:99": "anthropic/claude-sonnet-4-6",
+      },
+    },
+  },
+}
+```
+
+## "Set up WeChat"
+
+```bash
+openclaw plugins install "@tencent-weixin/openclaw-weixin"
+openclaw config set plugins.entries.openclaw-weixin.enabled true
+openclaw gateway restart
+openclaw channels login --channel openclaw-weixin
+# Scan QR, then approve pairing:
+openclaw pairing list openclaw-weixin
+openclaw pairing approve openclaw-weixin <CODE>
+```
+
+## "Configure context visibility"
+
+```json5
+{
+  channels: {
+    defaults: {
+      contextVisibility: "allowlist",  // all | allowlist | allowlist_quote
+    },
+    telegram: {
+      contextVisibility: "all",  // per-channel override
+    },
+  },
+}
+```

@@ -2,8 +2,8 @@
 
 ## Collections
 - `openclaw/` — curated, bot-friendly orientation pack for the OpenClaw project.
-- `ElevenLabs/` — implementation docs for simultaneous transcription/translation pipelines using ElevenLabs STT + Dubbing primitives.
-- `Trilinos/` — LLM-friendly documentation pack for the Trilinos monorepo (in progress).
+- `ElevenLabs/` — implementation docs for simultaneous transcription/translation pipelines using ElevenLabs STT + Dubbing primitives (complete, 11 files).
+- `Trilinos/` — LLM-friendly documentation pack for the Trilinos monorepo (complete, 61 files).
 
 Start at:
 - `openclaw/00_INDEX.md`

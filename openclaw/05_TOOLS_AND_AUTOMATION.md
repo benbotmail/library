@@ -27,35 +27,59 @@ All tools: everything in coding plus `browser`, `message`, `cron`, `gateway`, `n
 ### exec
 Execute shell commands. Supports:
 - Background execution with `yieldMs`
-- PTY mode for TTY-required CLIs
+- PTY mode for TTY-required CLIs (Codex, Claude Code, etc.)
 - Elevated permissions (host-level, when allowed)
-- Approval flow for sensitive commands
-- Approval prompts redact secrets
+- Approval flow for sensitive commands (secrets redacted)
+- Sandbox execution with `host: "auto"` (default)
+- `host: "node"` for remote execution on paired nodes
+
+Config:
+- `tools.exec.notifyOnExit` (default: true): heartbeat on background exit
+- `tools.exec.security`: `deny` | `allowlist` | `full`
+- `tools.exec.ask`: `off` | `on-miss` | `always`
+- `tools.exec.strictInlineEval`: force approval for `python -c`, `node -e`, etc.
+- `tools.exec.safeBins`: stdin-only safe binaries without allowlist
+- `tools.exec.pathPrepend`: directories prepended to PATH
 
 ### browser
-Control web browser via CDP (Chrome DevTools Protocol).
+Control web browser via CDP. **Now a bundled plugin** — disable or replace without touching core.
 
 Profiles:
 - `openclaw`: isolated managed browser (default)
-- `user`: logged-in user browser on local host
+- `user`: logged-in user browser via Chrome MCP
 - `chrome-relay`: Chrome extension / Browser Relay toolbar button
+- Custom profiles: `work`, `remote`, `browserless`, `browserbase`, etc.
 
 Key features:
 - Snapshot (DOM tree / accessibility tree)
-- Screenshot
+- Screenshot, PDF
 - Navigate, click, type, fill, select, drag
-- Tab management
-- **SSRF guard**: enforced on snapshot, screenshot, and tab routes. Default hostname SSRF relaxed for loopback. `cdp-reachability-policy` manages CDP readiness under strict defaults.
+- Tab management (list/open/focus/close)
+- **SSRF guard**: enforced on all browser navigation. `browser.ssrfPolicy.dangerouslyAllowPrivateNetwork` opt-in for private network access.
+- **Direct WebSocket CDP**: three URL shapes — HTTP discovery, direct `/devtools/` WebSocket, bare WebSocket root
+- **Node browser proxy**: zero-config remote gateway setups via node host
+- **Hosted providers**: Browserless, Browserbase with direct WSS endpoints
+- Remote CDP timeout config: `remoteCdpTimeoutMs`, `remoteCdpHandshakeTimeoutMs`
+
+Plugin control:
+```json5
+{
+  plugins: { entries: { browser: { enabled: false } } },  // disable bundled browser
+  browser: { enabled: true, defaultProfile: "openclaw" },
+}
+```
+
+If `plugins.allow` is set, must include `browser` for browser tool to load.
 
 ### web_search / web_fetch
-- `web_search`: Brave Search API (1-10 results, region/language filters)
+- `web_search`: Brave Search API (1-10 results, region/language filters, freshness)
 - `web_fetch`: HTTP fetch + HTML→markdown extraction
 
 ### message
-Send messages via channel plugins. Supports: send, edit, delete, react, poll, topic-create. Channel-specific features vary.
+Send messages via channel plugins. Supports: send, edit, delete, react, poll, topic-create. Channel-specific features vary. Media uploads via `filePath`, `buffer`, or `media` URL.
 
 ### cron
-Manage scheduled jobs. Schedule types: `at`, `every`, `cron`. Payload types: `systemEvent` (main session), `agentTurn` (isolated session). Delivery: `none`, `announce`, `webhook`.
+Manage scheduled jobs. Schedule types: `at` (one-shot), `every` (interval), `cron` (expression). Payload types: `systemEvent` (main session), `agentTurn` (isolated session). Delivery: `none`, `announce`, `webhook`.
 
 ### gateway
 Restart, apply config, or run updates. Protects `tools.exec.ask` / `tools.exec.security` from config writes.
@@ -81,13 +105,19 @@ Convert text to speech. Supported providers: **ElevenLabs**, **Google Gemini**, 
 }
 ```
 
-TTS directives in replies control when/how audio is sent. Bundled TTS providers register correctly with the gateway.
-
 ### memory_search / memory_get
-Semantic search over `MEMORY.md` and `memory/*.md`. Requires embedding provider configuration (OpenAI, Gemini, Ollama, or GitHub Copilot embeddings).
+Semantic search over `MEMORY.md` and `memory/*.md`. Embedding providers are **individual extensions** (not memory-host-sdk):
+- **OpenAI**: `text-embedding-3-small` (recommended)
+- **Gemini**: `gemini-embedding-001`
+- **Ollama**: `nomic-embed-text` (local)
+- **GitHub Copilot**: embedding access
+- **Voyage**: voyage-3 embeddings
+- **Bedrock**: AWS Bedrock embeddings
+- **LMStudio**: local model studio
+- **Mistral**: Mistral embeddings
 
 ### nodes
-Discover and control paired devices: camera, screen recording, location, notifications, remote command execution.
+Discover and control paired devices: camera, screen recording, location, notifications, remote command execution. Node browser proxy for zero-config remote browser access.
 
 ### canvas
 Present/eval/snapshot UI canvases on nodes. A2UI push for agent-generated UI.
@@ -111,15 +141,12 @@ Configurable under `tools`:
 }
 ```
 
-Experimental features are opt-in preview surfaces. Shape and behavior may change faster than stable config.
-
 ## Tool Loop Detection
 
-Prevents infinite tool call loops by tracking repeated patterns. Unknown-tool retries are only counted when streamed.
+Prevents infinite tool call loops by tracking repeated patterns. Unknown-tool retries counted only when streamed.
 
 ## Tool Result Handling
 
-- Large results are truncated to fit context window
+- Large results truncated to fit context window
 - Tool result context guard prevents accumulated outputs from overflowing
-- Truncation is configurable with per-source limits
-- Failed tool calls may be retried based on error classification
+- Truncation configurable with per-source limits

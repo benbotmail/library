@@ -1,129 +1,133 @@
 ---
-summary: "Complete CLI command reference and configuration CLI surface"
+summary: "Complete CLI command surface — what each openclaw subcommand does"
 read_when:
-  - Looking up a CLI command or its flags
-  - Understanding what the CLI can do
+  - Looking up a CLI command or flag
+  - Understanding what CLI tools are available
 title: "CLI Surface Map"
 ---
 
 # CLI Surface Map
 
-## Daemon Commands
-
-```bash
-openclaw gateway start          # Start the gateway daemon
-openclaw gateway stop           # Stop the gateway daemon
-openclaw gateway restart        # Restart the gateway daemon
-openclaw gateway status         # Check daemon status
-```
-
-## Setup & Configuration
-
-```bash
-openclaw configure              # Interactive setup wizard
-openclaw doctor                 # Diagnose and repair issues
-openclaw onboard                # Channel onboarding wizard
-```
-
-The configure wizard supports:
-- Provider setup (OpenAI, Anthropic, Google, Ollama, etc.)
-- Channel setup (Telegram, Discord, Slack, WhatsApp, etc.)
-- Model selection and auth profiles
-- Workspace configuration
-
-## Config Management
-
-```bash
-openclaw config get <path>      # Get a config value
-openclaw config set <path> <v>  # Set a config value
-openclaw config schema          # Print live JSON Schema
-openclaw config schema.lookup   # Lookup schema for a specific path
-```
-
-Config file: `~/.openclaw/openclaw.json` (JSON5 format).
-
-## Plugins
-
-```bash
-openclaw plugins install <pkg>  # Install a plugin
-openclaw plugins list           # List installed plugins
-openclaw plugins status         # Plugin health status
-```
-
-## Memory
-
-```bash
-openclaw memory status [--deep] # Memory system health check
-```
-
-## Sessions
-
-```bash
-openclaw sessions list          # List active sessions
-openclaw sessions clear <key>   # Clear/reset a session
-```
-
-Session display shows model, usage, and thinking level.
-
-## Models
-
-```bash
-openclaw models list            # List available models
-openclaw models providers       # List configured providers
-```
-
-## Updates
-
-```bash
-openclaw update                 # Check and apply updates
-openclaw update --check         # Check only, don't apply
-```
-
-Update system:
-- Verifies packaged dist inventory
-- Prunes stale dist files
-- Handles npm global upgrades safely
-- Rejects unsafe dist symlinks
-
-## Exec Approvals
-
-```bash
-openclaw exec-approvals list    # List pending approvals
-openclaw exec-approvals approve # Approve a pending command
-openclaw exec-approvals deny    # Deny a pending command
-```
-
-## In-Chat Slash Commands
-
-Available in any channel session:
+## Gateway Lifecycle
 
 | Command | Purpose |
 |---------|---------|
-| `/status` | Session status, model, usage |
-| `/model <ref>` | Override model for this session |
-| `/reasoning` | Toggle reasoning visibility |
-| `/verbose` | Toggle verbose output |
-| `/trace` | Toggle trace diagnostics |
-| `/tts on\|off` | Toggle text-to-speech |
-| `/active-memory on\|off\|status` | Toggle active memory |
-| `/config set\|get\|unset` | In-chat config edits |
-| `/reset` | Reset session transcript |
+| `openclaw gateway start` | Start the gateway daemon |
+| `openclaw gateway stop` | Stop the gateway |
+| `openclaw gateway restart` | Restart the gateway |
+| `openclaw gateway status` | Show gateway status |
+| `openclaw gateway run` | Run gateway in foreground |
 
-## QR Code Setup
+## Setup & Onboarding
 
-```bash
-openclaw qr                     # Display pairing QR code
-```
+| Command | Purpose |
+|---------|---------|
+| `openclaw onboard` | Full interactive onboarding flow |
+| `openclaw configure` | Interactive config wizard |
+| `openclaw setup` | Setup wizard |
+| `openclaw doctor` | Diagnose and repair issues |
+| `openclaw doctor --fix` | Apply automatic repairs |
 
-## Diagnostics
+## Config Management
 
-```bash
-openclaw doctor                 # Full diagnostic check
-openclaw doctor --repair        # Auto-repair issues
-```
+| Command | Purpose |
+|---------|---------|
+| `openclaw config get <path>` | Read a config value |
+| `openclaw config set <path> <value>` | Set a config value |
+| `openclaw config unset <path>` | Remove a config value |
+| `openclaw config schema` | Print live JSON Schema |
+| `openclaw config set ... --ref-provider default --ref-source env --ref-id VAR` | Set SecretRef value |
 
-Doctor handles:
-- Channel legacy config migration (with fast-path)
-- Plugin blocker detection
-- Config hash stale-race prevention
-- Credential validation
+## Channel Management
+
+| Command | Purpose |
+|---------|---------|
+| `openclaw channels status --probe` | Check channel connectivity |
+| `openclaw channels login --channel <name>` | QR login (WhatsApp, WeChat, etc.) |
+| `openclaw channels add` | Interactive channel setup |
+| `openclaw channels resolve --channel <name> "query"` | Resolve channel entity names |
+| `openclaw pairing list <channel>` | List pending pairing codes |
+| `openclaw pairing approve <channel> <code>` | Approve a pairing request |
+
+## Model Management
+
+| Command | Purpose |
+|---------|---------|
+| `openclaw models list` | List available models |
+| `openclaw models auth login --provider <name>` | Authenticate with a provider |
+| `openclaw models auth status` | Check auth status |
+| `openclaw onboard --auth-choice <provider>` | Specific provider auth flow |
+
+## Plugin Management
+
+| Command | Purpose |
+|---------|---------|
+| `openclaw plugins list` | List installed plugins |
+| `openclaw plugins install <pkg>` | Install a plugin |
+| `openclaw plugins install <pkg> --force` | Reinstall/update a plugin |
+
+## Browser
+
+| Command | Purpose |
+|---------|---------|
+| `openclaw browser status` | Check browser status |
+| `openclaw browser start` | Start managed browser |
+| `openclaw browser stop` | Stop managed browser |
+| `openclaw browser open <url>` | Open URL in managed browser |
+| `openclaw browser snapshot` | Capture page snapshot |
+| `openclaw browser screenshot` | Take screenshot |
+
+## Session Management
+
+| Command | Purpose |
+|---------|---------|
+| `openclaw sessions list` | List active sessions |
+| `openclaw sessions info <id>` | Session details |
+
+## Memory
+
+| Command | Purpose |
+|---------|---------|
+| `openclaw memory status` | Memory system health |
+| `openclaw memory status --deep` | Detailed memory diagnostics |
+
+## Node Management
+
+| Command | Purpose |
+|---------|---------|
+| `openclaw nodes list` | List paired nodes |
+| `openclaw node <id>` | Node details |
+| `openclaw devices list` | List connected devices |
+
+## Diagnostics & Utilities
+
+| Command | Purpose |
+|---------|---------|
+| `openclaw status` | System overview |
+| `openclaw health` | Health check |
+| `openclaw logs [--follow]` | View logs |
+| `openclaw --version` | Print version |
+| `openclaw update` | Update OpenClaw |
+| `openclaw sandbox` | Sandbox management |
+| `openclaw secrets` | Secrets management |
+| `openclaw security` | Security audit |
+| `openclaw dashboard` | Open web dashboard |
+| `openclaw qr` | Generate QR code |
+
+## Cron & Automation
+
+| Command | Purpose |
+|---------|---------|
+| `openclaw cron list` | List cron jobs |
+| `openclaw hooks` | Webhook/hook management |
+| `openclaw flows` | Flow management |
+
+## Misc
+
+| Command | Purpose |
+|---------|---------|
+| `openclaw backup` | Backup state |
+| `openclaw reset` | Reset configuration |
+| `openclaw completion` | Shell completion setup |
+| `openclaw uninstall` | Uninstall OpenClaw |
+| `openclaw docs` | Open documentation |

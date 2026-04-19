@@ -20,7 +20,13 @@ The gateway is a long-running Node.js daemon. It:
 
 ## Session Model
 
-Each conversation gets a persistent session identified by a session key (e.g., `telegram:-1001234567890`, `discord:123456789`).
+Each conversation gets a persistent session identified by a session key (e.g., `agent:main:telegram:group:-1001234567890`, `agent:main:discord:channel:123456:thread:987654`).
+
+Session key shapes:
+- **Main DM**: `agent:<agentId>:<mainKey>` (default: `agent:main:main`)
+- **Groups**: `agent:<agentId>:<channel>:group:<id>`
+- **Threads**: append `:thread:<threadId>` (Slack/Discord)
+- **Topics**: embed `:topic:<topicId>` (Telegram forums)
 
 Sessions store:
 - Transcript (conversation history in JSONL)
@@ -34,6 +40,13 @@ Session reset clears transcript but preserves config-level settings. Reset polic
 - **Main session**: Direct chat with the human (loads `MEMORY.md`)
 - **Isolated session**: Fresh session per run (cron, sub-agents)
 - **Persistent ACP session**: Thread-bound coding agent session
+
+### Session Scoping
+`session.dmScope` controls DM isolation:
+- `main`: all DMs share one session
+- `per-peer`: one session per sender
+- `per-channel-peer`: one session per sender per channel
+- `per-account-channel-peer`: most granular (account + channel + peer)
 
 ## Agent Runtime
 
@@ -58,8 +71,8 @@ When context fills up, the agent compacts older turns into a summary. Compaction
 ## Channel Plugin System
 
 Channels are plugins that implement the channel interface:
-- **Bundled**: Ship with OpenClaw (Telegram, Discord, Slack, WhatsApp, etc.)
-- **Community**: Installed via `openclaw plugins install`
+- **Bundled**: Ship with OpenClaw (Telegram, Discord, Slack, WhatsApp, Matrix, etc.)
+- **External**: Installed via `openclaw plugins install` (e.g., WeChat via `@tencent-weixin/openclaw-weixin`)
 
 Each plugin provides:
 - Inbound message handling (with deduplication)
@@ -72,6 +85,13 @@ Each plugin provides:
 - JITI loader with caching for fast reloads
 - Manifest registry with validation
 - Runtime boundary between plugin code and core
+- `plugins.allow` can restrict which plugins load (must include `browser` if browser tool needed)
+
+### Plugin Contracts
+- Channel plugins: inbound/outbound message contract, pairing, media
+- Provider plugins: model API contract, streaming, thinking config
+- Tool plugins: register tool names, parameter schemas, handlers
+- Extension providers: embedding providers as individual extensions (voyage, google, ollama, mistral, lmstudio, bedrock)
 
 ## Cron System
 
@@ -92,6 +112,7 @@ Periodic agent turn (default every 30m for API-key auth, 1h for OAuth). Config:
 - `agents.defaults.heartbeat.isolatedSession`: `true` for fresh session each time (~2-5K tokens vs ~100K)
 - `agents.defaults.heartbeat.lightContext`: `true` for minimal bootstrap
 - `agents.defaults.heartbeat.target`: delivery target channel
+- `channels.defaults.heartbeat`: shared heartbeat display config (`showOk`, `showAlerts`, `useIndicator`)
 
 ## Tool Loop
 

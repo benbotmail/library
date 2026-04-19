@@ -50,7 +50,8 @@ Pairing codes expire after 1 hour. Pending DM pairing requests capped at **3 per
 }
 ```
 
-- `contextVisibility`: controls supplemental context visibility. `all` (default), `allowlist` (only allowlisted senders), `allowlist_quote` (same but keeps explicit quote/reply context).
+- `contextVisibility`: controls supplemental context visibility. `all` (default), `allowlist` (only allowlisted senders), `allowlist_quote` (same but keeps explicit quote/reply context). Per-channel override: `channels.<channel>.contextVisibility`.
+- `heartbeat`: shared display config for heartbeat channel reports.
 
 ## Telegram
 
@@ -64,20 +65,30 @@ Pairing codes expire after 1 hour. Pending DM pairing requests capped at **3 per
       streaming: "partial",  // off | partial | block | progress (default: off)
       replyToMode: "first",  // off | first | all | batched
       retry: { attempts: 3, minDelayMs: 400, maxDelayMs: 30000 },
-      // Topic-name cache persists across restarts
-      // Binary document captions are sanitized to prevent prompt inflation
-      // Command sync is process-local (no cross-process races)
+      groups: {
+        "-1001234567890": {
+          topics: {
+            "99": { requireMention: false, skills: ["search"] },
+          },
+        },
+      },
+      customCommands: [{ command: "backup", description: "Git backup" }],
+      network: { autoSelectFamily: true, dnsResultOrder: "ipv4first" },
+      proxy: "socks5://localhost:9050",
+      webhookUrl: "https://example.com/telegram-webhook",
     },
   },
 }
 ```
 
-- Streaming modes: `off` (default), `partial` (sendMessage + editMessageText), `block`, `progress`
-- Multi-account support with `accounts` block
+- Multi-account support with `accounts` block; `defaultAccount` for explicit default
 - `configWrites: false` blocks Telegram-initiated config writes
-- Topic names are cached and persisted across restarts
-- Network: `autoSelectFamily`, `dnsResultOrder`, `proxy` support
-- Webhook mode available via `webhookUrl`/`webhookSecret`/`webhookPath`
+- Topic-level config inside `groups.<id>.topics.<topicId>`
+- Topic names cached and persisted across restarts
+- Stream previews use `sendMessage` + `editMessageText`
+- ACP bindings for forum topics with canonical `chatId:topic:topicId`
+- `reactionNotifications: "own" | "off" | "all"`
+- Directory config for sender resolution
 
 ## Discord
 
@@ -85,24 +96,37 @@ Pairing codes expire after 1 hour. Pending DM pairing requests capped at **3 per
 {
   channels: {
     discord: {
+      enabled: true,
+      token: { source: "env", provider: "default", id: "DISCORD_BOT_TOKEN" },
       streaming: "off",  // off | partial | block | progress (progress maps to partial)
       threadBindings: { enabled: true, idleHours: 24, maxAgeHours: 0 },
       execApprovals: {
-        enabled: "auto",  // true | false | "auto"
+        enabled: "auto",
         approvers: ["userId"],
-        target: "dm",     // dm | channel | both
+        target: "dm",  // dm | channel | both
       },
       voice: { enabled: true, daveEncryption: true },
+      guilds: {
+        "123456789012345678": {
+          slug: "friends-of-openclaw",
+          channels: {
+            help: { allow: true, requireMention: true },
+          },
+        },
+      },
     },
   },
 }
 ```
 
+- SecretRef supported for `token` (env/file/exec providers)
+- Native command plugin dispatch for slash commands
 - Inbound deduplication across restarts
-- Native status replies returned directly (no relay)
-- `execApprovals`: Discord-native approval delivery with DM, channel, or both
+- `execApprovals`: Discord-native approval delivery
 - `threadBindings`: thread-bound session routing with idle/max-age
 - `voice`: voice channel conversations with DAVE encryption
+- Directory config for member/role resolution
+- Outbound adapter: native status replies, no relay
 
 ## Slack
 
@@ -110,40 +134,75 @@ Pairing codes expire after 1 hour. Pending DM pairing requests capped at **3 per
 {
   channels: {
     slack: {
-      streaming: {
-        mode: "partial",
-        nativeTransport: true,  // use Slack native streaming API
-      },
-      execApprovals: {
-        enabled: "auto",
-        approvers: ["U123"],
-        target: "dm",
-      },
+      enabled: true,
+      mode: "socket",  // socket (default) | http
+      appToken: "xapp-...",
+      botToken: "xoxb-...",
+      streaming: { mode: "partial", nativeTransport: true },
+      execApprovals: { enabled: "auto", approvers: ["U123"], target: "dm" },
     },
   },
 }
 ```
 
-- Socket mode requires `botToken` + `appToken`
-- HTTP mode requires `botToken` + `signingSecret`
+- Socket mode: `botToken` + `appToken` (with `connections:write`)
+- HTTP mode: `botToken` + `signingSecret` + `webhookPath`
 - `typingReaction`: temporary reaction while reply is running
-- Native streaming requires a reply thread target (DMs use typingReaction instead)
+- Native streaming via Slack streaming API (reply thread target required; DMs use typingReaction)
 - Thread session isolation: `thread.historyScope` per-thread or shared
+- Message tool API: full message lifecycle management
+- Media handling: file uploads, attachment processing
+- Streaming dispatch: partial streaming to reply threads
 
 ## WhatsApp
 
 - Runs through Baileys Web (gateway's web channel)
-- Multi-account support with `accounts` block
+- Multi-account support with `accounts` block and `defaultAccount`
 - `sendReadReceipts` controls blue ticks
+- Group session keys: isolated sessions per group JID
+- Inbound policy: configurable access control per sender
+- Access control refactored: `dmPolicy`, `allowFrom`, `groupPolicy`, `groupAllowFrom`
 - Creds written atomically, flushed before reconnect socket open
-- Doctor contract API for fast-path diagnostics
+- Transport honors standard proxy env vars (`HTTPS_PROXY`, `HTTP_PROXY`, `NO_PROXY`)
+
+## Matrix
+
+- Bundled plugin (`@openclaw/matrix`)
+- **E2EE support**: via `matrix-js-sdk` with SSSS bootstrap
+- Setup: `homeserver` + `accessToken` or `homeserver` + `userId` + `password`
+- `autoJoin`: `off` (default) | `allowlist` | `always`
+- Subagent hooks for automated actions
+- Thread binding API for room/thread session routing
+- Reaction auth: authorize actions via Matrix reactions
+- Cached credentials in `~/.openclaw/credentials/matrix/`
+
+## WeChat
+
+- **External plugin**: `@tencent-weixin/openclaw-weixin`
+- QR login via `openclaw channels login --channel openclaw-weixin`
+- Direct chats supported; group chats not advertised
+- Plugin manages Tencent iLink API, media, context tokens
+- Install: `openclaw plugins install "@tencent-weixin/openclaw-weixin"`
+- Pairing via `openclaw pairing list openclaw-weixin`
+- Plugin version compatibility check at startup
 
 ## BlueBubbles
 
+- Recommended for iMessage (bundled plugin)
 - Replay missed webhook messages after gateway restart
 - Per-message retry cap for wedged messages
 - Inbound deduplication across restarts
-- Lazy-refresh Private API status on send
+
+## Nextcloud Talk
+
+- Bundled plugin
+- Monitor runtime for connection health
+- Replay guard: deduplicate replayed messages after reconnect
+
+## Twitch
+
+- Bundled plugin, IRC-based chat connection
+- Setup surface via channel config
 
 ## Model Overrides by Channel
 
@@ -155,12 +214,15 @@ Pairing codes expire after 1 hour. Pending DM pairing requests capped at **3 per
         "-1001234567890": "openai/gpt-4.1-mini",
         "-1001234567890:topic:99": "anthropic/claude-sonnet-4-6",
       },
+      discord: {
+        "123456789012345678": "anthropic/claude-opus-4-6",
+      },
     },
   },
 }
 ```
 
-Channel mapping applies when session doesn't already have a model override.
+Channel mapping applies when session doesn't already have a model override. Telegram supports topic-level keys.
 
 ## SendPolicy
 
@@ -178,18 +240,32 @@ Channel mapping applies when session doesn't already have a model override.
 }
 ```
 
-- `sendPolicy.deny`: first match wins. Match by `channel`, `chatType` (`direct|group|channel`, with legacy `dm` alias), `keyPrefix`, or `rawKeyPrefix`.
-- **Important**: `sendPolicy` deny suppresses **delivery**, not inbound processing. The agent still processes the message; only the outbound reply is blocked.
+- `sendPolicy.deny`: first match wins. Match by `channel`, `chatType` (`direct|group|channel`), `keyPrefix`, or `rawKeyPrefix`.
+- **Important**: `sendPolicy` deny suppresses **delivery**, not inbound processing.
 
 ## Routing
 
-Inbound messages are routed to sessions by:
-1. Channel + chat/topic ID → session key
-2. Thread bindings (Discord threads, Telegram topics)
-3. Session reset creates new transcript, keeps config overrides
-4. System events preserve shared session route
+Inbound messages are routed to agents by priority:
+1. Exact peer match (`bindings` with `peer.kind` + `peer.id`)
+2. Parent peer match (thread inheritance)
+3. Guild + roles match (Discord)
+4. Guild match (Discord)
+5. Team match (Slack)
+6. Account match
+7. Channel match (any account)
+8. Default agent
 
-Outbound delivery:
-- Target resolution: channel-specific ID formats (`user:<id>`, `channel:<id>`)
-- Delivery queue with recovery for transient failures
-- Media path normalization and containment checks
+Outbound: replies go to originating channel. Target resolution uses channel-specific ID formats. Delivery queue with recovery for transient failures.
+
+## Broadcast Groups
+
+Run multiple agents for the same peer in parallel:
+
+```json5
+{
+  broadcast: {
+    strategy: "parallel",
+    "120363403215116621@g.us": ["alfred", "baerbel"],
+  },
+}
+```
