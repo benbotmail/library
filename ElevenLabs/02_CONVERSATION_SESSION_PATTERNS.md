@@ -160,6 +160,77 @@ await conversation.changeInputDevice({ deviceId: "new-mic" });
 
 `ConversationProvider` now correctly propagates `startSession` rejections (e.g. "agent not found") through `onError`. Previously, the UI would silently get stuck in "connecting". No code changes needed — just make sure you have an `onError` handler wired.
 
+## File upload + multimodal turns (v1.3.0)
+
+The client SDK now provides `uploadFile()` directly on the conversation instance. Upload a `Blob`, get back a `fileId`, and send it with optional text via `sendMultimodalMessage`.
+
+### Core client
+
+```ts
+// Upload a file (image, PDF, etc.)
+const { fileId } = await conversation.uploadFile(blob);
+
+// Send with text
+conversation.sendMultimodalMessage({
+  text: "What's in this image?",
+  fileId,
+});
+
+// Or send file-only
+conversation.sendMultimodalMessage({ fileId });
+```
+
+**Error handling:** `uploadFile` throws on HTTP errors with a parsed API message via `extractApiErrorMessage`. It also validates the response contains a valid `file_id`.
+
+```ts
+try {
+  const { fileId } = await conversation.uploadFile(blob);
+} catch (e) {
+  // e.message includes HTTP status + API detail message
+  console.error(e);
+}
+```
+
+### React wrapper
+
+`uploadFile` is exposed through `useConversationControls()`:
+
+```tsx
+const { uploadFile, sendMultimodalMessage } = useConversationControls();
+
+const handleUpload = async (file: File) => {
+  const { fileId } = await uploadFile(file);
+  sendMultimodalMessage({ fileId, text: "Describe this" });
+};
+```
+
+### React Native example
+
+The upstream `examples/react-native-expo` now ships an `ImageUpload` component demonstrating the full flow:
+
+```tsx
+import { useConversationControls } from "@elevenlabs/react-native";
+import * as ImagePicker from "expo-image-picker";
+
+// 1. Pick image → 2. Convert to Blob → 3. uploadFile → 4. sendMultimodalMessage
+const blob = await fetch(asset.uri).then(r => r.blob());
+const { fileId } = await uploadFile(blob);
+sendMultimodalMessage({ fileId, text: textInput.trim() || undefined });
+```
+
+### Types
+
+```ts
+type MultimodalMessageInput = {
+  text?: string;
+  fileId?: string;
+};
+
+type UploadFileResult = {
+  fileId: string;
+};
+```
+
 ## Do-not-miss production practices
 
 - Request mic permission intentionally before starting session

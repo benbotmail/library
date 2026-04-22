@@ -1,16 +1,16 @@
 # ElevenLabs JS/TS SDK — Current-State Reference
 
-Last validated against upstream `elevenlabs/packages` commit: `1a5c902d10bd88e3aed89d58b544deff7fb07af9`.
+Last validated against upstream `elevenlabs/packages` commit: `7afc0e5fb8c93ea5be52cac0fba7ee1c0cb4c0de`.
 
 This pack documents **how the current ElevenLabs JavaScript/TypeScript SDK behaves now** (not a changelog).
 
 ## What this pack covers
-- `@elevenlabs/client` v1.2.1 for agent conversations (WebSocket + WebRTC)
+- `@elevenlabs/client` v1.3.0 for agent conversations (WebSocket + WebRTC)
 - `onConversationCreated` lifecycle hook for race-free session initialization
 - Scribe real-time STT via `@elevenlabs/client`
 - Practical patterns for low-latency conference subtitles + translation fan-out
 - Operational guardrails (tokens, auth boundaries, failure handling)
-- Multimodal client message path (`multimodal_message`) for text + file reference in a single turn
+- Multimodal client message path (`multimodal_message`) + file upload (`uploadFile`) for text + file reference in a single turn
 - SDK Migration Guide for v1.0+ major release breaking changes
 - Tool mocking support for agent development
 - Auto-select widget language from browser locale
@@ -38,14 +38,11 @@ This pack documents **how the current ElevenLabs JavaScript/TypeScript SDK behav
 - **Migration Guide**: `open-source/elevenlabs/.agents/skills/elevenlabs:sdk-migration/SKILL.md`
 
 ## Freshness note
-- **MAJOR UPDATE**: SDK v1.0+ breaking changes documented in migration guide
-- Added comprehensive tool mocking support for agent development
-- Enhanced widget language auto-selection from browser locale and localStorage
-- New `guardrail_triggered` server events for better compliance monitoring
-- Enhanced React components with improved conversation context management
-- React Native SDK completely restructured for better mobile performance
-- Updated ESLint configs to ESM format (.mjs)
-- Improved migration tools and patterns for v1.0 upgrade
+- **v1.3.0 client**: New `uploadFile()` method on conversation for file uploads; `MultimodalMessageInput` and `UploadFileResult` types; `SessionConnectionError` exported; `sendMultimodalMessage` for combining text + uploaded files
+- **v1.2.0 react**: `uploadFile` exposed via `useConversationControls`; `onConnect` lifecycle fix (fires after `conversationRef` is set)
+- **v1.1.2 react-native**: Upload API exposed; `ImageUpload` example component demonstrating image pick + upload + multimodal send
+- **v1.0+ migration**: Breaking changes documented in migration guide
+- Tool mocking support, guardrail events, auto-language widget selection remain current
 
 ## Important scope note
 For realtime STT + translation pipelines, this pack treats the **Client SDK Scribe section** as the practical source of truth for SDK behavior (events, commit strategies, token flow, and options).

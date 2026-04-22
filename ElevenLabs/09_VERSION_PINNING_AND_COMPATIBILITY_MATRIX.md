@@ -20,9 +20,9 @@ Use two lock levels:
 
 | Layer | Package | Current version seen upstream | Notes |
 |---|---|---|---|
-| Core SDK | `@elevenlabs/client` | `1.2.1` | New `onConversationCreated` lifecycle hook; race-free connect ordering |
-| React wrapper | `@elevenlabs/react` | `1.1.1` | Stale-session protection; `conversationRef` set in `onConversationCreated`; `onConnect` fires after ref |
-| React Native wrapper | `@elevenlabs/react-native` | `1.1.1` | Keep in sync with client |
+| Core SDK | `@elevenlabs/client` | `1.3.0` | `uploadFile()` for conversation file uploads; `MultimodalMessageInput`/`UploadFileResult` types; `SessionConnectionError` exported |
+| React wrapper | `@elevenlabs/react` | `1.2.0` | `uploadFile` in `useConversationControls`; `onConnect` lifecycle fix |
+| React Native wrapper | `@elevenlabs/react-native` | `1.1.2` | Upload API; `ImageUpload` example |
 | Types | `@elevenlabs/types` | `0.9.1` | Enhanced with type discriminants; new WebSocket message types |
 | Widget core | `@elevenlabs/convai-widget-core` | `0.11.4` | Keep in sync |
 | Widget embed | `@elevenlabs/convai-widget-embed` | `0.11.4` | Keep in sync with core |
@@ -65,13 +65,13 @@ Recommended practice:
 ## 5) Upstream freshness marker
 
 Current tracked upstream commit in this docs pack:
-- `1a5c902d10bd88e3aed89d58b544deff7fb07af9`
+- `7afc0e5fb8c93ea5be52cac0fba7ee1c0cb4c0de`
 
 Observed surface changes in this revision:
-- **v1.2.1 client**: New `onConversationCreated` callback fires before `onConnect`; `ConversationLifecycleOptions` type exported; `markConnected()` separates status update from constructor
-- **v1.1.1 react**: Monotonic `startSessionId` prevents stale async handlers; `conversationRef` populated in `onConversationCreated` (no more race with `onConnect`); error path clears ref
-- **v1.1.1 react-native**: Version bump
-- **v0.11.4 widget-core/embed**: Version bump
+- **v1.3.0 client**: New `uploadFile()` method on `BaseConversation` for uploading files to a conversation; `MultimodalMessageInput` and `UploadFileResult` types; `SessionConnectionError` class exported from errors module; `extractApiErrorMessage` utility for parsing upload error responses; `sendMultimodalMessage` updated to accept `fileId`
+- **v1.2.0 react**: `uploadFile` exposed through `ConversationControls`; `onConnect` lifecycle fix ensures `conversationRef` is set before callback fires; improved error handling in `ConversationControlsProvider`
+- **v1.1.2 react-native**: Upload API exposed via `useConversationControls`; new `ImageUpload` example component demonstrating image picker + upload + multimodal send flow
+- **v0.11.5 widget-core/embed**: Version bump
 
 Policy:
 - when event or session surface changes, update `02_CONVERSATION_SESSION_PATTERNS.md` first
