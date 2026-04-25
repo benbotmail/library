@@ -4,10 +4,8 @@ read_when:
   - You want to understand `openclaw.ai/install.sh`
   - You want to automate installs (CI / headless)
   - You want to install from a GitHub checkout
-title: "Installer Internals"
+title: "Installer internals"
 ---
-
-# Installer internals
 
 OpenClaw ships three installer scripts, served from `openclaw.ai`.
 
@@ -19,7 +17,7 @@ OpenClaw ships three installer scripts, served from `openclaw.ai`.
 
 ## Quick commands
 
-<Tabs>
+
   <Tab title="install.sh">
     ```bash
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install.sh | bash
@@ -50,7 +48,7 @@ OpenClaw ships three installer scripts, served from `openclaw.ai`.
     ```
 
   </Tab>
-</Tabs>
+
 
 <Note>
 If install succeeds but `openclaw` is not found in a new terminal, see [Node.js troubleshooting](/install/node#troubleshooting).
@@ -103,7 +101,7 @@ The script exits with code `2` for invalid method selection or invalid `--instal
 
 ### Examples (install.sh)
 
-<Tabs>
+
   <Tab title="Default">
     ```bash
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install.sh | bash
@@ -129,7 +127,7 @@ The script exits with code `2` for invalid method selection or invalid `--instal
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install.sh | bash -s -- --dry-run
     ```
   </Tab>
-</Tabs>
+
 
 <AccordionGroup>
   <Accordion title="Flags reference">
@@ -205,7 +203,7 @@ by default, plus git-checkout installs under the same prefix flow.
 
 ### Examples (install-cli.sh)
 
-<Tabs>
+
   <Tab title="Default">
     ```bash
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install-cli.sh | bash
@@ -231,7 +229,7 @@ by default, plus git-checkout installs under the same prefix flow.
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install-cli.sh | bash -s -- --onboard
     ```
   </Tab>
-</Tabs>
+
 
 <AccordionGroup>
   <Accordion title="Flags reference">
@@ -298,7 +296,7 @@ by default, plus git-checkout installs under the same prefix flow.
 
 ### Examples (install.ps1)
 
-<Tabs>
+
   <Tab title="Default">
     ```powershell
     iwr -useb https://openclaw.ai/install.ps1 | iex
@@ -332,7 +330,7 @@ by default, plus git-checkout installs under the same prefix flow.
     Set-PSDebug -Trace 0
     ```
   </Tab>
-</Tabs>
+
 
 <AccordionGroup>
   <Accordion title="Flags reference">
@@ -371,7 +369,7 @@ If `-InstallMethod git` is used and Git is missing, the script exits and prints 
 
 Use non-interactive flags/env vars for predictable runs.
 
-<Tabs>
+
   <Tab title="install.sh (non-interactive npm)">
     ```bash
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install.sh | bash -s -- --no-prompt --no-onboard
@@ -393,7 +391,7 @@ Use non-interactive flags/env vars for predictable runs.
     & ([scriptblock]::Create((iwr -useb https://openclaw.ai/install.ps1))) -NoOnboard
     ```
   </Tab>
-</Tabs>
+
 
 ---
 
@@ -441,3 +439,9 @@ Use non-interactive flags/env vars for predictable runs.
     Usually a PATH issue. See [Node.js troubleshooting](/install/node#troubleshooting).
   </Accordion>
 </AccordionGroup>
+
+## Related
+
+- [Install overview](/install)
+- [Updating](/install/updating)
+- [Uninstall](/install/uninstall)

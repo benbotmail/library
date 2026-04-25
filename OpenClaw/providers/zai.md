@@ -6,8 +6,6 @@ read_when:
 title: "Z.AI"
 ---
 
-# Z.AI
-
 Z.AI is the API platform for **GLM** models. It provides REST APIs for GLM and uses API keys
 for authentication. Create your API key in the Z.AI console. OpenClaw uses the `zai` provider
 with a Z.AI API key.
@@ -18,7 +16,7 @@ with a Z.AI API key.
 
 ## Getting started
 
-<Tabs>
+
   <Tab title="Auto-detect endpoint">
     **Best for:** most users. OpenClaw detects the matching Z.AI endpoint from the key and applies the correct base URL automatically.
 
@@ -80,9 +78,9 @@ with a Z.AI API key.
     </Steps>
 
   </Tab>
-</Tabs>
 
-## Bundled GLM catalog
+
+## Built-in catalog
 
 OpenClaw currently seeds the bundled `zai` provider with:
 
@@ -155,11 +153,11 @@ GLM models are available as `zai/<model>` (example: `zai/glm-5`). The default bu
 
 ## Related
 
-<CardGroup cols={2}>
-  <Card title="GLM model family" href="/providers/glm" icon="microchip">
+
+  
     Model family overview for GLM.
-  </Card>
-  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
+  
+  
     Choosing providers, model refs, and failover behavior.
-  </Card>
-</CardGroup>
+  
+

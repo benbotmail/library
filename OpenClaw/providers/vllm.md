@@ -6,11 +6,13 @@ read_when:
 title: "vLLM"
 ---
 
-# vLLM
-
 vLLM can serve open-source (and some custom) models via an **OpenAI-compatible** HTTP API. OpenClaw connects to vLLM using the `openai-completions` API.
 
 OpenClaw can also **auto-discover** available models from vLLM when you opt in with `VLLM_API_KEY` (any value works if your server does not enforce auth) and you do not define an explicit `models.providers.vllm` entry.
+
+OpenClaw treats `vllm` as a local OpenAI-compatible provider that supports
+streamed usage accounting, so status/context token counts can update from
+`stream_options.include_usage` responses.
 
 | Property         | Value                                    |
 | ---------------- | ---------------------------------------- |
@@ -106,7 +108,7 @@ Use explicit config when:
 }
 ```
 
-## Advanced notes
+## Advanced configuration
 
 <AccordionGroup>
   <Accordion title="Proxy-style behavior">
@@ -188,17 +190,17 @@ More help: [Troubleshooting](/help/troubleshooting) and [FAQ](/help/faq).
 
 ## Related
 
-<CardGroup cols={2}>
-  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
+
+  
     Choosing providers, model refs, and failover behavior.
-  </Card>
-  <Card title="OpenAI" href="/providers/openai" icon="bolt">
+  
+  
     Native OpenAI provider and OpenAI-compatible route behavior.
-  </Card>
-  <Card title="OAuth and auth" href="/gateway/authentication" icon="key">
+  
+  
     Auth details and credential reuse rules.
-  </Card>
-  <Card title="Troubleshooting" href="/help/troubleshooting" icon="wrench">
+  
+  
     Common issues and how to resolve them.
-  </Card>
-</CardGroup>
+  
+

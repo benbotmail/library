@@ -4,11 +4,9 @@ read_when:
   - You want to run the Gateway on a Linux server or cloud VPS
   - You need a quick map of hosting guides
   - You want generic Linux server tuning for OpenClaw
-title: "Linux Server"
+title: "Linux server"
 sidebarTitle: "Linux Server"
 ---
-
-# Linux Server
 
 Run the OpenClaw Gateway on any Linux server or cloud VPS. This page helps you
 pick a provider, explains how cloud deployments work, and covers generic Linux
@@ -16,19 +14,19 @@ tuning that applies everywhere.
 
 ## Pick a provider
 
-<CardGroup cols={2}>
-  <Card title="Railway" href="/install/railway">One-click, browser setup</Card>
-  <Card title="Northflank" href="/install/northflank">One-click, browser setup</Card>
-  <Card title="DigitalOcean" href="/install/digitalocean">Simple paid VPS</Card>
-  <Card title="Oracle Cloud" href="/install/oracle">Always Free ARM tier</Card>
-  <Card title="Fly.io" href="/install/fly">Fly Machines</Card>
-  <Card title="Hetzner" href="/install/hetzner">Docker on Hetzner VPS</Card>
-  <Card title="Hostinger" href="/install/hostinger">VPS with one-click setup</Card>
-  <Card title="GCP" href="/install/gcp">Compute Engine</Card>
-  <Card title="Azure" href="/install/azure">Linux VM</Card>
-  <Card title="exe.dev" href="/install/exe-dev">VM with HTTPS proxy</Card>
-  <Card title="Raspberry Pi" href="/install/raspberry-pi">ARM self-hosted</Card>
-</CardGroup>
+
+  One-click, browser setup
+  One-click, browser setup
+  Simple paid VPS
+  Always Free ARM tier
+  Fly Machines
+  Docker on Hetzner VPS
+  VPS with one-click setup
+  Compute Engine
+  Linux VM
+  VM with HTTPS proxy
+  ARM self-hosted
+
 
 **AWS (EC2 / Lightsail / free tier)** also works well.
 A community video walkthrough is available at
@@ -114,3 +112,13 @@ If you deliberately installed a system unit instead, edit
 
 How `Restart=` policies help automated recovery:
 [systemd can automate service recovery](https://www.redhat.com/en/blog/systemd-automate-recovery).
+
+For Linux OOM behavior, child process victim selection, and `exit 137`
+diagnostics, see [Linux memory pressure and OOM kills](/platforms/linux#memory-pressure-and-oom-kills).
+
+## Related
+
+- [Install overview](/install)
+- [DigitalOcean](/install/digitalocean)
+- [Fly.io](/install/fly)
+- [Hetzner](/install/hetzner)

@@ -7,8 +7,6 @@ title: "Onboarding (CLI)"
 sidebarTitle: "Onboarding: CLI"
 ---
 
-# Onboarding (CLI)
-
 CLI onboarding is the **recommended** way to set up OpenClaw on macOS,
 Linux, or Windows (via WSL2; strongly recommended).
 It configures a local Gateway or a remote Gateway connection, plus channels, skills,
@@ -46,7 +44,7 @@ API key, while others are key-free. You can also configure this later with
 
 Onboarding starts with **QuickStart** (defaults) vs **Advanced** (full control).
 
-<Tabs>
+
   <Tab title="QuickStart (defaults)">
     - Local gateway (loopback)
     - Workspace default (or existing workspace)
@@ -60,7 +58,7 @@ Onboarding starts with **QuickStart** (defaults) vs **Advanced** (full control).
   <Tab title="Advanced (full control)">
     - Exposes every step (mode, workspace, gateway, channels, daemon, skills).
   </Tab>
-</Tabs>
+
 
 ## What onboarding configures
 

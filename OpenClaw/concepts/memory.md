@@ -1,12 +1,10 @@
 ---
-title: "Memory Overview"
 summary: "How OpenClaw remembers things across sessions"
+title: "Memory overview"
 read_when:
   - You want to understand how memory works
   - You want to know what memory files to write
 ---
-
-# Memory Overview
 
 OpenClaw remembers things by writing **plain Markdown files** in your agent's
 workspace. The model only "remembers" what gets saved to disk -- there is no
@@ -78,29 +76,29 @@ For details on how search works, tuning options, and provider setup, see
 
 ## Memory backends
 
-<CardGroup cols={3}>
-<Card title="Builtin (default)" icon="database" href="/concepts/memory-builtin">
+
+
 SQLite-based. Works out of the box with keyword search, vector similarity, and
 hybrid search. No extra dependencies.
-</Card>
-<Card title="QMD" icon="search" href="/concepts/memory-qmd">
+
+
 Local-first sidecar with reranking, query expansion, and the ability to index
 directories outside the workspace.
-</Card>
-<Card title="Honcho" icon="brain" href="/concepts/memory-honcho">
+
+
 AI-native cross-session memory with user modeling, semantic search, and
 multi-agent awareness. Plugin install.
-</Card>
-</CardGroup>
+
+
 
 ## Knowledge wiki layer
 
-<CardGroup cols={1}>
-<Card title="Memory Wiki" icon="book" href="/plugins/memory-wiki">
+
+
 Compiles durable memory into a provenance-rich wiki vault with claims,
 dashboards, bridge mode, and Obsidian-friendly workflows.
-</Card>
-</CardGroup>
+
+
 
 ## Automatic memory flush
 
@@ -188,3 +186,10 @@ openclaw memory index --force   # Rebuild the index
   from short-term recall to long-term memory
 - [Memory configuration reference](/reference/memory-config) -- all config knobs
 - [Compaction](/concepts/compaction) -- how compaction interacts with memory
+
+## Related
+
+- [Active memory](/concepts/active-memory)
+- [Memory search](/concepts/memory-search)
+- [Builtin memory engine](/concepts/memory-builtin)
+- [Honcho memory](/concepts/memory-honcho)

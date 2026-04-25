@@ -6,8 +6,6 @@ read_when:
 title: "OpenCode Go"
 ---
 
-# OpenCode Go
-
 OpenCode Go is the Go catalog within [OpenCode](/providers/opencode).
 It uses the same `OPENCODE_API_KEY` as the Zen catalog, but keeps the runtime
 provider id `opencode-go` so upstream per-model routing stays correct.
@@ -18,7 +16,7 @@ provider id `opencode-go` so upstream per-model routing stays correct.
 | Auth             | `OPENCODE_API_KEY`              |
 | Parent setup     | [OpenCode](/providers/opencode) |
 
-## Supported models
+## Built-in catalog
 
 OpenClaw sources the Go catalog from the bundled pi model registry. Run
 `openclaw models list --provider opencode-go` for the current model list.
@@ -40,7 +38,7 @@ As of the bundled pi catalog, the provider includes:
 
 ## Getting started
 
-<Tabs>
+
   <Tab title="Interactive">
     <Steps>
       <Step title="Run onboarding">
@@ -50,7 +48,7 @@ As of the bundled pi catalog, the provider includes:
       </Step>
       <Step title="Set a Go model as default">
         ```bash
-        openclaw config set agents.defaults.model.primary "opencode-go/kimi-k2.5"
+        openclaw config set agents.defaults.model.primary "opencode-go/kimi-k2.6"
         ```
       </Step>
       <Step title="Verify models are available">
@@ -75,18 +73,18 @@ As of the bundled pi catalog, the provider includes:
       </Step>
     </Steps>
   </Tab>
-</Tabs>
+
 
 ## Config example
 
 ```json5
 {
   env: { OPENCODE_API_KEY: "YOUR_API_KEY_HERE" }, // pragma: allowlist secret
-  agents: { defaults: { model: { primary: "opencode-go/kimi-k2.5" } } },
+  agents: { defaults: { model: { primary: "opencode-go/kimi-k2.6" } } },
 }
 ```
 
-## Advanced notes
+## Advanced configuration
 
 <AccordionGroup>
   <Accordion title="Routing behavior">
@@ -112,11 +110,11 @@ Zen + Go catalog reference.
 
 ## Related
 
-<CardGroup cols={2}>
-  <Card title="OpenCode (parent)" href="/providers/opencode" icon="server">
+
+  
     Shared onboarding, catalog overview, and advanced notes.
-  </Card>
-  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
+  
+  
     Choosing providers, model refs, and failover behavior.
-  </Card>
-</CardGroup>
+  
+

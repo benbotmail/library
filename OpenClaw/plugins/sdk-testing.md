@@ -1,14 +1,12 @@
 ---
-title: "Plugin Testing"
-sidebarTitle: "Testing"
 summary: "Testing utilities and patterns for OpenClaw plugins"
+title: "Plugin testing"
+sidebarTitle: "Testing"
 read_when:
   - You are writing tests for a plugin
   - You need test utilities from the plugin SDK
   - You want to understand contract tests for bundled plugins
 ---
-
-# Plugin Testing
 
 Reference for test utilities, patterns, and lint enforcement for OpenClaw
 plugins.
@@ -26,7 +24,6 @@ plugins.
 The testing subpath exports a narrow set of helpers for plugin authors:
 
 ```typescript
-import {
   installCommonResolveTargetErrorCases,
   shouldAckReaction,
   removeAckReactionAfterReply,
@@ -46,7 +43,6 @@ import {
 The testing subpath also re-exports types useful in test files:
 
 ```typescript
-import type {
   ChannelAccountSnapshot,
   ChannelGatewayContext,
   OpenClawConfig,
@@ -62,8 +58,6 @@ Use `installCommonResolveTargetErrorCases` to add standard error cases for
 channel target resolution:
 
 ```typescript
-import { describe } from "vitest";
-import { installCommonResolveTargetErrorCases } from "openclaw/plugin-sdk/testing";
 
 describe("my-channel target resolution", () => {
   installCommonResolveTargetErrorCases({
@@ -86,7 +80,6 @@ describe("my-channel target resolution", () => {
 ### Unit testing a channel plugin
 
 ```typescript
-import { describe, it, expect, vi } from "vitest";
 
 describe("my-channel plugin", () => {
   it("should resolve account from config", () => {
@@ -122,7 +115,6 @@ describe("my-channel plugin", () => {
 ### Unit testing a provider plugin
 
 ```typescript
-import { describe, it, expect } from "vitest";
 
 describe("my-provider plugin", () => {
   it("should resolve dynamic models", () => {
@@ -152,8 +144,6 @@ describe("my-provider plugin", () => {
 For code that uses `createPluginRuntimeStore`, mock the runtime in tests:
 
 ```typescript
-import { createPluginRuntimeStore } from "openclaw/plugin-sdk/runtime-store";
-import type { PluginRuntime } from "openclaw/plugin-sdk/runtime-store";
 
 const store = createPluginRuntimeStore<PluginRuntime>({
   pluginId: "test-plugin",

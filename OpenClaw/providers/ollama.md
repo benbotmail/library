@@ -7,8 +7,6 @@ read_when:
 title: "Ollama"
 ---
 
-# Ollama
-
 OpenClaw integrates with Ollama's native API (`/api/chat`) for hosted cloud models and local/self-hosted Ollama servers. You can use Ollama in three modes: `Cloud + Local` through a reachable Ollama host, `Cloud only` against `https://ollama.com`, or `Local only` against a reachable Ollama host.
 
 <Warning>
@@ -19,7 +17,7 @@ OpenClaw integrates with Ollama's native API (`/api/chat`) for hosted cloud mode
 
 Choose your preferred setup method and mode.
 
-<Tabs>
+
   <Tab title="Onboarding (recommended)">
     **Best for:** fastest path to a working Ollama cloud or local setup.
 
@@ -119,11 +117,11 @@ Choose your preferred setup method and mode.
     </Steps>
 
   </Tab>
-</Tabs>
+
 
 ## Cloud models
 
-<Tabs>
+
   <Tab title="Cloud + Local">
     `Cloud + Local` uses a reachable Ollama host as the control point for both local and cloud models. This is Ollama's preferred hybrid flow.
 
@@ -148,7 +146,7 @@ Choose your preferred setup method and mode.
     OpenClaw currently suggests `gemma4` as the local default.
 
   </Tab>
-</Tabs>
+
 
 ## Model discovery (implicit provider)
 
@@ -235,7 +233,7 @@ OpenClaw rejects image-description requests for models that are not marked image
 
 ## Configuration
 
-<Tabs>
+
   <Tab title="Basic (implicit discovery)">
     The simplest local-only enablement path is via environment variable:
 
@@ -301,7 +299,7 @@ OpenClaw rejects image-description requests for models that are not marked image
     </Warning>
 
   </Tab>
-</Tabs>
+
 
 ### Model selection
 
@@ -522,17 +520,17 @@ More help: [Troubleshooting](/help/troubleshooting) and [FAQ](/help/faq).
 
 ## Related
 
-<CardGroup cols={2}>
-  <Card title="Model providers" href="/concepts/model-providers" icon="layers">
+
+  
     Overview of all providers, model refs, and failover behavior.
-  </Card>
-  <Card title="Model selection" href="/concepts/models" icon="brain">
+  
+  
     How to choose and configure models.
-  </Card>
-  <Card title="Ollama Web Search" href="/tools/ollama-search" icon="magnifying-glass">
+  
+  
     Full setup and behavior details for Ollama-powered web search.
-  </Card>
-  <Card title="Configuration" href="/gateway/configuration" icon="gear">
+  
+  
     Full config reference.
-  </Card>
-</CardGroup>
+  
+

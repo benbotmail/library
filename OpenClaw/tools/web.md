@@ -1,15 +1,13 @@
 ---
-title: "Web Search"
-sidebarTitle: "Web Search"
 summary: "web_search, x_search, and web_fetch -- search the web, search X posts, or fetch page content"
+title: "Web search"
+sidebarTitle: "Web Search"
 read_when:
   - You want to enable or configure web_search
   - You want to enable or configure x_search
   - You need to choose a search provider
   - You want to understand auto-detection and provider fallback
 ---
-
-# Web Search
 
 The `web_search` tool searches the web using your configured provider and
 returns results. Results are cached by query for 15 minutes (configurable).
@@ -58,44 +56,44 @@ local while `web_search` and `x_search` can use xAI Responses under the hood.
 
 ## Choosing a provider
 
-<CardGroup cols={2}>
-  <Card title="Brave Search" icon="shield" href="/tools/brave-search">
+
+  
     Structured results with snippets. Supports `llm-context` mode, country/language filters. Free tier available.
-  </Card>
-  <Card title="DuckDuckGo" icon="bird" href="/tools/duckduckgo-search">
+  
+  
     Key-free fallback. No API key needed. Unofficial HTML-based integration.
-  </Card>
-  <Card title="Exa" icon="brain" href="/tools/exa-search">
+  
+  
     Neural + keyword search with content extraction (highlights, text, summaries).
-  </Card>
-  <Card title="Firecrawl" icon="flame" href="/tools/firecrawl">
+  
+  
     Structured results. Best paired with `firecrawl_search` and `firecrawl_scrape` for deep extraction.
-  </Card>
-  <Card title="Gemini" icon="sparkles" href="/tools/gemini-search">
+  
+  
     AI-synthesized answers with citations via Google Search grounding.
-  </Card>
-  <Card title="Grok" icon="zap" href="/tools/grok-search">
+  
+  
     AI-synthesized answers with citations via xAI web grounding.
-  </Card>
-  <Card title="Kimi" icon="moon" href="/tools/kimi-search">
+  
+  
     AI-synthesized answers with citations via Moonshot web search.
-  </Card>
-  <Card title="MiniMax Search" icon="globe" href="/tools/minimax-search">
+  
+  
     Structured results via the MiniMax Coding Plan search API.
-  </Card>
-  <Card title="Ollama Web Search" icon="globe" href="/tools/ollama-search">
+  
+  
     Key-free search via your configured Ollama host. Requires `ollama signin`.
-  </Card>
-  <Card title="Perplexity" icon="search" href="/tools/perplexity-search">
+  
+  
     Structured results with content extraction controls and domain filtering.
-  </Card>
-  <Card title="SearXNG" icon="server" href="/tools/searxng-search">
+  
+  
     Self-hosted meta-search. No API key needed. Aggregates Google, Bing, DuckDuckGo, and more.
-  </Card>
-  <Card title="Tavily" icon="globe" href="/tools/tavily">
+  
+  
     Structured results with search depth, topic filtering, and `tavily_extract` for URL extraction.
-  </Card>
-</CardGroup>
+  
+
 
 ### Provider comparison
 
@@ -115,6 +113,10 @@ local while `web_search` and `x_search` can use xAI Responses under the hood.
 | [Tavily](/tools/tavily)                   | Structured snippets        | Via `tavily_search` tool                         | `TAVILY_API_KEY`                                                                 |
 
 ## Auto-detection
+
+## Native OpenAI web search
+
+Direct OpenAI Responses models use OpenAI's hosted `web_search` tool automatically when OpenClaw web search is enabled and no managed provider is pinned. This is provider-owned behavior in the bundled OpenAI plugin and only applies to native OpenAI API traffic, not OpenAI-compatible proxy base URLs or Azure routes. Set `tools.web.search.provider` to another provider such as `brave` to keep the managed `web_search` tool for OpenAI models, or set `tools.web.search.enabled: false` to disable both managed search and native OpenAI search.
 
 ## Native Codex web search
 
@@ -238,7 +240,7 @@ show the `x_search` prompt.
 
 ### Storing API keys
 
-<Tabs>
+
   <Tab title="Config file">
     Run `openclaw configure --section web` or set the key directly:
 
@@ -270,7 +272,7 @@ show the `x_search` prompt.
     See [Env vars](/help/faq#env-vars-and-env-loading).
 
   </Tab>
-</Tabs>
+
 
 ## Tool parameters
 

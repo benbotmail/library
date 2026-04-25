@@ -3,10 +3,8 @@ summary: "Get OpenClaw installed and run your first chat in minutes."
 read_when:
   - First time setup from zero
   - You want the fastest path to a working chat
-title: "Getting Started"
+title: "Getting started"
 ---
-
-# Getting Started
 
 Install OpenClaw, run onboarding, and chat with your AI assistant — all in
 about 5 minutes. By the end you will have a running Gateway, configured auth,
@@ -28,7 +26,7 @@ Need to install Node? See [Node setup](/install/node).
 
 <Steps>
   <Step title="Install OpenClaw">
-    <Tabs>
+    
       <Tab title="macOS / Linux">
         ```bash
         curl -fsSL https://openclaw.ai/install.sh | bash
@@ -44,7 +42,7 @@ Need to install Node? See [Node setup](/install/node).
         iwr -useb https://openclaw.ai/install.ps1 | iex
         ```
       </Tab>
-    </Tabs>
+    
 
     <Note>
     Other install methods (Docker, Nix, npm): [Install](/install).
@@ -123,18 +121,18 @@ openclaw dashboard
 ## What to do next
 
 <Columns>
-  <Card title="Connect a channel" href="/channels" icon="message-square">
+  
     Discord, Feishu, iMessage, Matrix, Microsoft Teams, Signal, Slack, Telegram, WhatsApp, Zalo, and more.
-  </Card>
-  <Card title="Pairing and safety" href="/channels/pairing" icon="shield">
+  
+  
     Control who can message your agent.
-  </Card>
-  <Card title="Configure the Gateway" href="/gateway/configuration" icon="settings">
+  
+  
     Models, tools, sandbox, and advanced settings.
-  </Card>
-  <Card title="Browse tools" href="/tools" icon="wrench">
+  
+  
     Browser, exec, web search, skills, and plugins.
-  </Card>
+  
 </Columns>
 
 <Accordion title="Advanced: environment variables">
@@ -146,3 +144,9 @@ openclaw dashboard
 
 Full reference: [Environment variables](/help/environment).
 </Accordion>
+
+## Related
+
+- [Install overview](/install)
+- [Channels overview](/channels)
+- [Setup](/start/setup)

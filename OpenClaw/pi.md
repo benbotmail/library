@@ -1,12 +1,10 @@
 ---
-title: "Pi Integration Architecture"
 summary: "Architecture of OpenClaw's embedded Pi agent integration and session lifecycle"
+title: "Pi integration architecture"
 read_when:
   - Understanding Pi SDK integration design in OpenClaw
   - Modifying agent session lifecycle, tooling, or provider wiring for Pi
 ---
-
-# Pi Integration Architecture
 
 This document describes how OpenClaw integrates with [pi-coding-agent](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent) and its sibling packages (`pi-ai`, `pi-agent-core`, `pi-tui`) to power its AI agent capabilities.
 
@@ -25,10 +23,10 @@ OpenClaw uses the pi SDK to embed an AI coding agent into its messaging gateway 
 
 ```json
 {
-  "@mariozechner/pi-agent-core": "0.68.1",
-  "@mariozechner/pi-ai": "0.68.1",
-  "@mariozechner/pi-coding-agent": "0.68.1",
-  "@mariozechner/pi-tui": "0.68.1"
+  "@mariozechner/pi-agent-core": "0.70.2",
+  "@mariozechner/pi-ai": "0.70.2",
+  "@mariozechner/pi-coding-agent": "0.70.2",
+  "@mariozechner/pi-tui": "0.70.2"
 }
 ```
 
@@ -137,14 +135,13 @@ directories instead of under `src/agents/tools`, for example:
 - the Telegram plugin action runtime file
 - the WhatsApp plugin action runtime file
 
-## Core Integration Flow
+## Core integration flow
 
 ### 1. Running an Embedded Agent
 
 The main entry point is `runEmbeddedPiAgent()` in `pi-embedded-runner/run.ts`:
 
 ```typescript
-import { runEmbeddedPiAgent } from "./agents/pi-embedded-runner.js";
 
 const result = await runEmbeddedPiAgent({
   sessionId: "user-123",
@@ -168,7 +165,6 @@ const result = await runEmbeddedPiAgent({
 Inside `runEmbeddedAttempt()` (called by `runEmbeddedPiAgent()`), the pi SDK is used:
 
 ```typescript
-import {
   createAgentSession,
   DefaultResourceLoader,
   SessionManager,
@@ -287,7 +283,7 @@ export function splitSdkTools(options: { tools: AnyAgentTool[]; sandboxEnabled: 
 
 This ensures OpenClaw's policy filtering, sandbox integration, and extended toolset remain consistent across providers.
 
-## System Prompt Construction
+## System prompt construction
 
 The system prompt is built in `buildAgentSystemPrompt()` (`system-prompt.ts`). It assembles a full prompt with sections including Tooling, Tool Call Style, Safety guardrails, OpenClaw CLI reference, Skills, Docs, Workspace, Sandbox, Messaging, Reply Tags, Voice, Silent Replies, Heartbeats, Runtime metadata, plus Memory and Reactions when enabled, and optional context files and extra system prompt content. Sections are trimmed for minimal prompt mode used by subagents.
 
@@ -360,7 +356,6 @@ const rotated = await advanceAuthProfile();
 ### Model Resolution
 
 ```typescript
-import { resolveModel } from "./pi-embedded-runner/model.js";
 
 const { model, error, authStorage, modelRegistry } = resolveModel(
   provider,
@@ -520,7 +515,6 @@ OpenClaw also has a local TUI mode that uses pi-tui components directly:
 
 ```typescript
 // src/tui/tui.ts
-import { ... } from "@mariozechner/pi-tui";
 ```
 
 This provides the interactive terminal experience similar to pi's native mode.
@@ -568,3 +562,8 @@ Live/opt-in:
 - `src/agents/pi-embedded-runner-extraparams.live.test.ts` (enable `OPENCLAW_LIVE_TEST=1`)
 
 For current run commands, see [Pi Development Workflow](/pi-dev).
+
+## Related
+
+- [Pi development workflow](/pi-dev)
+- [Install overview](/install)

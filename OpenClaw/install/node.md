@@ -1,13 +1,11 @@
 ---
-title: "Node.js"
 summary: "Install and configure Node.js for OpenClaw — version requirements, install options, and PATH troubleshooting"
+title: "Node.js"
 read_when:
   - "You need to install Node.js before installing OpenClaw"
   - "You installed OpenClaw but `openclaw` is command not found"
   - "npm install -g fails with permissions or PATH issues"
 ---
-
-# Node.js
 
 OpenClaw requires **Node 22.14 or newer**. **Node 24 is the default and recommended runtime** for installs, CI, and release workflows. Node 22 remains supported via the active LTS line. The [installer script](/install#alternative-install-methods) will detect and install Node automatically — this page is for when you want to set up Node yourself and make sure everything is wired up correctly (versions, PATH, global installs).
 
@@ -21,7 +19,7 @@ If this prints `v24.x.x` or higher, you're on the recommended default. If it pri
 
 ## Install Node
 
-<Tabs>
+
   <Tab title="macOS">
     **Homebrew** (recommended):
 
@@ -65,7 +63,7 @@ If this prints `v24.x.x` or higher, you're on the recommended default. If it pri
     Or download the Windows installer from [nodejs.org](https://nodejs.org/).
 
   </Tab>
-</Tabs>
+
 
 <Accordion title="Using a version manager (nvm, fnm, mise, asdf)">
   Version managers let you switch between Node versions easily. Popular options:
@@ -107,7 +105,7 @@ This almost always means npm's global bin directory isn't on your PATH.
 
   </Step>
   <Step title="Add it to your shell startup file">
-    <Tabs>
+    
       <Tab title="macOS / Linux">
         Add to `~/.zshrc` or `~/.bashrc`:
 
@@ -120,7 +118,7 @@ This almost always means npm's global bin directory isn't on your PATH.
       <Tab title="Windows">
         Add the output of `npm prefix -g` to your system PATH via Settings → System → Environment Variables.
       </Tab>
-    </Tabs>
+    
 
   </Step>
 </Steps>

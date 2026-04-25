@@ -1,12 +1,10 @@
 ---
-title: "Perplexity"
 summary: "Perplexity web search provider setup (API key, search modes, filtering)"
+title: "Perplexity"
 read_when:
   - You want to configure Perplexity as a web search provider
   - You need the Perplexity API key or OpenRouter proxy setup
 ---
-
-# Perplexity (Web Search Provider)
 
 The Perplexity plugin provides web search capabilities through the Perplexity
 Search API or Perplexity Sonar via OpenRouter.
@@ -49,7 +47,7 @@ This page covers the Perplexity **provider** setup. For the Perplexity
 
 The plugin auto-selects the transport based on API key prefix:
 
-<Tabs>
+
   <Tab title="Native Perplexity API (pplx-)">
     When your key starts with `pplx-`, OpenClaw uses the native Perplexity Search
     API. This transport returns structured results and supports domain, language,
@@ -60,7 +58,7 @@ The plugin auto-selects the transport based on API key prefix:
     the Perplexity Sonar model. This transport returns AI-synthesized answers with
     citations.
   </Tab>
-</Tabs>
+
 
 | Key prefix | Transport                    | Features                                         |
 | ---------- | ---------------------------- | ------------------------------------------------ |
@@ -84,7 +82,7 @@ When using the native Perplexity API, searches support the following filters:
 | Domain filters | Allowlist or denylist (max 20 domains) | `example.com`                       |
 | Content budget | Token limits per response / per page   | `max_tokens`, `max_tokens_per_page` |
 
-## Advanced notes
+## Advanced configuration
 
 <AccordionGroup>
   <Accordion title="Environment variable for daemon processes">
@@ -116,11 +114,11 @@ When using the native Perplexity API, searches support the following filters:
 
 ## Related
 
-<CardGroup cols={2}>
-  <Card title="Perplexity search tool" href="/tools/perplexity-search" icon="magnifying-glass">
+
+  
     How the agent invokes Perplexity searches and interprets results.
-  </Card>
-  <Card title="Configuration reference" href="/gateway/configuration-reference" icon="gear">
+  
+  
     Full configuration reference including plugin entries.
-  </Card>
-</CardGroup>
+  
+

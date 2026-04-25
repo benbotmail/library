@@ -1,13 +1,11 @@
 ---
-title: "Chutes"
 summary: "Chutes setup (OAuth or API key, model discovery, aliases)"
+title: "Chutes"
 read_when:
   - You want to use Chutes with OpenClaw
   - You need the OAuth or API key setup path
   - You want the default model, aliases, or discovery behavior
 ---
-
-# Chutes
 
 [Chutes](https://chutes.ai) exposes open-source model catalogs through an
 OpenAI-compatible API. OpenClaw supports both browser OAuth and direct API-key
@@ -22,7 +20,7 @@ auth for the bundled `chutes` provider.
 
 ## Getting started
 
-<Tabs>
+
   <Tab title="OAuth">
     <Steps>
       <Step title="Run the OAuth onboarding flow">
@@ -58,7 +56,7 @@ auth for the bundled `chutes` provider.
       </Step>
     </Steps>
   </Tab>
-</Tabs>
+
 
 <Note>
 Both auth paths register the bundled Chutes catalog and set the default model to
@@ -138,17 +136,17 @@ The bundled fallback catalog includes current Chutes refs:
 
 ## Related
 
-<CardGroup cols={2}>
-  <Card title="Model providers" href="/concepts/model-providers" icon="layers">
+
+  
     Provider rules, model refs, and failover behavior.
-  </Card>
-  <Card title="Configuration reference" href="/gateway/configuration-reference" icon="gear">
+  
+  
     Full config schema including provider settings.
-  </Card>
-  <Card title="Chutes" href="https://chutes.ai" icon="arrow-up-right-from-square">
+  
+  
     Chutes dashboard and API docs.
-  </Card>
-  <Card title="Chutes API keys" href="https://chutes.ai/settings/api-keys" icon="key">
+  
+  
     Create and manage Chutes API keys.
-  </Card>
-</CardGroup>
+  
+

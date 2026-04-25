@@ -1,12 +1,10 @@
 ---
-title: "Groq"
 summary: "Groq setup (auth + model selection)"
+title: "Groq"
 read_when:
   - You want to use Groq with OpenClaw
   - You need the API key env var or CLI auth choice
 ---
-
-# Groq
 
 [Groq](https://groq.com) provides ultra-fast inference on open-source models
 (Llama, Gemma, Mistral, and more) using custom LPU hardware. OpenClaw connects
@@ -55,7 +53,7 @@ to Groq through its OpenAI-compatible API.
 }
 ```
 
-## Available models
+## Built-in catalog
 
 Groq's model catalog changes frequently. Run `openclaw models list | grep groq`
 to see currently available models, or check
@@ -118,17 +116,17 @@ surface.
 
 ## Related
 
-<CardGroup cols={2}>
-  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
+
+  
     Choosing providers, model refs, and failover behavior.
-  </Card>
-  <Card title="Configuration reference" href="/gateway/configuration-reference" icon="gear">
+  
+  
     Full config schema including provider and audio settings.
-  </Card>
-  <Card title="Groq Console" href="https://console.groq.com" icon="arrow-up-right-from-square">
+  
+  
     Groq dashboard, API docs, and pricing.
-  </Card>
-  <Card title="Groq model list" href="https://console.groq.com/docs/models" icon="list">
+  
+  
     Official Groq model catalog.
-  </Card>
-</CardGroup>
+  
+

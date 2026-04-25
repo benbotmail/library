@@ -6,8 +6,6 @@ read_when:
 title: "Vydra"
 ---
 
-# Vydra
-
 The bundled Vydra plugin adds:
 
 - Image generation via `vydra/grok-imagine`
@@ -158,17 +156,17 @@ Vydra's apex host (`https://vydra.ai/api/v1`) currently redirects to `www`. Some
 
 ## Related
 
-<CardGroup cols={2}>
-  <Card title="Provider directory" href="/providers/index" icon="list">
+
+  
     Browse all available providers.
-  </Card>
-  <Card title="Image generation" href="/tools/image-generation" icon="image">
+  
+  
     Shared image tool parameters and provider selection.
-  </Card>
-  <Card title="Video generation" href="/tools/video-generation" icon="video">
+  
+  
     Shared video tool parameters and provider selection.
-  </Card>
-  <Card title="Configuration reference" href="/gateway/configuration-reference#agent-defaults" icon="gear">
+  
+  
     Agent defaults and model configuration.
-  </Card>
-</CardGroup>
+  
+

@@ -6,8 +6,6 @@ read_when:
 title: "Venice AI"
 ---
 
-# Venice AI
-
 Venice AI provides **privacy-focused AI inference** with support for uncensored models and access to major proprietary models through their anonymized proxy. All inference is private by default — no training on your data, no logging.
 
 ## Why Venice in OpenClaw
@@ -52,7 +50,7 @@ Anonymized models are **not** fully private. Venice strips metadata before forwa
   <Step title="Configure OpenClaw">
     Choose your preferred setup method:
 
-    <Tabs>
+    
       <Tab title="Interactive (recommended)">
         ```bash
         openclaw onboard --auth-choice venice-api-key
@@ -76,7 +74,7 @@ Anonymized models are **not** fully private. Venice strips metadata before forwa
           --venice-api-key "vapi_xxxxxxxxxxxx"
         ```
       </Tab>
-    </Tabs>
+    
 
   </Step>
   <Step title="Verify setup">
@@ -125,7 +123,7 @@ Use the table below to pick the right model for your use case.
 
 </Tip>
 
-## Available models (41 total)
+## Built-in catalog (41 total)
 
 <AccordionGroup>
   <Accordion title="Private models (26) — fully private, no logging">
@@ -292,17 +290,17 @@ More help: [Troubleshooting](/help/troubleshooting) and [FAQ](/help/faq).
 
 ## Related
 
-<CardGroup cols={2}>
-  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
+
+  
     Choosing providers, model refs, and failover behavior.
-  </Card>
-  <Card title="Venice AI" href="https://venice.ai" icon="globe">
+  
+  
     Venice AI homepage and account signup.
-  </Card>
-  <Card title="API documentation" href="https://docs.venice.ai" icon="book">
+  
+  
     Venice API reference and developer docs.
-  </Card>
-  <Card title="Pricing" href="https://venice.ai/pricing" icon="credit-card">
+  
+  
     Current Venice credit rates and plans.
-  </Card>
-</CardGroup>
+  
+

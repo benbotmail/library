@@ -6,8 +6,6 @@ read_when:
 title: "NVIDIA"
 ---
 
-# NVIDIA
-
 NVIDIA provides an OpenAI-compatible API at `https://integrate.api.nvidia.com/v1` for
 open models for free. Authenticate with an API key from
 [build.nvidia.com](https://build.nvidia.com/settings/api-keys).
@@ -66,7 +64,7 @@ If you pass `--token` instead of the env var, the value lands in shell history a
 | `nvidia/minimaxai/minimax-m2.5`            | Minimax M2.5                 | 196,608 | 8,192      |
 | `nvidia/z-ai/glm5`                         | GLM 5                        | 202,752 | 8,192      |
 
-## Advanced notes
+## Advanced configuration
 
 <AccordionGroup>
   <Accordion title="Auto-enable behavior">
@@ -93,11 +91,11 @@ rate-limit details.
 
 ## Related
 
-<CardGroup cols={2}>
-  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
+
+  
     Choosing providers, model refs, and failover behavior.
-  </Card>
-  <Card title="Configuration reference" href="/gateway/configuration-reference" icon="gear">
+  
+  
     Full config reference for agents, models, and providers.
-  </Card>
-</CardGroup>
+  
+

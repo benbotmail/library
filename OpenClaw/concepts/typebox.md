@@ -156,7 +156,6 @@ Event:
 Smallest useful flow: connect + health.
 
 ```ts
-import { WebSocket } from "ws";
 
 const ws = new WebSocket("ws://127.0.0.1:18789");
 
@@ -305,3 +304,8 @@ published raw file is typically available at:
    node scope classification.
 4. Run `pnpm protocol:check`.
 5. Commit the regenerated schema + Swift models.
+
+## Related
+
+- [Rich output protocol](/reference/rich-output-protocol)
+- [RPC adapters](/reference/rpc)

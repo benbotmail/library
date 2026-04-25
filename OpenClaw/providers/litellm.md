@@ -1,12 +1,10 @@
 ---
-title: "LiteLLM"
 summary: "Run OpenClaw through LiteLLM Proxy for unified model access and cost tracking"
+title: "LiteLLM"
 read_when:
   - You want to route OpenClaw through a LiteLLM proxy
   - You need cost tracking, logging, or model routing through LiteLLM
 ---
-
-# LiteLLM
 
 [LiteLLM](https://litellm.ai) is an open-source LLM gateway that provides a unified API to 100+ model providers. Route OpenClaw through LiteLLM to get centralized cost tracking, logging, and the flexibility to switch backends without changing your OpenClaw config.
 
@@ -18,11 +16,12 @@ read_when:
 - **Virtual keys** — Create keys with spend limits for OpenClaw
 - **Logging** — Full request/response logs for debugging
 - **Fallbacks** — Automatic failover if your primary provider is down
-  </Tip>
+
+</Tip>
 
 ## Quick start
 
-<Tabs>
+
   <Tab title="Onboarding (recommended)">
     **Best for:** fastest path to a working LiteLLM setup.
 
@@ -58,7 +57,7 @@ read_when:
     </Steps>
 
   </Tab>
-</Tabs>
+
 
 ## Configuration
 
@@ -107,7 +106,7 @@ export LITELLM_API_KEY="sk-litellm-key"
 }
 ```
 
-## Advanced topics
+## Advanced configuration
 
 <AccordionGroup>
   <Accordion title="Virtual keys">
@@ -181,17 +180,17 @@ For general provider configuration and failover behavior, see [Model Providers](
 
 ## Related
 
-<CardGroup cols={2}>
-  <Card title="LiteLLM Docs" href="https://docs.litellm.ai" icon="book">
+
+  
     Official LiteLLM documentation and API reference.
-  </Card>
-  <Card title="Model providers" href="/concepts/model-providers" icon="layers">
+  
+  
     Overview of all providers, model refs, and failover behavior.
-  </Card>
-  <Card title="Configuration" href="/gateway/configuration" icon="gear">
+  
+  
     Full config reference.
-  </Card>
-  <Card title="Model selection" href="/concepts/models" icon="brain">
+  
+  
     How to choose and configure models.
-  </Card>
-</CardGroup>
+  
+
