@@ -20,12 +20,12 @@ Use two lock levels:
 
 | Layer | Package | Current version seen upstream | Notes |
 |---|---|---|---|
-| Core SDK | `@elevenlabs/client` | `1.3.0` | `uploadFile()` for conversation file uploads; `MultimodalMessageInput`/`UploadFileResult` types; `SessionConnectionError` exported |
-| React wrapper | `@elevenlabs/react` | `1.2.0` | `uploadFile` in `useConversationControls`; `onConnect` lifecycle fix |
-| React Native wrapper | `@elevenlabs/react-native` | `1.1.2` | Upload API; `ImageUpload` example |
+| Core SDK | `@elevenlabs/client` | `1.3.1` | Scribe realtime: `keyterms` and `noVerbatim` options; VoiceConversation: fix for tool-call sound interrupting agent |
+| React wrapper | `@elevenlabs/react` | `1.2.1` | `useScribe` now accepts `keyterms` and `noVerbatim` options |
+| React Native wrapper | `@elevenlabs/react-native` | `1.1.3` | Version bump |
 | Types | `@elevenlabs/types` | `0.9.1` | Enhanced with type discriminants; new WebSocket message types |
-| Widget core | `@elevenlabs/convai-widget-core` | `0.11.4` | Keep in sync |
-| Widget embed | `@elevenlabs/convai-widget-embed` | `0.11.4` | Keep in sync with core |
+| Widget core | `@elevenlabs/convai-widget-core` | `0.11.6` | Keep in sync |
+| Widget embed | `@elevenlabs/convai-widget-embed` | `0.11.6` | Keep in sync with core |
 
 > For app-level production pinning, still lock exact versions in your own `package.json` + lockfile.
 
@@ -65,13 +65,13 @@ Recommended practice:
 ## 5) Upstream freshness marker
 
 Current tracked upstream commit in this docs pack:
-- `7afc0e5fb8c93ea5be52cac0fba7ee1c0cb4c0de`
+- `a8c2d5dff4dbec0f0947918ea2dce13ff0961938`
 
 Observed surface changes in this revision:
-- **v1.3.0 client**: New `uploadFile()` method on `BaseConversation` for uploading files to a conversation; `MultimodalMessageInput` and `UploadFileResult` types; `SessionConnectionError` class exported from errors module; `extractApiErrorMessage` utility for parsing upload error responses; `sendMultimodalMessage` updated to accept `fileId`
-- **v1.2.0 react**: `uploadFile` exposed through `ConversationControls`; `onConnect` lifecycle fix ensures `conversationRef` is set before callback fires; improved error handling in `ConversationControlsProvider`
-- **v1.1.2 react-native**: Upload API exposed via `useConversationControls`; new `ImageUpload` example component demonstrating image picker + upload + multimodal send flow
-- **v0.11.5 widget-core/embed**: Version bump
+- **v1.3.1 client**: Scribe realtime now supports `keyterms` (up to 50 terms, ≤20 chars each) for model biasing and `noVerbatim` to strip filler words/disfluencies; VoiceConversation interruption handler fixed to skip stale output flushes (prevents tool-call sound from interrupting agent)
+- **v1.2.1 react**: `useScribe` hook now passes `keyterms` and `noVerbatim` through to ScribeRealtime
+- **v1.1.3 react-native**: Version bump
+- **v0.11.6 widget-core/embed**: Version bump
 
 Policy:
 - when event or session surface changes, update `02_CONVERSATION_SESSION_PATTERNS.md` first
