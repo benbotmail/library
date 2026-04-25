@@ -36,43 +36,6 @@ Rule of thumb:
 - Live conference mic: start with `VAD`
 - Pre-cut media/transcodes: prefer `MANUAL` + explicit `commit()`
 
-## Keyterms (model biasing)
-
-Pass `keyterms` to bias the model toward specific vocabulary (product names, proper nouns, jargon). Maximum 50 terms, each up to 20 characters.
-
-```ts
-const conn = Scribe.connect({
-  token: scribeTokenFromBackend,
-  modelId: "scribe_v2_realtime",
-  languageCode: "en",
-  keyterms: ["Phalaenopsis", "Dendrobium", "Cattleya"],
-});
-```
-
-For React hook usage:
-
-```tsx
-const { start, stop } = useScribe({
-  keyterms: ["Phalaenopsis", "Dendrobium"],
-  onCommittedTranscript: (d) => console.log(d.text),
-});
-```
-
-Keyterms are sent as repeated query parameters (`keyterms=term1&keyterms=term2`).
-
-## Clean transcripts with noVerbatim
-
-Set `noVerbatim: true` to strip filler words, false starts, and disfluencies from the transcript. Useful for caption/subtitle pipelines.
-
-```ts
-const conn = Scribe.connect({
-  token: scribeTokenFromBackend,
-  modelId: "scribe_v2_realtime",
-  languageCode: "en",
-  noVerbatim: true,
-});
-```
-
 ## Previous context for domain terms
 
 `previousText` can improve continuity, but only in the **first** chunk.
