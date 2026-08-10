@@ -29,7 +29,7 @@ Anthropic's current public docs:
 
 ## Getting started
 
-
+<Tabs>
   <Tab title="API key">
     **Best for:** standard API access and usage-based billing.
 
@@ -97,12 +97,31 @@ Anthropic's current public docs:
     Setup and runtime details for the Claude CLI backend are in [CLI Backends](/gateway/cli-backends).
     </Note>
 
+    ### Config example
+
+    Prefer the canonical Anthropic model ref plus a CLI runtime override:
+
+    ```json5
+    {
+      agents: {
+        defaults: {
+          model: { primary: "anthropic/claude-opus-4-7" },
+          agentRuntime: { id: "claude-cli" },
+        },
+      },
+    }
+    ```
+
+    Legacy `claude-cli/claude-opus-4-7` model refs still work for
+    compatibility, but new config should keep provider/model selection as
+    `anthropic/*` and put the execution backend in `agentRuntime.id`.
+
     <Tip>
     If you want the clearest billing path, use an Anthropic API key instead. OpenClaw also supports subscription-style options from [OpenAI Codex](/providers/openai), [Qwen Cloud](/providers/qwen), [MiniMax](/providers/minimax), and [Z.AI / GLM](/providers/glm).
     </Tip>
 
   </Tab>
-
+</Tabs>
 
 ## Thinking defaults (Claude 4.6)
 
@@ -128,6 +147,7 @@ Override per-message with `/think:<level>` or in model params:
 Related Anthropic docs:
 - [Adaptive thinking](https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking)
 - [Extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
+
 </Note>
 
 ## Prompt caching
@@ -190,6 +210,7 @@ OpenClaw supports Anthropic's prompt caching feature for API-key auth.
     - Anthropic Claude models on Bedrock (`amazon-bedrock/*anthropic.claude*`) accept `cacheRetention` pass-through when configured.
     - Non-Anthropic Bedrock models are forced to `cacheRetention: "none"` at runtime.
     - API-key smart defaults also seed `cacheRetention: "short"` for Claude-on-Bedrock refs when no explicit value is set.
+
   </Accordion>
 </AccordionGroup>
 
@@ -222,6 +243,7 @@ OpenClaw supports Anthropic's prompt caching feature for API-key auth.
     - Only injected for direct `api.anthropic.com` requests. Proxy routes leave `service_tier` untouched.
     - Explicit `serviceTier` or `service_tier` params override `/fast` when both are set.
     - On accounts without Priority Tier capacity, `service_tier: "auto"` may resolve to `standard`.
+
     </Note>
 
   </Accordion>
@@ -259,6 +281,10 @@ OpenClaw supports Anthropic's prompt caching feature for API-key auth.
     ```
 
     OpenClaw maps this to `anthropic-beta: context-1m-2025-08-07` on requests.
+
+    `params.context1m: true` also applies to the Claude CLI backend
+    (`claude-cli/*`) for eligible Opus and Sonnet models, expanding the runtime
+    context window for those CLI sessions to match the direct-API behavior.
 
     <Warning>
     Requires long-context access on your Anthropic credential. Legacy token auth (`sk-ant-oat-*`) is rejected for 1M context requests — OpenClaw logs a warning and falls back to the standard context window.
@@ -298,17 +324,17 @@ More help: [Troubleshooting](/help/troubleshooting) and [FAQ](/help/faq).
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
     Choosing providers, model refs, and failover behavior.
-  
-  
+  </Card>
+  <Card title="CLI backends" href="/gateway/cli-backends" icon="terminal">
     Claude CLI backend setup and runtime details.
-  
-  
+  </Card>
+  <Card title="Prompt caching" href="/reference/prompt-caching" icon="database">
     How prompt caching works across providers.
-  
-  
+  </Card>
+  <Card title="OAuth and auth" href="/gateway/authentication" icon="key">
     Auth details and credential reuse rules.
-  
-
+  </Card>
+</CardGroup>

@@ -30,7 +30,7 @@ OpenClaw ships a bundled `comfy` plugin for workflow-driven ComfyUI runs. The pl
 
 Choose between running ComfyUI on your own machine or using Comfy Cloud.
 
-
+<Tabs>
   <Tab title="Local">
     **Best for:** running your own ComfyUI instance on your machine or LAN.
 
@@ -159,7 +159,7 @@ Choose between running ComfyUI on your own machine or using Comfy Cloud.
     </Steps>
 
   </Tab>
-
+</Tabs>
 
 ## Configuration
 
@@ -343,20 +343,20 @@ The `image` and `video` sections also support:
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Image Generation" href="/tools/image-generation" icon="image">
     Image generation tool configuration and usage.
-  
-  
+  </Card>
+  <Card title="Video Generation" href="/tools/video-generation" icon="video">
     Video generation tool configuration and usage.
-  
-  
+  </Card>
+  <Card title="Music Generation" href="/tools/music-generation" icon="music">
     Music and audio generation tool setup.
-  
-  
+  </Card>
+  <Card title="Provider Directory" href="/providers/index" icon="layers">
     Overview of all providers and model refs.
-  
-  
+  </Card>
+  <Card title="Configuration reference" href="/gateway/config-agents#agent-defaults" icon="gear">
     Full config reference including agent defaults.
-  
-
+  </Card>
+</CardGroup>

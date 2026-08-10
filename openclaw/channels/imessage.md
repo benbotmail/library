@@ -14,21 +14,21 @@ The `imsg` integration is legacy and may be removed in a future release.
 
 Status: legacy external CLI integration. Gateway spawns `imsg rpc` and communicates over JSON-RPC on stdio (no separate daemon/port).
 
-
-  
+<CardGroup cols={3}>
+  <Card title="BlueBubbles (recommended)" icon="message-circle" href="/channels/bluebubbles">
     Preferred iMessage path for new setups.
-  
-  
+  </Card>
+  <Card title="Pairing" icon="link" href="/channels/pairing">
     iMessage DMs default to pairing mode.
-  
-  
+  </Card>
+  <Card title="Configuration reference" icon="settings" href="/gateway/config-channels#imessage">
     Full iMessage field reference.
-  
-
+  </Card>
+</CardGroup>
 
 ## Quick setup
 
-
+<Tabs>
   <Tab title="Local Mac (fast path)">
     <Steps>
       <Step title="Install and verify imsg">
@@ -110,7 +110,7 @@ exec ssh -T gateway-host imsg "$@"
     Attachment paths are validated against allowed roots (`attachmentRoots` / `remoteAttachmentRoots`).
 
   </Tab>
-
+</Tabs>
 
 ## Requirements and permissions (macOS)
 
@@ -131,7 +131,7 @@ imsg send <handle> "test"
 
 ## Access control and routing
 
-
+<Tabs>
   <Tab title="DM policy">
     `channels.imessage.dmPolicy` controls direct messages:
 
@@ -180,7 +180,7 @@ imsg send <handle> "test"
     If that `chat_id` is explicitly configured under `channels.imessage.groups`, OpenClaw treats it as group traffic (group gating + group session isolation).
 
   </Tab>
-
+</Tabs>
 
 ## ACP conversation bindings
 
@@ -306,6 +306,7 @@ exec ssh -T bot@mac-mini.tailnet-1234.ts.net imsg "$@"
       - default root pattern: `/Users/*/Library/Messages/Attachments`
     - SCP uses strict host-key checking (`StrictHostKeyChecking=yes`)
     - outbound media size uses `channels.imessage.mediaMaxMb` (default 16 MB)
+
   </Accordion>
 
   <Accordion title="Outbound chunking">
@@ -313,6 +314,7 @@ exec ssh -T bot@mac-mini.tailnet-1234.ts.net imsg "$@"
     - chunk mode: `channels.imessage.chunkMode`
       - `length` (default)
       - `newline` (paragraph-first splitting)
+
   </Accordion>
 
   <Accordion title="Addressing formats">

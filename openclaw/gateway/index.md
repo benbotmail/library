@@ -7,20 +7,20 @@ title: "Gateway runbook"
 
 Use this page for day-1 startup and day-2 operations of the Gateway service.
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Deep troubleshooting" icon="siren" href="/gateway/troubleshooting">
     Symptom-first diagnostics with exact command ladders and log signatures.
-  
-  
+  </Card>
+  <Card title="Configuration" icon="sliders" href="/gateway/configuration">
     Task-oriented setup guide + full configuration reference.
-  
-  
+  </Card>
+  <Card title="Secrets management" icon="key-round" href="/gateway/secrets">
     SecretRef contract, runtime snapshot behavior, and migrate/reload operations.
-  
-  
+  </Card>
+  <Card title="Secrets plan contract" icon="shield-check" href="/gateway/secrets-plan-contract">
     Exact `secrets apply` target/path rules and ref-only auth-profile behavior.
-  
-
+  </Card>
+</CardGroup>
 
 ## 5-minute local startup
 
@@ -111,6 +111,14 @@ All of these run on the main Gateway port and use the same trusted operator auth
 | ------------ | ------------------------------------------------------------- |
 | Gateway port | `--port` → `OPENCLAW_GATEWAY_PORT` → `gateway.port` → `18789` |
 | Bind mode    | CLI/override → `gateway.bind` → `loopback`                    |
+
+Installed gateway services record the resolved `--port` in supervisor metadata. After changing `gateway.port`, run `openclaw doctor --fix` or `openclaw gateway install --force` so launchd/systemd/schtasks starts the process on the new port.
+
+Gateway startup uses the same effective port and bind when it seeds local
+Control UI origins for non-loopback binds. For example, `--bind lan --port 3000`
+seeds `http://localhost:3000` and `http://127.0.0.1:3000` before runtime
+validation runs. Add any remote browser origins, such as HTTPS proxy URLs, to
+`gateway.controlUi.allowedOrigins` explicitly.
 
 ### Hot reload modes
 
@@ -235,7 +243,7 @@ See: [Remote Gateway](/gateway/remote), [Authentication](/gateway/authentication
 
 Use supervised runs for production-like reliability.
 
-
+<Tabs>
   <Tab title="macOS (launchd)">
 
 ```bash
@@ -244,6 +252,8 @@ openclaw gateway status
 openclaw gateway restart
 openclaw gateway stop
 ```
+
+Use `openclaw gateway restart` for restarts. Do not chain `openclaw gateway stop` and `openclaw gateway start`; on macOS, `gateway stop` intentionally disables the LaunchAgent before stopping it.
 
 LaunchAgent labels are `ai.openclaw.gateway` (default) or `ai.openclaw.<profile>` (named profile). `openclaw doctor` audits and repairs service config drift.
 
@@ -315,8 +325,10 @@ Use the same service body as the user unit, but install it under
 `/etc/systemd/system/openclaw-gateway[-<profile>].service` and adjust
 `ExecStart=` if your `openclaw` binary lives elsewhere.
 
-  </Tab>
+Do not also let `openclaw doctor --fix` install a user-level gateway service for the same profile/port. Doctor refuses that automatic install when it finds a system-level OpenClaw gateway service; use `OPENCLAW_SERVICE_REPAIR_POLICY=external` when the system unit owns the lifecycle.
 
+  </Tab>
+</Tabs>
 
 ## Dev profile quick path
 

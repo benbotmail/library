@@ -19,7 +19,7 @@ as one OpenCode setup.
 
 ## Getting started
 
-
+<Tabs>
   <Tab title="Zen catalog">
     **Best for:** the curated OpenCode multi-model proxy (Claude, GPT, Gemini).
 
@@ -77,7 +77,7 @@ as one OpenCode setup.
     </Steps>
 
   </Tab>
-
+</Tabs>
 
 ## Config example
 
@@ -139,11 +139,11 @@ Go runtime providers, so you only need to onboard once.
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
     Choosing providers, model refs, and failover behavior.
-  
-  
+  </Card>
+  <Card title="Configuration reference" href="/gateway/configuration-reference" icon="gear">
     Full config reference for agents, models, and providers.
-  
-
+  </Card>
+</CardGroup>

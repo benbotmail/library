@@ -19,6 +19,11 @@ Cloudflare AI Gateway sits in front of provider APIs and lets you add analytics,
 For Anthropic models routed through Cloudflare AI Gateway, use your **Anthropic API key** as the provider key.
 </Note>
 
+When thinking is enabled for Anthropic Messages models, OpenClaw strips trailing
+assistant prefill turns before sending the payload through Cloudflare AI Gateway.
+Anthropic rejects response prefilling with extended thinking, while ordinary
+non-thinking prefill remains available.
+
 ## Getting started
 
 <Steps>
@@ -104,11 +109,11 @@ openclaw onboard --non-interactive \
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
     Choosing providers, model refs, and failover behavior.
-  
-  
+  </Card>
+  <Card title="Troubleshooting" href="/help/troubleshooting" icon="wrench">
     General troubleshooting and FAQ.
-  
-
+  </Card>
+</CardGroup>

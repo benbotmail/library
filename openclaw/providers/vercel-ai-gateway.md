@@ -109,11 +109,11 @@ configuration. OpenClaw resolves the canonical form automatically.
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
     Choosing providers, model refs, and failover behavior.
-  
-  
+  </Card>
+  <Card title="Troubleshooting" href="/help/troubleshooting" icon="wrench">
     General troubleshooting and FAQ.
-  
-
+  </Card>
+</CardGroup>

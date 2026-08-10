@@ -21,7 +21,7 @@ not an API key.
 
 Choose your preferred auth method and follow the setup steps.
 
-
+<Tabs>
   <Tab title="Access keys / env vars">
     **Best for:** developer machines, CI, or hosts where you manage AWS credentials directly.
 
@@ -129,7 +129,7 @@ Choose your preferred auth method and follow the setup steps.
     </Note>
 
   </Tab>
-
+</Tabs>
 
 ## Automatic model discovery
 
@@ -344,17 +344,17 @@ openclaw models list
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
     Choosing providers, model refs, and failover behavior.
-  
-  
+  </Card>
+  <Card title="Memory search" href="/concepts/memory-search" icon="magnifying-glass">
     Bedrock embeddings for memory search configuration.
-  
-  
+  </Card>
+  <Card title="Memory config reference" href="/reference/memory-config#bedrock-embedding-config" icon="database">
     Full Bedrock embedding model list and dimension options.
-  
-  
+  </Card>
+  <Card title="Troubleshooting" href="/help/troubleshooting" icon="wrench">
     General troubleshooting and FAQ.
-  
-
+  </Card>
+</CardGroup>

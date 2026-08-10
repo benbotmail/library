@@ -101,14 +101,14 @@ Reference image/video mode currently requires **remote http(s) URLs**. Local fil
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Video generation" href="/tools/video-generation" icon="video">
     Shared video tool parameters and provider selection.
-  
-  
+  </Card>
+  <Card title="Qwen" href="/providers/qwen" icon="microchip">
     Qwen provider setup and DashScope integration.
-  
-  
+  </Card>
+  <Card title="Configuration reference" href="/gateway/config-agents#agent-defaults" icon="gear">
     Agent defaults and model configuration.
-  
-
+  </Card>
+</CardGroup>

@@ -43,7 +43,7 @@ Step Plan (`stepfun-plan`):
 
 Choose your provider surface and follow the setup steps.
 
-
+<Tabs>
   <Tab title="Standard">
     **Best for:** general-purpose use via the standard StepFun endpoint.
 
@@ -124,7 +124,7 @@ Choose your provider surface and follow the setup steps.
     - Alternate model: `stepfun-plan/step-3.5-flash-2603`
 
   </Tab>
-
+</Tabs>
 
 ## Advanced configuration
 
@@ -203,6 +203,7 @@ Choose your provider surface and follow the setup steps.
     - `step-3.5-flash-2603` is currently exposed only on `stepfun-plan`.
     - A single auth flow writes region-matched profiles for both `stepfun` and `stepfun-plan`, so both surfaces can be discovered together.
     - Use `openclaw models list` and `openclaw models set <provider/model>` to inspect or switch models.
+
   </Accordion>
 </AccordionGroup>
 
@@ -212,17 +213,17 @@ For the broader provider overview, see [Model providers](/concepts/model-provide
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
     Overview of all providers, model refs, and failover behavior.
-  
-  
+  </Card>
+  <Card title="Configuration reference" href="/gateway/configuration-reference" icon="gear">
     Full config schema for providers, models, and plugins.
-  
-  
+  </Card>
+  <Card title="Model selection" href="/concepts/models" icon="brain">
     How to choose and configure models.
-  
-  
+  </Card>
+  <Card title="StepFun Platform" href="https://platform.stepfun.com" icon="globe">
     StepFun API key management and documentation.
-  
-
+  </Card>
+</CardGroup>

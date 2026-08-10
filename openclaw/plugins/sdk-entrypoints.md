@@ -49,6 +49,7 @@ For provider plugins, tool plugins, hook plugins, and anything that is **not**
 a messaging channel.
 
 ```typescript
+import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
 
 export default definePluginEntry({
   id: "my-plugin",
@@ -89,6 +90,7 @@ Wraps `definePluginEntry` with channel-specific wiring. Automatically calls
 seam, and gates `registerFull` on registration mode.
 
 ```typescript
+import { defineChannelPluginEntry } from "openclaw/plugin-sdk/channel-core";
 
 export default defineChannelPluginEntry({
   id: "my-channel",
@@ -150,6 +152,7 @@ For the lightweight `setup-entry.ts` file. Returns just `{ plugin }` with no
 runtime or CLI wiring.
 
 ```typescript
+import { defineSetupPluginEntry } from "openclaw/plugin-sdk/channel-core";
 
 export default defineSetupPluginEntry(myChannelPlugin);
 ```
@@ -177,6 +180,7 @@ setup entry keep setup-safe plugin/secrets exports while still exposing a
 runtime setter:
 
 ```typescript
+import { defineBundledChannelSetupEntry } from "openclaw/plugin-sdk/channel-entry-contract";
 
 export default defineBundledChannelSetupEntry({
   importMetaUrl: import.meta.url,

@@ -14,19 +14,19 @@ tuning that applies everywhere.
 
 ## Pick a provider
 
-
-  One-click, browser setup
-  One-click, browser setup
-  Simple paid VPS
-  Always Free ARM tier
-  Fly Machines
-  Docker on Hetzner VPS
-  VPS with one-click setup
-  Compute Engine
-  Linux VM
-  VM with HTTPS proxy
-  ARM self-hosted
-
+<CardGroup cols={2}>
+  <Card title="Railway" href="/install/railway">One-click, browser setup</Card>
+  <Card title="Northflank" href="/install/northflank">One-click, browser setup</Card>
+  <Card title="DigitalOcean" href="/install/digitalocean">Simple paid VPS</Card>
+  <Card title="Oracle Cloud" href="/install/oracle">Always Free ARM tier</Card>
+  <Card title="Fly.io" href="/install/fly">Fly Machines</Card>
+  <Card title="Hetzner" href="/install/hetzner">Docker on Hetzner VPS</Card>
+  <Card title="Hostinger" href="/install/hostinger">VPS with one-click setup</Card>
+  <Card title="GCP" href="/install/gcp">Compute Engine</Card>
+  <Card title="Azure" href="/install/azure">Linux VM</Card>
+  <Card title="exe.dev" href="/install/exe-dev">VM with HTTPS proxy</Card>
+  <Card title="Raspberry Pi" href="/install/raspberry-pi">ARM self-hosted</Card>
+</CardGroup>
 
 **AWS (EC2 / Lightsail / free tier)** also works well.
 A community video walkthrough is available at

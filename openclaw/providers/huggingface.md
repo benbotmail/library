@@ -219,17 +219,17 @@ You can append `:fastest` or `:cheapest` to any model id. Set your default order
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
     Overview of all providers, model refs, and failover behavior.
-  
-  
+  </Card>
+  <Card title="Model selection" href="/concepts/models" icon="brain">
     How to choose and configure models.
-  
-  
+  </Card>
+  <Card title="Inference Providers docs" href="https://huggingface.co/docs/inference-providers" icon="book">
     Official Hugging Face Inference Providers documentation.
-  
-  
+  </Card>
+  <Card title="Configuration" href="/gateway/configuration" icon="gear">
     Full config reference.
-  
-
+  </Card>
+</CardGroup>

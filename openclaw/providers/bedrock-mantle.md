@@ -22,7 +22,7 @@ third-party models (GPT-OSS, Qwen, Kimi, GLM, and similar) through a standard
 
 Choose your preferred auth method and follow the setup steps.
 
-
+<Tabs>
   <Tab title="Explicit bearer token">
     **Best for:** environments where you already have a Mantle bearer token.
 
@@ -76,7 +76,7 @@ Choose your preferred auth method and follow the setup steps.
     </Tip>
 
   </Tab>
-
+</Tabs>
 
 ## Automatic model discovery
 
@@ -188,17 +188,17 @@ If you prefer explicit config instead of auto-discovery:
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Amazon Bedrock" href="/providers/bedrock" icon="cloud">
     Native Bedrock provider for Anthropic Claude, Titan, and other models.
-  
-  
+  </Card>
+  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
     Choosing providers, model refs, and failover behavior.
-  
-  
+  </Card>
+  <Card title="OAuth and auth" href="/gateway/authentication" icon="key">
     Auth details and credential reuse rules.
-  
-  
+  </Card>
+  <Card title="Troubleshooting" href="/help/troubleshooting" icon="wrench">
     Common issues and how to resolve them.
-  
-
+  </Card>
+</CardGroup>

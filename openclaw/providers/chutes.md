@@ -20,7 +20,7 @@ auth for the bundled `chutes` provider.
 
 ## Getting started
 
-
+<Tabs>
   <Tab title="OAuth">
     <Steps>
       <Step title="Run the OAuth onboarding flow">
@@ -56,7 +56,7 @@ auth for the bundled `chutes` provider.
       </Step>
     </Steps>
   </Tab>
-
+</Tabs>
 
 <Note>
 Both auth paths register the bundled Chutes catalog and set the default model to
@@ -131,22 +131,23 @@ The bundled fallback catalog includes current Chutes refs:
     - API-key and OAuth discovery both use the same `chutes` provider id.
     - Chutes models are registered as `chutes/<model-id>`.
     - If discovery fails at startup, the bundled static catalog is used automatically.
+
   </Accordion>
 </AccordionGroup>
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
     Provider rules, model refs, and failover behavior.
-  
-  
+  </Card>
+  <Card title="Configuration reference" href="/gateway/configuration-reference" icon="gear">
     Full config schema including provider settings.
-  
-  
+  </Card>
+  <Card title="Chutes" href="https://chutes.ai" icon="arrow-up-right-from-square">
     Chutes dashboard and API docs.
-  
-  
+  </Card>
+  <Card title="Chutes API keys" href="https://chutes.ai/settings/api-keys" icon="key">
     Create and manage Chutes API keys.
-  
-
+  </Card>
+</CardGroup>

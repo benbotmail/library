@@ -19,7 +19,7 @@ Arcee AI models can be accessed directly via the Arcee platform or through [Open
 
 ## Getting started
 
-
+<Tabs>
   <Tab title="Direct (Arcee platform)">
     <Steps>
       <Step title="Get an API key">
@@ -70,11 +70,11 @@ Arcee AI models can be accessed directly via the Arcee platform or through [Open
     </Steps>
 
   </Tab>
-
+</Tabs>
 
 ## Non-interactive setup
 
-
+<Tabs>
   <Tab title="Direct (Arcee platform)">
     ```bash
     openclaw onboard --non-interactive \
@@ -92,7 +92,7 @@ Arcee AI models can be accessed directly via the Arcee platform or through [Open
       --openrouter-api-key "$OPENROUTER_API_KEY"
     ```
   </Tab>
-
+</Tabs>
 
 ## Built-in catalog
 
@@ -134,11 +134,11 @@ The onboarding preset sets `arcee/trinity-large-thinking` as the default model.
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="OpenRouter" href="/providers/openrouter" icon="shuffle">
     Access Arcee models and many others through a single API key.
-  
-  
+  </Card>
+  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
     Choosing providers, model refs, and failover behavior.
-  
-
+  </Card>
+</CardGroup>

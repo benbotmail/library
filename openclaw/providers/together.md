@@ -119,22 +119,23 @@ provider selection, and failover behavior.
     - If models are not appearing, confirm the API key is set in the correct
       environment for your Gateway process.
     - Model refs use the form `together/<model-id>`.
+
   </Accordion>
 </AccordionGroup>
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
     Provider rules, model refs, and failover behavior.
-  
-  
+  </Card>
+  <Card title="Video generation" href="/tools/video-generation" icon="video">
     Shared video generation tool parameters and provider selection.
-  
-  
+  </Card>
+  <Card title="Configuration reference" href="/gateway/configuration-reference" icon="gear">
     Full config schema including provider settings.
-  
-  
+  </Card>
+  <Card title="Together AI" href="https://together.ai" icon="arrow-up-right-from-square">
     Together AI dashboard, API docs, and pricing.
-  
-
+  </Card>
+</CardGroup>

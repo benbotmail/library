@@ -317,7 +317,7 @@ If the connection is weak, it should return `NONE`.
 sees. Pick the smallest mode that still answers follow-up questions well;
 timeout budgets should grow with context size (`message` < `recent` < `full`).
 
-
+<Tabs>
   <Tab title="message">
     Only the latest user message is sent.
 
@@ -376,7 +376,7 @@ timeout budgets should grow with context size (`message` < `recent` < `full`).
     Start around `15000` ms or higher depending on thread size.
 
   </Tab>
-
+</Tabs>
 
 ## Prompt styles
 

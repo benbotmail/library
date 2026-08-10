@@ -19,7 +19,7 @@ If this prints `v24.x.x` or higher, you're on the recommended default. If it pri
 
 ## Install Node
 
-
+<Tabs>
   <Tab title="macOS">
     **Homebrew** (recommended):
 
@@ -63,7 +63,7 @@ If this prints `v24.x.x` or higher, you're on the recommended default. If it pri
     Or download the Windows installer from [nodejs.org](https://nodejs.org/).
 
   </Tab>
-
+</Tabs>
 
 <Accordion title="Using a version manager (nvm, fnm, mise, asdf)">
   Version managers let you switch between Node versions easily. Popular options:
@@ -105,7 +105,7 @@ This almost always means npm's global bin directory isn't on your PATH.
 
   </Step>
   <Step title="Add it to your shell startup file">
-    
+    <Tabs>
       <Tab title="macOS / Linux">
         Add to `~/.zshrc` or `~/.bashrc`:
 
@@ -118,7 +118,7 @@ This almost always means npm's global bin directory isn't on your PATH.
       <Tab title="Windows">
         Add the output of `npm prefix -g` to your system PATH via Settings → System → Environment Variables.
       </Tab>
-    
+    </Tabs>
 
   </Step>
 </Steps>

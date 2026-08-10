@@ -10,8 +10,7 @@ The Perplexity plugin provides web search capabilities through the Perplexity
 Search API or Perplexity Sonar via OpenRouter.
 
 <Note>
-This page covers the Perplexity **provider** setup. For the Perplexity
-**tool** (how the agent uses it), see [Perplexity tool](/tools/perplexity-search).
+This page is the Perplexity **provider** setup. For the Perplexity **tool** (how the agent uses it), see [Perplexity tool](/tools/perplexity-search).
 </Note>
 
 | Property    | Value                                                                  |
@@ -47,7 +46,7 @@ This page covers the Perplexity **provider** setup. For the Perplexity
 
 The plugin auto-selects the transport based on API key prefix:
 
-
+<Tabs>
   <Tab title="Native Perplexity API (pplx-)">
     When your key starts with `pplx-`, OpenClaw uses the native Perplexity Search
     API. This transport returns structured results and supports domain, language,
@@ -58,7 +57,7 @@ The plugin auto-selects the transport based on API key prefix:
     the Perplexity Sonar model. This transport returns AI-synthesized answers with
     citations.
   </Tab>
-
+</Tabs>
 
 | Key prefix | Transport                    | Features                                         |
 | ---------- | ---------------------------- | ------------------------------------------------ |
@@ -114,11 +113,11 @@ When using the native Perplexity API, searches support the following filters:
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Perplexity search tool" href="/tools/perplexity-search" icon="magnifying-glass">
     How the agent invokes Perplexity searches and interprets results.
-  
-  
+  </Card>
+  <Card title="Configuration reference" href="/gateway/configuration-reference" icon="gear">
     Full configuration reference including plugin entries.
-  
-
+  </Card>
+</CardGroup>

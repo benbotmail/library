@@ -65,7 +65,7 @@ final transcripts as Deepgram returns them.
 | `punctuate`       | `tools.media.audio.providerOptions.deepgram.punctuate`       | Enable punctuation (optional)         |
 | `smart_format`    | `tools.media.audio.providerOptions.deepgram.smart_format`    | Enable smart formatting (optional)    |
 
-
+<Tabs>
   <Tab title="With language hint">
     ```json5
     {
@@ -101,7 +101,7 @@ final transcripts as Deepgram returns them.
     }
     ```
   </Tab>
-
+</Tabs>
 
 ## Voice Call streaming STT
 
@@ -168,17 +168,17 @@ Twilio media frames can be forwarded directly.
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Media tools" href="/tools/media-overview" icon="photo-film">
     Audio, image, and video processing pipeline overview.
-  
-  
+  </Card>
+  <Card title="Configuration" href="/gateway/configuration" icon="gear">
     Full config reference including media tool settings.
-  
-  
+  </Card>
+  <Card title="Troubleshooting" href="/help/troubleshooting" icon="wrench">
     Common issues and debugging steps.
-  
-  
+  </Card>
+  <Card title="FAQ" href="/help/faq" icon="circle-question">
     Frequently asked questions about OpenClaw setup.
-  
-
+  </Card>
+</CardGroup>

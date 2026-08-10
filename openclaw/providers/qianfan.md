@@ -110,22 +110,23 @@ The default bundled model ref is `qianfan/deepseek-v3.2`. You only need to overr
     - Ensure your API key starts with `bce-v3/ALTAK-` and has Qianfan API access enabled in the Baidu Cloud console.
     - If models are not listed, confirm your account has the Qianfan service activated.
     - The default base URL is `https://qianfan.baidubce.com/v2`. Only change it if you use a custom endpoint or proxy.
+
   </Accordion>
 </AccordionGroup>
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
     Choosing providers, model refs, and failover behavior.
-  
-  
+  </Card>
+  <Card title="Configuration reference" href="/gateway/configuration-reference" icon="gear">
     Full OpenClaw configuration reference.
-  
-  
+  </Card>
+  <Card title="Agent setup" href="/concepts/agent" icon="robot">
     Configuring agent defaults and model assignments.
-  
-  
+  </Card>
+  <Card title="Qianfan API docs" href="https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb" icon="arrow-up-right-from-square">
     Official Qianfan API documentation.
-  
-
+  </Card>
+</CardGroup>

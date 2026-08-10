@@ -141,14 +141,14 @@ account.
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
     Provider rules, model refs, and failover behavior.
-  
-  
+  </Card>
+  <Card title="Configuration reference" href="/gateway/configuration-reference" icon="gear">
     Full config schema including provider settings.
-  
-  
+  </Card>
+  <Card title="Synthetic" href="https://synthetic.new" icon="arrow-up-right-from-square">
     Synthetic dashboard and API docs.
-  
-
+  </Card>
+</CardGroup>

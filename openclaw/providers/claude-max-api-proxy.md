@@ -172,17 +172,17 @@ For native Anthropic integration with Claude CLI or API keys, see [Anthropic pro
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Anthropic provider" href="/providers/anthropic" icon="bolt">
     Native OpenClaw integration with Claude CLI or API keys.
-  
-  
+  </Card>
+  <Card title="OpenAI provider" href="/providers/openai" icon="robot">
     For OpenAI/Codex subscriptions.
-  
-  
+  </Card>
+  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
     Overview of all providers, model refs, and failover behavior.
-  
-  
+  </Card>
+  <Card title="Configuration" href="/gateway/configuration" icon="gear">
     Full config reference.
-  
-
+  </Card>
+</CardGroup>

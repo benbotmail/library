@@ -50,7 +50,7 @@ Anonymized models are **not** fully private. Venice strips metadata before forwa
   <Step title="Configure OpenClaw">
     Choose your preferred setup method:
 
-    
+    <Tabs>
       <Tab title="Interactive (recommended)">
         ```bash
         openclaw onboard --auth-choice venice-api-key
@@ -74,7 +74,7 @@ Anonymized models are **not** fully private. Venice strips metadata before forwa
           --venice-api-key "vapi_xxxxxxxxxxxx"
         ```
       </Tab>
-    
+    </Tabs>
 
   </Step>
   <Step title="Verify setup">
@@ -122,6 +122,15 @@ Use the table below to pick the right model for your use case.
 | **Uncensored**             | `venice-uncensored`              | No content restrictions                      |
 
 </Tip>
+
+## DeepSeek V4 replay behavior
+
+If Venice exposes DeepSeek V4 models such as `venice/deepseek-v4-pro` or
+`venice/deepseek-v4-flash`, OpenClaw fills the required DeepSeek V4
+`reasoning_content` replay placeholder on assistant messages when the proxy
+omits it. Venice rejects DeepSeek's native top-level `thinking` control, so
+OpenClaw keeps that provider-specific replay fix separate from the native
+DeepSeek provider's thinking controls.
 
 ## Built-in catalog (41 total)
 
@@ -290,17 +299,17 @@ More help: [Troubleshooting](/help/troubleshooting) and [FAQ](/help/faq).
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
     Choosing providers, model refs, and failover behavior.
-  
-  
+  </Card>
+  <Card title="Venice AI" href="https://venice.ai" icon="globe">
     Venice AI homepage and account signup.
-  
-  
+  </Card>
+  <Card title="API documentation" href="https://docs.venice.ai" icon="book">
     Venice API reference and developer docs.
-  
-  
+  </Card>
+  <Card title="Pricing" href="https://venice.ai/pricing" icon="credit-card">
     Current Venice credit rates and plans.
-  
-
+  </Card>
+</CardGroup>

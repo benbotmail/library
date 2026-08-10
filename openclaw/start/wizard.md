@@ -44,7 +44,7 @@ API key, while others are key-free. You can also configure this later with
 
 Onboarding starts with **QuickStart** (defaults) vs **Advanced** (full control).
 
-
+<Tabs>
   <Tab title="QuickStart (defaults)">
     - Local gateway (loopback)
     - Workspace default (or existing workspace)
@@ -54,11 +54,13 @@ Onboarding starts with **QuickStart** (defaults) vs **Advanced** (full control).
     - DM isolation default: local onboarding writes `session.dmScope: "per-channel-peer"` when unset. Details: [CLI Setup Reference](/start/wizard-cli-reference#outputs-and-internals)
     - Tailscale exposure **Off**
     - Telegram + WhatsApp DMs default to **allowlist** (you'll be prompted for your phone number)
+
   </Tab>
   <Tab title="Advanced (full control)">
     - Exposes every step (mode, workspace, gateway, channels, daemon, skills).
-  </Tab>
 
+  </Tab>
+</Tabs>
 
 ## What onboarding configures
 

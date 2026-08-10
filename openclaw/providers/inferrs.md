@@ -195,14 +195,14 @@ For general help, see [Troubleshooting](/help/troubleshooting) and [FAQ](/help/f
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Local models" href="/gateway/local-models" icon="server">
     Running OpenClaw against local model servers.
-  
-  
+  </Card>
+  <Card title="Gateway troubleshooting" href="/gateway/troubleshooting#local-openai-compatible-backend-passes-direct-probes-but-agent-runs-fail" icon="wrench">
     Debugging local OpenAI-compatible backends that pass probes but fail agent runs.
-  
-  
+  </Card>
+  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
     Overview of all providers, model refs, and failover behavior.
-  
-
+  </Card>
+</CardGroup>

@@ -34,7 +34,7 @@ Coding Plan support can lag behind the public catalog.
 
 Choose your plan type and follow the setup steps.
 
-
+<Tabs>
   <Tab title="Coding Plan (subscription)">
     **Best for:** subscription-based access through the Qwen Coding Plan.
 
@@ -76,7 +76,10 @@ Choose your plan type and follow the setup steps.
     <Note>
     Legacy `modelstudio-*` auth-choice ids and `modelstudio/...` model refs still
     work as compatibility aliases, but new setup flows should prefer the canonical
-    `qwen-*` auth-choice ids and `qwen/...` model refs.
+    `qwen-*` auth-choice ids and `qwen/...` model refs. If you define an exact
+    custom `models.providers.modelstudio` entry with another `api` value, that
+    custom provider owns `modelstudio/...` refs instead of the Qwen compatibility
+    alias.
     </Note>
 
   </Tab>
@@ -122,11 +125,14 @@ Choose your plan type and follow the setup steps.
     <Note>
     Legacy `modelstudio-*` auth-choice ids and `modelstudio/...` model refs still
     work as compatibility aliases, but new setup flows should prefer the canonical
-    `qwen-*` auth-choice ids and `qwen/...` model refs.
+    `qwen-*` auth-choice ids and `qwen/...` model refs. If you define an exact
+    custom `models.providers.modelstudio` entry with another `api` value, that
+    custom provider owns `modelstudio/...` refs instead of the Qwen compatibility
+    alias.
     </Note>
 
   </Tab>
-
+</Tabs>
 
 ## Plan types and endpoints
 
@@ -168,6 +174,13 @@ the Standard endpoint.
 Availability can still vary by endpoint and billing plan even when a model is
 present in the bundled catalog.
 </Note>
+
+## Thinking Controls
+
+For reasoning-enabled Qwen Cloud models, the bundled provider maps OpenClaw
+thinking levels to DashScope's top-level `enable_thinking` request flag. Disabled
+thinking sends `enable_thinking: false`; other thinking levels send
+`enable_thinking: true`.
 
 ## Multimodal add-ons
 
@@ -221,6 +234,12 @@ See [Video Generation](/tools/video-generation) for shared tool parameters, prov
     If the Coding Plan endpoints return an "unsupported model" error for
     `qwen3.6-plus`, switch to Standard (pay-as-you-go) instead of the Coding Plan
     endpoint/key pair.
+
+    OpenClaw's bundled Qwen catalog does not advertise `qwen3.6-plus` on Coding
+    Plan endpoints, but explicitly configured `qwen/qwen3.6-plus` entries under
+    `models.providers.qwen.models` are honored on Coding Plan baseUrls so you
+    can opt that model in if Aliyun enables it on your subscription. The
+    upstream API still decides whether the call succeeds.
 
   </Accordion>
 
@@ -297,17 +316,17 @@ See [Video Generation](/tools/video-generation) for shared tool parameters, prov
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
     Choosing providers, model refs, and failover behavior.
-  
-  
+  </Card>
+  <Card title="Video generation" href="/tools/video-generation" icon="video">
     Shared video tool parameters and provider selection.
-  
-  
+  </Card>
+  <Card title="Alibaba (ModelStudio)" href="/providers/alibaba" icon="cloud">
     Legacy ModelStudio provider and migration notes.
-  
-  
+  </Card>
+  <Card title="Troubleshooting" href="/help/troubleshooting" icon="wrench">
     General troubleshooting and FAQ.
-  
-
+  </Card>
+</CardGroup>

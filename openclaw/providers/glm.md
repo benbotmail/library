@@ -100,11 +100,11 @@ can change; check Z.AI's docs for the latest.
 
 ## Related
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Z.AI provider" href="/providers/zai" icon="server">
     Full Z.AI provider configuration and regional endpoints.
-  
-  
+  </Card>
+  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
     Choosing providers, model refs, and failover behavior.
-  
-
+  </Card>
+</CardGroup>

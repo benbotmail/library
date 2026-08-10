@@ -26,17 +26,17 @@ falls back to npm automatically.
 
 ## What kind of plugin?
 
-
-  
+<CardGroup cols={3}>
+  <Card title="Channel plugin" icon="messages-square" href="/plugins/sdk-channel-plugins">
     Connect OpenClaw to a messaging platform (Discord, IRC, etc.)
-  
-  
+  </Card>
+  <Card title="Provider plugin" icon="cpu" href="/plugins/sdk-provider-plugins">
     Add a model provider (LLM, proxy, or custom endpoint)
-  
-  
+  </Card>
+  <Card title="Tool / hook plugin" icon="wrench" href="/plugins/hooks">
     Register agent tools, event hooks, or services — continue below
-  
-
+  </Card>
+</CardGroup>
 
 For a channel plugin that isn't guaranteed to be installed when onboarding/setup
 runs, use `createOptionalChannelSetupSurface(...)` from
@@ -76,6 +76,9 @@ and provider plugins have dedicated guides linked above.
       "id": "my-plugin",
       "name": "My Plugin",
       "description": "Adds a custom tool to OpenClaw",
+      "activation": {
+        "onStartup": true
+      },
       "configSchema": {
         "type": "object",
         "additionalProperties": false
@@ -84,7 +87,9 @@ and provider plugins have dedicated guides linked above.
     ```
     </CodeGroup>
 
-    Every plugin needs a manifest, even with no config. See
+    Every plugin needs a manifest, even with no config, and every plugin should
+    declare `activation.onStartup` intentionally. Runtime-registered tools need
+    startup import, so this example sets it to `true`. See
     [Manifest](/plugins/manifest) for the full schema. The canonical ClawHub
     publish snippets live in `docs/snippets/plugin-publish/`.
 
@@ -243,6 +248,7 @@ Users enable optional tools in config:
 ```
 
 - Tool names must not clash with core tools (conflicts are skipped)
+- Tools with malformed registration objects, including missing `parameters`, are skipped and reported in plugin diagnostics instead of breaking agent runs
 - Use `optional: true` for tools with side effects or extra binary requirements
 - Users can enable all tools from a plugin by adding the plugin id to `tools.allow`
 
@@ -251,8 +257,11 @@ Users enable optional tools in config:
 Always import from focused `openclaw/plugin-sdk/<subpath>` paths:
 
 ```typescript
+import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
+import { createPluginRuntimeStore } from "openclaw/plugin-sdk/runtime-store";
 
 // Wrong: monolithic root (deprecated, will be removed)
+import { ... } from "openclaw/plugin-sdk";
 ```
 
 For the full subpath reference, see [SDK Overview](/plugins/sdk-overview).
@@ -271,9 +280,8 @@ If a helper is only useful inside one bundled provider package, keep it on that
 package-root seam instead of promoting it into `openclaw/plugin-sdk/*`.
 
 Some generated `openclaw/plugin-sdk/<bundled-id>` helper seams still exist for
-bundled-plugin maintenance and compatibility, for example
-`plugin-sdk/feishu-setup` or `plugin-sdk/zalo-setup`. Treat those as reserved
-surfaces, not as the default pattern for new third-party plugins.
+bundled-plugin maintenance when they have tracked owner usage. Treat those as
+reserved surfaces, not as the default pattern for new third-party plugins.
 
 ## Pre-submission checklist
 
@@ -285,37 +293,37 @@ surfaces, not as the default pattern for new third-party plugins.
 <Check>Tests pass (`pnpm test -- <bundled-plugin-root>/my-plugin/`)</Check>
 <Check>`pnpm check` passes (in-repo plugins)</Check>
 
-## Beta Release Testing
+## Beta release testing
 
 1. Watch for GitHub release tags on [openclaw/openclaw](https://github.com/openclaw/openclaw/releases) and subscribe via `Watch` > `Releases`. Beta tags look like `v2026.3.N-beta.1`. You can also turn on notifications for the official OpenClaw X account [@openclaw](https://x.com/openclaw) for release announcements.
 2. Test your plugin against the beta tag as soon as it appears. The window before stable is typically only a few hours.
 3. Post in your plugin's thread in the `plugin-forum` Discord channel after testing with either `all good` or what broke. If you do not have a thread yet, create one.
-4. If something breaks, open or update an issue titled `Beta blocker: <plugin-name> - ` and apply the `beta-blocker` label. Put the issue link in your thread.
-5. Open a PR to `main` titled `fix(<plugin-id>): beta blocker - ` and link the issue in both the PR and your Discord thread. Contributors cannot label PRs, so the title is the PR-side signal for maintainers and automation. Blockers with a PR get merged; blockers without one might ship anyway. Maintainers watch these threads during beta testing.
+4. If something breaks, open or update an issue titled `Beta blocker: <plugin-name> - <summary>` and apply the `beta-blocker` label. Put the issue link in your thread.
+5. Open a PR to `main` titled `fix(<plugin-id>): beta blocker - <summary>` and link the issue in both the PR and your Discord thread. Contributors cannot label PRs, so the title is the PR-side signal for maintainers and automation. Blockers with a PR get merged; blockers without one might ship anyway. Maintainers watch these threads during beta testing.
 6. Silence means green. If you miss the window, your fix likely lands in the next cycle.
 
 ## Next steps
 
-
-  
+<CardGroup cols={2}>
+  <Card title="Channel Plugins" icon="messages-square" href="/plugins/sdk-channel-plugins">
     Build a messaging channel plugin
-  
-  
+  </Card>
+  <Card title="Provider Plugins" icon="cpu" href="/plugins/sdk-provider-plugins">
     Build a model provider plugin
-  
-  
+  </Card>
+  <Card title="SDK Overview" icon="book-open" href="/plugins/sdk-overview">
     Import map and registration API reference
-  
-  
+  </Card>
+  <Card title="Runtime Helpers" icon="settings" href="/plugins/sdk-runtime">
     TTS, search, subagent via api.runtime
-  
-  
+  </Card>
+  <Card title="Testing" icon="test-tubes" href="/plugins/sdk-testing">
     Test utilities and patterns
-  
-  
+  </Card>
+  <Card title="Plugin Manifest" icon="file-json" href="/plugins/manifest">
     Full manifest schema reference
-  
-
+  </Card>
+</CardGroup>
 
 ## Related
 
