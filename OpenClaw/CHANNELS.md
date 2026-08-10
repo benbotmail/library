@@ -1,6 +1,6 @@
 # OpenClaw Channels Reference
 
-> Messaging channel setup and configuration
+> **Current state:** OpenClaw v2026.8.1 · upstream `cd7b7f6`
 
 ## Supported Channels
 
@@ -34,15 +34,7 @@
 ### DM Policy
 
 ```json5
-{
-  channels: {
-    telegram: {
-      enabled: true,
-      dmPolicy: "pairing",   // pairing | allowlist | open | disabled
-      allowFrom: ["tg:123"],
-    },
-  },
-}
+dmPolicy: "pairing"   // pairing | allowlist | open | disabled
 ```
 
 | Policy | Behavior |
@@ -55,15 +47,20 @@
 ### Group Policy
 
 ```json5
+groupPolicy: "requireMention"   // open | requireMention | allowlist | disabled
+```
+
+### Channel Defaults (inherited)
+
+```json5
 {
   channels: {
-    discord: {
-      groupPolicy: "allowlist",
-      groupAllowFrom: ["123456789012345678"],
-      groups: {
-        "*": { requireMention: true },
-        "123456789012345678": { requireMention: false },
-      },
+    defaults: {
+      groupPolicy: "requireMention",
+      contextVisibility: "always",
+      heartbeatVisibility: { enabled: false },
+      botLoopProtection: { /* pair-loop guard */ },
+      implicitMentions: { /* implicit mention policy */ },
     },
   },
 }
@@ -71,7 +68,7 @@
 
 ---
 
-## Telegram Setup
+## Telegram
 
 ### Quick Config
 
@@ -81,33 +78,248 @@
     telegram: {
       enabled: true,
       botToken: "123456:ABC-DEF",
+      // tokenFile: "/path/to/token-file",  // alternative to botToken
       dmPolicy: "pairing",
-      groups: { "*": { requireMention: true } },
+      groups: { "*": { groupPolicy: "requireMention" } },
     },
   },
 }
 ```
 
-### BotFather Commands
+### Streaming / Preview Modes
 
-- `/newbot` - Create new bot
-- `/setprivacy` - Toggle privacy mode
-- `/setjoingroups` - Allow/deny group adds
+```json5
+{
+  channels: {
+    telegram: {
+      streaming: {
+        // Preview streaming mode (how live agent responses are shown)
+        mode: "progress",
+        // off:     no preview updates
+        // partial: update one preview message in place
+        // block:   emit larger chunked preview updates
+        // progress: progress/status preview with tool activity
 
-### CLI
+        chunkMode: "text",         // text chunking mode for outbound delivery
+        nativeTransport: false,    // prefer Telegram native streaming transport
 
-```bash
-# Set token via env
-TELEGRAM_BOT_TOKEN=123:abc openclaw gateway
+        preview: {
+          minChars: undefined,     // min chunk size before sending update
+          maxChars: undefined,     // max chunk size before forcing update
+          breakPreference: "paragraph",
+          toolProgress: true,
+          commandText: "raw",      // raw | status
+        },
 
-# Pairing
-openclaw pairing list telegram
-openclaw pairing approve telegram <CODE>
+        progress: {
+          label: "auto",           // "auto" | false | custom string
+          maxLines: 8,             // max progress lines below label
+          maxLineChars: 120,
+          render: "text",          // text | rich
+          toolProgress: true,
+          commandText: "raw",      // raw | status
+          commentary: false,       // include assistant preamble text
+          narration: true,         // utility-model narration of tool activity
+        },
+
+        block: {
+          enabled: false,          // chunked block-reply delivery
+          chunk: { breakPreference: "paragraph" },
+          toolProgress: true,
+          commandText: "raw",
+        },
+      },
+    },
+  },
+}
+```
+
+### Capabilities
+
+```json5
+{
+  channels: {
+    telegram: {
+      capabilities: {
+        inlineButtons: "dm",   // off | dm | group | all | allowlist
+      },
+    },
+  },
+}
+```
+
+### Reactions
+
+```json5
+{
+  channels: {
+    telegram: {
+      reactions: {
+        enabled: true,
+        listen: "off",     // off | own | all — which user reactions trigger notifications
+        send: "ack",       // off | ack | minimal | extensive — agent reaction behavior
+      },
+    },
+  },
+}
+```
+
+### Rich Messages (Bot API 10.2)
+
+```json5
+{
+  channels: {
+    telegram: {
+      richMessages: false,
+      // Enable for native tables, details, and rich media via sendRichMessage.
+      // WARNING: Web/Desktop and older mobile clients may not support these.
+    },
+  },
+}
+```
+
+### Network
+
+```json5
+{
+  channels: {
+    telegram: {
+      network: {
+        dnsResultOrder: "ipv4first",   // ipv4first | verbatim
+        autoSelectFamily: undefined,    // override Node autoSelectFamily
+        dangerouslyAllowPrivateNetwork: false,
+      },
+      proxy: "socks5://...",
+      apiRoot: "https://my-bot-api.example.com",
+      trustedLocalFileRoots: ["/var/lib/telegram-bot-api/files"],
+    },
+  },
+}
+```
+
+### Error Policy
+
+```json5
+{
+  channels: {
+    telegram: {
+      errorPolicy: "always",       // always | once | silent
+      silentErrorReplies: false,   // send error replies without notification sound
+    },
+  },
+}
+```
+
+### Groups & Topics
+
+```json5
+{
+  channels: {
+    telegram: {
+      groups: {
+        "*": {
+          groupPolicy: "requireMention",
+          requireMention: true,
+          ingest: false,            // emit hooks for mention-skipped messages
+          skills: ["github"],       // limit skills; omit = all, empty = none
+          enabled: true,
+          allowFrom: [],
+          systemPrompt: "",
+          disableAudioPreflight: false,
+          errorPolicy: "always",
+          topics: {
+            "*": { requireMention: true },
+            "42": {
+              agentId: "codex",
+              systemPrompt: "Topic-specific prompt",
+              groupPolicy: "open",
+              skills: [],
+              allowFrom: [123456],
+            },
+          },
+        },
+      },
+    },
+  },
+}
+```
+
+### Direct DM Config
+
+```json5
+{
+  channels: {
+    telegram: {
+      direct: {
+        "123456789": {
+          dmPolicy: "open",
+          autoTopicLabel: true,    // LLM-based topic naming (default: true)
+          topics: { /* same as group topics */ },
+        },
+      },
+    },
+  },
+}
+```
+
+### Thread Bindings
+
+```json5
+{
+  channels: {
+    telegram: {
+      threadBindings: {
+        enabled: false,
+        spawnSessions: false,
+        defaultSpawnContext: "isolated",   // isolated | fork
+      },
+    },
+  },
+}
+```
+
+### Multi-Account
+
+```json5
+{
+  channels: {
+    telegram: {
+      accounts: {
+        work: {
+          botToken: "work-bot-token",
+          // ...all same fields as top-level
+        },
+      },
+      defaultAccount: "work",
+    },
+  },
+}
+```
+
+### Actions
+
+```json5
+{
+  channels: {
+    telegram: {
+      actions: {
+        reactions: true,
+        sendMessage: true,
+        poll: false,            // requires sendMessage
+        deleteMessage: true,
+        editMessage: true,
+        sticker: false,
+        createForumTopic: false,
+        editForumTopic: false,
+      },
+    },
+  },
+}
 ```
 
 ---
 
-## WhatsApp Setup
+## WhatsApp
 
 ### Quick Config
 
@@ -117,8 +329,9 @@ openclaw pairing approve telegram <CODE>
     whatsapp: {
       dmPolicy: "pairing",
       allowFrom: ["+15551234567"],
-      groupPolicy: "allowlist",
-      groupAllowFrom: ["+15551234567"],
+      groups: {
+        "*": { groupPolicy: "requireMention" },
+      },
     },
   },
 }
@@ -127,20 +340,15 @@ openclaw pairing approve telegram <CODE>
 ### CLI
 
 ```bash
-# Link via QR
 openclaw channels login --channel whatsapp
-
-# Multi-account
 openclaw channels login --channel whatsapp --account work
-
-# Pairing
 openclaw pairing list whatsapp
 openclaw pairing approve whatsapp <CODE>
 ```
 
 ---
 
-## Discord Setup
+## Discord
 
 ### Quick Config
 
@@ -149,38 +357,26 @@ openclaw pairing approve whatsapp <CODE>
   channels: {
     discord: {
       enabled: true,
-      botToken: "OTk...",
-      applicationId: "123456789012345678",
+      botToken: "...",
       dmPolicy: "pairing",
+      allowFrom: ["discord:123456789"],
       groups: {
-        "*": { requireMention: true },
+        "*": { groupPolicy: "requireMention" },
+        "guild:123456": { groupPolicy: "allowlist" },
       },
-      guilds: {
-        "123456789012345678": {
-          enabled: true,
-          channels: {
-            "987654321098765432": { enabled: true },
-          },
-        },
+      threadBindings: {
+        enabled: true,
+        spawnSessions: true,
+        defaultSpawnContext: "isolated",
       },
     },
   },
 }
 ```
 
-### CLI
-
-```bash
-# Login
-openclaw channels login discord
-
-# Status
-openclaw channels status discord
-```
-
 ---
 
-## Slack Setup
+## Slack
 
 ### Quick Config
 
@@ -191,25 +387,16 @@ openclaw channels status discord
       enabled: true,
       botToken: "xoxb-...",
       appToken: "xapp-...",
-      signingSecret: "...",
       dmPolicy: "pairing",
-      groups: { "*": { requireMention: true } },
+      groups: { "*": { groupPolicy: "requireMention" } },
     },
   },
 }
 ```
 
-### CLI
-
-```bash
-openclaw channels login slack
-```
-
 ---
 
-## Signal Setup
-
-### Quick Config
+## Signal
 
 ```json5
 {
@@ -223,47 +410,21 @@ openclaw channels login slack
 }
 ```
 
-### CLI
-
-```bash
-# Register
-openclaw channels login signal
-
-# Verify
-openclaw channels verify signal <CODE>
-```
-
----
-
-## Multi-Account
-
-```json5
-{
-  channels: {
-    telegram: {
-      enabled: true,
-      botToken: "main-bot-token",
-      accounts: {
-        work: {
-          botToken: "work-bot-token",
-        },
-      },
-    },
-  },
-}
-```
-
 ---
 
 ## Troubleshooting
 
 ```bash
-# Channel status
-openclaw channels status --probe
-
-# Diagnostics
-openclaw doctor
-
-# Logs
-openclaw logs --follow
+openclaw channels status --probe   # channel status
+openclaw doctor                    # diagnostics
+openclaw logs --follow             # live logs
 ```
+
+---
+
+## Provenance
+
+- **Source files:** `src/config/types.telegram.ts`, `src/config/types.channels.ts`, `src/config/types.base.ts`, `src/channels/streaming.ts`, `src/channels/streaming-config-readers.ts`
+- **Upstream commit:** `cd7b7f639da0d26424b52f3ffa2391f81acb5040`
+- **OpenClaw version:** `2026.8.1`
+- **Last validated:** 2026-08-10
