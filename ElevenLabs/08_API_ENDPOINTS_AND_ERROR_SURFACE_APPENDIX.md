@@ -3,7 +3,7 @@
 This appendix captures the **canonical endpoint surface** needed for the architectures in this pack.
 
 Scope: conversation sessions + Scribe realtime STT token flow.
-Source basis: `open-source/elevenlabs/packages/client/README.md` (current monorepo state).
+Source basis: `open-source/elevenlabs/packages/client/README.md` + source code (current monorepo state at v1.17.0).
 
 ## 1) Vendor endpoints (server-to-ElevenLabs)
 
@@ -13,7 +13,7 @@ Source basis: `open-source/elevenlabs/packages/client/README.md` (current monore
   - `https://api.elevenlabs.io/v1/convai/conversation/get-signed-url?agent_id=<AGENT_ID>`
 - Required header:
   - `xi-api-key: <ELEVENLABS_API_KEY>`
-- Expected response shape (minimum used by client):
+- Expected response shape:
   - `{ "signed_url": "..." }`
 
 ### B) Conversation token (WebRTC flow)
@@ -22,7 +22,7 @@ Source basis: `open-source/elevenlabs/packages/client/README.md` (current monore
   - `https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=<AGENT_ID>`
 - Required header:
   - `xi-api-key: <ELEVENLABS_API_KEY>`
-- Expected response shape (minimum used by client):
+- Expected response shape:
   - `{ "token": "..." }`
 
 ### C) Scribe single-use token
@@ -31,32 +31,36 @@ Source basis: `open-source/elevenlabs/packages/client/README.md` (current monore
   - `https://api.elevenlabs.io/v1/single-use-token/realtime_scribe`
 - Required header:
   - `xi-api-key: <ELEVENLABS_API_KEY>`
-- Expected response shape (minimum used by client):
+- Expected response shape:
   - `{ "token": "..." }`
+
+### D) Overall conversation feedback
+- Method: `POST`
+- Endpoint:
+  - `https://api.elevenlabs.io/v1/convai/conversations/{conversation_id}/feedback`
+- Required header:
+  - `xi-api-key: <ELEVENLABS_API_KEY>` (or client-side token for per-message feedback via SDK)
 
 ---
 
 ## 2) App-facing endpoints (your backend)
 
-These are recommended boundary endpoints so clients never receive permanent API keys.
+Recommended boundary endpoints so clients never receive permanent API keys:
 
-- `GET /signed-url`
-  - Returns plaintext signed URL (or JSON wrapper if preferred)
-- `GET /conversation-token`
-  - Returns WebRTC token
-- `GET /scribe-token`
-  - Returns realtime Scribe token
+- `GET /signed-url` — Returns plaintext signed URL
+- `GET /conversation-token` — Returns WebRTC token
+- `GET /scribe-token` — Returns realtime Scribe token
 
 Hard requirements:
-- authenticate caller before minting
-- apply rate limits per user/session
-- redact tokens from logs
+- Authenticate caller before minting
+- Apply rate limits per user/session
+- Redact tokens from logs
 
 ---
 
 ## 3) Minimal response/error contract for your backend
 
-### Success envelope (recommended)
+### Success envelope
 ```json
 {
   "ok": true,
@@ -65,7 +69,7 @@ Hard requirements:
 }
 ```
 
-### Error envelope (recommended)
+### Error envelope
 ```json
 {
   "ok": false,
@@ -75,38 +79,56 @@ Hard requirements:
 }
 ```
 
-Error-code starter set:
-- `UNAUTHORIZED`
-- `FORBIDDEN`
-- `RATE_LIMITED`
-- `UPSTREAM_AUTH_FAILED`
-- `UPSTREAM_RATE_LIMITED`
-- `UPSTREAM_UNAVAILABLE`
-- `BAD_REQUEST`
+Error-code starter set: `UNAUTHORIZED`, `FORBIDDEN`, `RATE_LIMITED`, `UPSTREAM_AUTH_FAILED`, `UPSTREAM_RATE_LIMITED`, `UPSTREAM_UNAVAILABLE`, `BAD_REQUEST`
 
 ---
 
-## 4) Runtime error events to map explicitly
+## 4) Runtime error events (Scribe)
 
-When using `@elevenlabs/client` realtime flows, map these to actionable recovery:
+Map these to actionable recovery:
 
-- `AUTH_ERROR`
-  - action: refresh token + reconnect
-- `ERROR`
-  - action: classify (retryable vs fatal), then backoff retry if retryable
-- `QUOTA_EXCEEDED`
-  - action: surface billing/limit state to operator and user path
-- `CLOSE`
-  - action: reconnect policy with jitter and max attempts
+| Event | Action |
+|---|---|
+| `AUTH_ERROR` | Refresh token + reconnect |
+| `ERROR` | Classify (retryable vs fatal), backoff retry if retryable |
+| `QUOTA_EXCEEDED` | Surface billing/limit state |
+| `COMMIT_THROTTLED` | Reduce commit frequency |
+| `TRANSCRIBER_ERROR` | Surface as server-side failure |
+| `UNACCEPTED_TERMS` | Prompt terms acceptance |
+| `RATE_LIMITED` | Backoff and retry |
+| `INPUT_ERROR` | Validate input format |
+| `QUEUE_OVERFLOW` | Reduce audio chunk rate |
+| `RESOURCE_EXHAUSTED` | Retry with backoff |
+| `SESSION_TIME_LIMIT_EXCEEDED` | Start new session |
+| `CHUNK_SIZE_EXCEEDED` | Reduce chunk size |
+| `INSUFFICIENT_AUDIO_ACTIVITY` | Check microphone input |
+| `CLOSE` | Reconnect policy with jitter and max attempts |
+
+> **v1.15.1 robustness:** Generic local Scribe errors now use the same typed error payload as server errors, and malformed error messages (missing `error_event` payload) are handled defensively instead of crashing the consumer.
 
 ---
 
-## 5) Endpoint drift check (doc-freshness guard)
+## 5) Conversation disconnection details
+
+`onDisconnect` receives `DisconnectionDetails`:
+
+```ts
+type DisconnectionDetails =
+  | { reason: "error"; message: string; context: DisconnectionContext; closeCode?: number; closeReason?: string }
+  | { reason: "agent"; context?: DisconnectionContext; closeCode?: number; closeReason?: string }
+  | { reason: "user" };
+```
+
+Use `reason` to drive smart retry: only auto-retry on `"error"`, prompt user on `"agent"`, and do nothing on `"user"`.
+
+---
+
+## 6) Endpoint drift check (doc-freshness guard)
 
 On each docs refresh run:
-1. verify each endpoint string above still exists in upstream docs/examples
-2. confirm method (`GET` vs `POST`) unchanged
-3. confirm expected key fields (`signed_url`, `token`) unchanged
-4. update this file if any mismatch is found
+1. Verify each endpoint string still exists in upstream docs/examples
+2. Confirm method (`GET` vs `POST`) unchanged
+3. Confirm expected key fields (`signed_url`, `token`) unchanged
+4. Update this file if any mismatch is found
 
 If drift is detected, mark this appendix with a **BREAKING CHANGE NOTE** at top before publishing.
