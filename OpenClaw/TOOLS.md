@@ -1,6 +1,6 @@
 # OpenClaw Tools Reference
 
-> Built-in agent tools for automation, messaging, and control
+> Current as of 2026-08-13 (upstream `0926d56cbf9`).
 
 ## Tool Control
 
@@ -9,9 +9,10 @@
 ```json5
 {
   tools: {
-    allow: ["group:fs", "browser"],   // Whitelist
-    deny: ["exec"],                    // Blacklist (wins over allow)
-    profile: "coding",                 // Base profile
+    profile: "full",            // minimal | coding | messaging | full (default)
+    allow: ["group:fs", "browser"],
+    deny: ["exec"],             // deny wins over allow
+    elevated: [],               // tools that bypass sandbox
   },
 }
 ```
@@ -39,37 +40,61 @@
 | `group:messaging` | `message` |
 | `group:nodes` | `nodes` |
 
+### Tool Policy Layers (Intersecting)
+
+A deny in **any** layer blocks the tool:
+
+1. Global `tools.deny` / `tools.allow`
+2. Per-agent `agents.entries.*.tools`
+3. Per-channel `channels.<channel>.direct.<chatId>.tools`
+4. Per-sender `toolsBySender`
+5. Sandbox tool policy (`tools.sandbox.tools`)
+
+### `toolsBySender`
+
+```json5
+{
+  channels: {
+    telegram: {
+      direct: {
+        "*": { tools: { deny: ["write", "edit"] } },
+        "603767951": { tools: {} },  // this sender gets full tools
+      },
+    },
+  },
+}
+```
+
+A matching `toolsBySender` entry replaces `tools` for that DM. An exact chat entry replaces the `"*"` entry (no inheritance).
+
 ---
 
 ## Core Tools
 
-### `exec` - Shell Commands
+### `exec` — Shell Commands
 
 ```json
 {
   "command": "npm test",
-  "yieldMs": 10000,       // Auto-background after timeout
-  "background": false,    // Immediate background
-  "timeout": 1800,        // Seconds (kills process)
-  "pty": false,           // TTY mode
-  "elevated": false,      // Host execution if sandboxed
-  "host": "sandbox",      // sandbox | gateway | node
-  "security": "deny",     // deny | allowlist | full
-  "node": "office-mac"    // Target node for host=node
+  "yieldMs": 10000,
+  "background": false,
+  "timeout": 1800,
+  "pty": false,
+  "elevated": false,
+  "host": "sandbox",
+  "security": "deny",
+  "node": "office-mac"
 }
 ```
 
-### `process` - Background Sessions
+**Security modes:** `deny` (default) | `allowlist` | `full`
+**Elevated commands** require `/approve` from operator (allow-once; fresh approval per command).
 
-Actions: `list`, `poll`, `log`, `write`, `kill`, `clear`, `remove`
+### `process` — Background Sessions
 
-```json
-{ "action": "poll", "sessionId": "abc123", "timeout": 5000 }
-{ "action": "log", "sessionId": "abc123", "offset": 0, "limit": 100 }
-{ "action": "kill", "sessionId": "abc123" }
-```
+Actions: `list`, `poll`, `log`, `write`, `send-keys`, `submit`, `paste`, `kill`, `clear`, `remove`
 
-### `web_search` - Web Search
+### `web_search` — Web Search
 
 ```json
 {
@@ -83,12 +108,12 @@ Actions: `list`, `poll`, `log`, `write`, `kill`, `clear`, `remove`
 
 Providers: Brave (default), Firecrawl, Gemini, Grok, Kimi, Perplexity
 
-### `web_fetch` - URL Content
+### `web_fetch` — URL Content
 
 ```json
 {
   "url": "https://docs.openclaw.ai",
-  "extractMode": "markdown",  // or "text"
+  "extractMode": "markdown",
   "maxChars": 50000
 }
 ```
@@ -97,36 +122,32 @@ Providers: Brave (default), Firecrawl, Gemini, Grok, Kimi, Perplexity
 
 ## Browser Tool
 
-### Actions
-
 | Action | Description |
 |--------|-------------|
 | `status` | Browser state |
 | `start` | Launch browser |
 | `stop` | Close browser |
+| `profiles` | List profiles |
 | `tabs` | List tabs |
 | `open` | Open URL |
-| `snapshot` | Capture page structure (aria/ai) |
+| `snapshot` | Capture page structure (aria/role refs) |
 | `screenshot` | Capture image |
-| `act` | UI interaction |
+| `act` | UI interaction (click, type, press, hover, drag, select, fill, etc.) |
 | `navigate` | Navigate to URL |
 | `pdf` | Export PDF |
+| `console` | Console output |
+| `upload` | File upload |
+| `dialog` | Handle dialogs |
 
 ### Profiles
-
 - `openclaw` (default): Isolated managed browser
 - `user`: Real signed-in Chrome (requires user presence)
 - Custom profiles: `work`, `remote`, etc.
 
-```json
-{ "action": "start", "profile": "openclaw" }
-{ "action": "snapshot", "refs": "aria" }
-{ "action": "act", "kind": "click", "ref": "e12" }
-```
-
-### Act Kinds
-
-`click`, `type`, `press`, `hover`, `drag`, `select`, `fill`, `resize`, `wait`, `evaluate`
+### Refs
+- `refs="aria"`: Playwright aria-ref ids (stable across calls)
+- `refs="role"` (default): role+name-based refs
+- Keep `targetId` from snapshot in subsequent calls
 
 ---
 
@@ -134,17 +155,9 @@ Providers: Brave (default), Firecrawl, Gemini, Grok, Kimi, Perplexity
 
 Actions: `present`, `hide`, `navigate`, `eval`, `snapshot`, `a2ui_push`, `a2ui_reset`
 
-```json
-{ "action": "present", "url": "https://example.com" }
-{ "action": "a2ui_push", "jsonl": "{\"type\":\"text\",\"text\":\"Hello\"}" }
-{ "action": "snapshot" }
-```
-
 ---
 
 ## Nodes Tool
-
-### Actions
 
 | Action | Description |
 |--------|-------------|
@@ -157,77 +170,47 @@ Actions: `present`, `hide`, `navigate`, `eval`, `snapshot`, `a2ui_push`, `a2ui_r
 | `screen_record` | Screen recording |
 | `location_get` | Get GPS location |
 
-```json
-{ "action": "camera_snap", "node": "iphone-15", "facing": "back" }
-{ "action": "run", "node": "mac-mini", "command": ["echo", "Hello"] }
-```
-
 ---
 
 ## Messaging Tool
 
-### Actions
-
-| Action | Channels |
-|--------|----------|
-| `send` | All |
-| `poll` | WhatsApp, Discord, MS Teams |
-| `react` | Most |
-| `edit`, `delete` | Most |
-| `thread-create` | Discord, Slack, Telegram |
-| `search` | Discord, Slack |
-
-```json
-{
-  "action": "send",
-  "channel": "telegram",
-  "target": "-1001234567890",
-  "message": "Hello!"
-}
-```
+| Action | Description |
+|--------|-------------|
+| `send` | Send message to channel |
+| `broadcast` | Broadcast to multiple targets |
+| `poll` | Poll for messages (WhatsApp, Discord, MS Teams) |
+| `react` | React with emoji |
+| `edit` | Edit message |
+| `delete` | Delete message |
+| `topic-create` | Create topic/thread (Discord, Slack, Telegram) |
+| `topic-edit` | Edit topic |
 
 ---
 
 ## Cron Tool
 
-Actions: `status`, `list`, `add`, `update`, `remove`, `run`, `runs`, `wake`
-
-```json
-{
-  "action": "add",
-  "job": {
-    "name": "Daily report",
-    "schedule": { "kind": "cron", "expr": "0 9 * * *" },
-    "payload": { "kind": "agentTurn", "message": "Generate report" },
-    "sessionTarget": "isolated"
-  }
-}
-```
+Actions: `status`, `list`, `add`, `update`, `remove`, `run`, `runs`, `wake`, `scratch`
 
 ---
 
 ## Sessions Tools
 
 ### `sessions_list`
-
 ```json
 { "limit": 20, "activeMinutes": 60, "messageLimit": 5 }
 ```
 
 ### `sessions_history`
-
 ```json
 { "sessionKey": "agent:main:main", "limit": 50, "includeTools": false }
 ```
 
 ### `sessions_send`
-
 ```json
 { "sessionKey": "agent:main:main", "message": "Hello", "timeoutSeconds": 60 }
 ```
 
 ### `sessions_spawn`
-
 ```json
 {
   "task": "Build a hello world app",
@@ -238,12 +221,24 @@ Actions: `status`, `list`, `add`, `update`, `remove`, `run`, `runs`, `wake`
 }
 ```
 
+Use `runtime: "acp"` for ACP harness sessions (Codex, Claude Code, Pi). Set `thread: true` for Discord thread-bound persistent sessions.
+
 ---
 
 ## Image Tool
 
 ```json
 { "image": "/path/to/image.png", "prompt": "Describe this image" }
+{ "images": ["url1", "url2"], "prompt": "Compare these" }
+```
+
+---
+
+## PDF Tool
+
+```json
+{ "pdf": "/path/to/doc.pdf", "prompt": "Summarize this" }
+{ "pdfs": ["url1", "url2"], "pages": "1-5" }
 ```
 
 ---
@@ -252,16 +247,15 @@ Actions: `status`, `list`, `add`, `update`, `remove`, `run`, `runs`, `wake`
 
 Actions: `restart`, `config.get`, `config.schema.lookup`, `config.apply`, `config.patch`, `update.run`
 
-```json
-{ "action": "restart", "delayMs": 2000 }
-{ "action": "config.patch", "patch": { "agents": { "defaults": { "thinking": "high" } } } }
-```
+---
+
+## TTS Tool
+
+Converts text to speech. Audio delivered automatically from tool result.
 
 ---
 
 ## Loop Detection
-
-Prevent infinite tool-call loops:
 
 ```json5
 {

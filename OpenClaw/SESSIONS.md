@@ -1,148 +1,114 @@
-# OpenClaw Sessions
+# OpenClaw Sessions Reference
 
-> Session management, keys, lifecycle, and configuration
+> Current as of 2026-08-13 (upstream `0926d56cbf9`).
+
+## Session Model
+
+A **session** is an independent conversation context with its own message history. OpenClaw routes inbound messages to sessions based on channel, sender, and scope.
 
 ## Session Types
 
-| Type | Key Pattern | Use Case |
-|------|-------------|----------|
-| **Main** | `agent:<agentId>:main` | Default direct-chat session |
-| **Per-peer DM** | `agent:<agentId>:direct:<peerId>` | Isolated per-sender DMs |
-| **Per-channel DM** | `agent:<agentId>:<channel>:direct:<peerId>` | DM isolation by channel |
-| **Group** | `agent:<agentId>:<channel>:group:<id>` | Group/channel chats |
-| **Cron** | `cron:<jobId>` | Scheduled task sessions |
-| **Webhook** | `hook:<uuid>` | Webhook-triggered sessions |
+| Type | Key Pattern | Description |
+|------|-------------|-------------|
+| Main | `agent:<agentId>:main` | Direct chat with the agent (primary context) |
+| Group | `agent:<agentId>:<channel>:<groupId>` | Per-group conversation |
+| DM | `agent:<agentId>:<channel>:<userId>` | Per-user DM conversation |
+| Topic | `agent:<agentId>:<channel>:<groupId>:topic:<threadId>` | Forum topic / thread |
+| Isolated | `agent:<agentId>:automation:<jobId>` | Fresh session for automation/cron jobs |
+| Sub-agent | `agent:<agentId>:subagent:<uuid>` | Child session spawned by another agent |
 
-## DM Scoping (`session.dmScope`)
-
-Controls how direct messages are grouped:
+## DM Scope
 
 ```json5
 {
   session: {
-    dmScope: "main",              // Default: all DMs share main session
-    // dmScope: "per-peer",       // Isolate by sender across channels
-    // dmScope: "per-channel-peer",     // Isolate by channel + sender
-    // dmScope: "per-account-channel-peer", // Full isolation for multi-account
+    dmScope: "per-channel-peer",  // Recommended for multi-user
+    // Options:
+    // "main"                  — shared main session (single user)
+    // "per-peer"              — per-user sessions across all channels
+    // "per-channel-peer"      — per-user per-channel sessions
+    // "per-account-channel-peer" — per-user per-account per-channel
   },
 }
 ```
 
-**Security Warning**: For multi-user setups, use `per-channel-peer` or higher to prevent context leakage between users.
-
-## Identity Links
-
-Map the same person across channels to share their DM session:
-
-```json5
-{
-  session: {
-    dmScope: "per-peer",
-    identityLinks: {
-      alice: ["telegram:123456789", "discord:987654321012345678"],
-      bob: ["whatsapp:+15555550123", "telegram:987654321"],
-    },
-  },
-}
-```
-
-## Session Lifecycle
-
-### Reset Policies
+## Session Reset
 
 ```json5
 {
   session: {
     reset: {
-      mode: "daily",      // Daily reset
-      atHour: 4,          // At 4 AM local time
-      idleMinutes: 120,   // Or after 2h idle (whichever first)
+      mode: "daily",       // daily | manual | idle
+      atHour: 4,           // Hour for daily reset (0-23)
+      idleMinutes: 120,    // Idle timeout for idle mode
     },
-    resetByType: {
-      direct: { mode: "idle", idleMinutes: 240 },
-      group: { mode: "idle", idleMinutes: 120 },
-      thread: { mode: "daily", atHour: 4 },
-    },
-    resetByChannel: {
-      discord: { mode: "idle", idleMinutes: 10080 }, // 7 days
-    },
-    resetTriggers: ["/new", "/reset"],
   },
 }
 ```
 
-### Manual Commands
+## Thread Bindings
 
-| Command | Action |
-|---------|--------|
-| `/new` | Start fresh session |
-| `/new <model>` | New session with specific model |
-| `/reset` | Same as `/new` |
-| `/status` | Show session info, context usage |
-| `/compact` | Summarize old context |
-| `/stop` | Abort current run |
+Discord threads, Telegram topics, and other thread-like surfaces can bind sessions:
 
-## Storage
-
-```
-~/.openclaw/agents/<agentId>/sessions/
-├── sessions.json              # Session store (key -> metadata)
-├── <sessionId>.jsonl          # Transcript
-├── <sessionId>-topic-<threadId>.jsonl  # Threaded sessions
-└── *.deleted.<timestamp>      # Archived/deleted sessions
+```json5
+{
+  session: {
+    threadBindings: {
+      enabled: true,
+      idleHours: 24,
+      maxAgeHours: 0,    // 0 = no max age
+    },
+  },
+}
 ```
 
-## Maintenance
+Commands: `/focus`, `/unfocus`, `/agents`, `/session idle`, `/session max-age`.
+
+## Session Maintenance
 
 ```json5
 {
   session: {
     maintenance: {
-      mode: "enforce",        // "warn" | "enforce"
-      pruneAfter: "30d",      // Remove stale sessions
-      maxEntries: 500,        // Cap total entries
-      rotateBytes: "10mb",    // Rotate store file
-      maxDiskBytes: "1gb",    // Disk budget
-      highWaterBytes: "800mb", // Cleanup threshold
+      mode: "enforce",     // enforce | advisory
+      pruneAfter: "30d",
+      maxEntries: 500,
     },
   },
 }
 ```
 
-CLI commands:
+## Sub-Agent Sessions
+
+Sub-agent sessions are spawned by the parent agent for isolated work:
+
+- **`runtime: "subagent"`**: OpenClaw native sub-agent
+- **`runtime: "acp"`**: ACP harness (Codex, Claude Code, Pi)
+- **`mode: "run"`**: One-shot task
+- **`mode: "session"`**: Persistent/thread-bound session
+- **`thread: true`**: Discord thread-bound (ACP harness)
+
+Sub-agents inherit the parent workspace directory automatically.
+
+## Session Visibility
+
+Session visibility determines which sessions an agent can see and interact with. Protected sessions are excluded from entry caps.
+
+## Context and Compaction
+
+- Each session maintains conversation history with bounded context
+- Compaction summarizes older history when context grows too large
+- `session.highWaterBytes` controls when pruning triggers (0 is valid, does not delete all history)
+- Compaction preserves structure history for audit
+
+## Session Search
+
+Sessions can be searched via `sessions_list` with filters for kind, recent activity, and last messages.
+
+## CLI
+
 ```bash
-openclaw sessions cleanup --dry-run    # Preview
-openclaw sessions cleanup --enforce    # Apply
-openclaw sessions --json               # List all
+openclaw sessions               # List sessions
+openclaw sessions --json        # JSON output
+openclaw transcripts            # View transcripts
 ```
-
-## Send Policy
-
-Block delivery for specific session types:
-
-```json5
-{
-  session: {
-    sendPolicy: {
-      rules: [
-        { action: "deny", match: { channel: "discord", chatType: "group" } },
-        { action: "deny", match: { keyPrefix: "cron:" } },
-      ],
-      default: "allow",
-    },
-  },
-}
-```
-
-Runtime overrides (owner only):
-- `/send on` → allow
-- `/send off` → deny
-- `/send inherit` → use config rules
-
-## Tips
-
-1. **Single-user**: Default `dmScope: "main"` is fine
-2. **Multi-user**: Use `per-channel-peer` minimum
-3. **Multi-account**: Use `per-account-channel-peer`
-4. **Cross-channel identity**: Configure `identityLinks`
-5. **Production**: Enable `maintenance.mode: "enforce"`
