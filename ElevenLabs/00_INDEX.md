@@ -1,32 +1,12 @@
 # ElevenLabs JS/TS SDK — Current-State Reference
 
-Last validated against upstream `elevenlabs/packages` commit: `da7b5323e0e0f5b3c7c0e8e8a0a1b2c3d4e5f6a7` (2026-08-10).
+Last validated against upstream `elevenlabs/packages` commit: `d4a4a3becd7514eb3da57b9f3281a793e8678263`.
 
 This pack documents **how the current ElevenLabs JavaScript/TypeScript SDK behaves now** (not a changelog).
 
-## Current package versions documented
-
-| Package | Version |
-|---|---|
-| `@elevenlabs/client` | 1.17.0 |
-| `@elevenlabs/react` | 1.12.0 |
-| `@elevenlabs/react-native` | 1.2.18 |
-| `@elevenlabs/types` | 0.19.0 |
-| `@elevenlabs/convai-widget-core` | 0.15.1 |
-| `@elevenlabs/convai-widget-embed` | 0.15.1 |
-
 ## What this pack covers
-- `@elevenlabs/client` v1.17.0 for agent conversations (WebSocket + WebRTC, text + voice)
-- Full callback surface including `onAgentReasoningResponsePart`, `onPing`, `onAudioAlignment`, `onAgentTyping`, `onExternalAgentConnected`
-- Scribe real-time STT with `enableLogging`, `includeLanguageDetection`, `keyterms`, `noVerbatim`
-- `sendFeedback` with per-message targeting and null-clearing
-- `overrides.asr.keywords` for per-conversation ASR biasing
-- `textOnly` mode for text-only agent sessions
-- Platform abstraction layer (`platform/web/`, `internal/unity`)
-- Unity WebGL bridge (`@elevenlabs/client/internal/unity`)
-- Multimodal user turns via `sendMultimodalMessage({ text?, fileId? })` + `uploadFile()`
-- Widget config: `show_resize_button`, file upload, `EventBridge`, audio tags, dynamic variables
-- React `useScribe` hook with full Scribe options parity
+- `@elevenlabs/client` for agent conversations (WebSocket + WebRTC)
+- Scribe real-time STT via `@elevenlabs/client`
 - Practical patterns for low-latency conference subtitles + translation fan-out
 - Operational guardrails (tokens, auth boundaries, failure handling)
 
@@ -40,18 +20,18 @@ This pack documents **how the current ElevenLabs JavaScript/TypeScript SDK behav
 7. `07_EVALUATION_AND_ACCEPTANCE.md`
 8. `08_API_ENDPOINTS_AND_ERROR_SURFACE_APPENDIX.md`
 9. `09_VERSION_PINNING_AND_COMPATIBILITY_MATRIX.md`
-10. `10_SDK_MIGRATION_V1_PREVIEW.md`
 
 ## Canonical source files
 - Monorepo overview: `open-source/elevenlabs/README.md`
 - Client SDK: `open-source/elevenlabs/packages/client/README.md`
-- Client types: `open-source/elevenlabs/packages/client/src/types.ts`
 - React wrapper: `open-source/elevenlabs/packages/react/README.md`
 - React Native wrapper: `open-source/elevenlabs/packages/react-native/README.md`
 - Types package: `open-source/elevenlabs/packages/types/README.md`
-- AsyncAPI contract: `open-source/elevenlabs/packages/types/schemas/agent.asyncapi.yaml`
-- Scribe AsyncAPI: `open-source/elevenlabs/packages/types/schemas/scribe.asyncapi.yaml`
-- Widget config types: `open-source/elevenlabs/packages/convai-widget-core/src/types/config.ts`
+- Widgets packages (source/package metadata): `open-source/elevenlabs/packages/convai-widget-core/package.json`, `open-source/elevenlabs/packages/convai-widget-embed/package.json`
+
+## Freshness note
+- In this upstream revision, `packages/agents-cli` is removed from the monorepo.
+- Treat docs in this pack as aligned to the package surface listed above.
 
 ## Important scope note
 For realtime STT + translation pipelines, this pack treats the **Client SDK Scribe section** as the practical source of truth for SDK behavior (events, commit strategies, token flow, and options).

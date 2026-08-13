@@ -1,68 +1,115 @@
 # OpenClaw Overview
 
-> **Current state:** OpenClaw v2026.8.1 · upstream `cd7b7f6`
+> Personal AI assistant gateway — self-hosted, multi-channel, agent-native
 
-OpenClaw is a multi-channel AI gateway with extensible messaging integrations. It connects LLM-powered agents to messaging platforms (Telegram, Discord, WhatsApp, Slack, Signal, IRC, and more) with a unified configuration, scheduling, and tool system.
+## What It Is
 
-## Core concepts
+OpenClaw is a **self-hosted gateway** connecting chat apps (WhatsApp, Telegram, Discord, iMessage, Slack, etc.) to AI agents. Run a single Gateway process on your machine; message your AI assistant from anywhere.
 
-- **Gateway** — long-running daemon that manages channels, sessions, and agent dispatch
-- **Agents** — configurable AI personalities with per-agent model, skills, and heartbeat
-- **Channels** — messaging platform integrations (Telegram, Discord, WhatsApp, etc.)
-- **Skills** — bundled capabilities (github, coding-agent, weather, tmux, etc.)
-- **Cron** — scheduled jobs for periodic tasks, reminders, and automated workflows
-- **Memory** — workspace-based memory files (`MEMORY.md`, `memory/YYYY-MM-DD.md`) for cross-session continuity
-- **Sub-agents** — isolated sessions spawned for delegated work
-
-## Architecture (high level)
+## Architecture
 
 ```
-┌─────────────────────────────────────────┐
-│                Gateway                  │
-│  ┌──────────┐  ┌──────────┐  ┌────────┐ │
-│  │ Telegram │  │ Discord  │  │ Slack  │ │
-│  │ Channel  │  │ Channel  │  │ Channel│ │
-│  └────┬─────┘  └────┬─────┘  └───┬────┘ │
-│       │              │            │       │
-│  ┌────▼──────────────▼────────────▼────┐ │
-│  │          Session / Agent             │ │
-│  │  ┌─────────┐  ┌──────┐  ┌────────┐  │ │
-│  │  │  Model  │  │ Tools│  │ Skills │  │ │
-│  │  └─────────┘  └──────┘  └────────┘  │ │
-│  └─────────────────────────────────────┘ │
-│  ┌──────────┐  ┌──────────┐              │
-│  │   Cron   │  │  Memory  │              │
-│  └──────────┘  └──────────┘              │
-└─────────────────────────────────────────┘
+Chat Apps (WhatsApp/Telegram/Discord/Slack/Signal/iMessage/...)
+                    │
+                    ▼
+            ┌───────────────┐
+            │   Gateway     │  ← Control plane (ws://127.0.0.1:18789)
+            │  (Node.js)    │
+            └───────┬───────┘
+                    │
+     ┌──────────────┼──────────────┐
+     │              │              │
+     ▼              ▼              ▼
+  Pi Agent      CLI/WebUI      Mobile Nodes
+  (RPC mode)   (openclaw ...)  (iOS/Android)
 ```
 
-## Configuration
+## Key Concepts
 
-Config lives at `~/.openclaw/openclaw.json` (or `.jsonc`/`.yaml`). Key sections:
+| Concept | Description |
+|---------|-------------|
+| **Gateway** | Single control plane for sessions, routing, channels |
+| **Session** | Conversation context (main=direct chat, isolated=per-agent) |
+| **Channel** | Messaging surface (WhatsApp, Telegram, Discord, etc.) |
+| **Node** | Paired device (iOS/Android/macOS) with camera/mic/canvas |
+| **Skill** | Bundled capability (browser, web search, etc.) |
+| **Plugin** | Extension package for additional channels/features |
 
-- `agents` — agent defaults, per-agent entries, bindings
-- `channels` — channel sections (telegram, discord, whatsapp, etc.)
-- `cron` — scheduled jobs
-- `tools` — tool exposure and exec policy
-- `models` — provider/model catalog
-
-Run `openclaw config schema` for the full schema.
-
-## CLI
+## Quick Start
 
 ```bash
-openclaw gateway start          # start the daemon
-openclaw gateway status         # check status
-openclaw config schema          # print full config schema
-openclaw config.schema.lookup agents.defaults.heartbeat  # lookup a field
-openclaw channels status --probe  # check all channels
-openclaw doctor                 # run diagnostics
-openclaw logs --follow          # live logs
+# Install
+npm install -g openclaw@latest
+
+# Onboard (guided setup)
+openclaw onboard --install-daemon
+
+# Start gateway
+openclaw gateway --port 18789
+
+# Send message
+openclaw message send --to +1234567890 --message "Hello"
+
+# Chat with agent
+openclaw agent --message "What's on my calendar?"
 ```
 
-## Provenance
+## Requirements
 
-- **Source:** `package.json`, `README.md`, `src/` source tree
-- **Upstream commit:** `cd7b7f639da0d26424b52f3ffa2391f81acb5040`
-- **OpenClaw version:** `2026.8.1`
-- **Last validated:** 2026-08-10
+- **Node.js**: v22+ (v24 recommended)
+- **API Key**: From your LLM provider (OpenAI, Anthropic, etc.)
+- **Runtime**: 5 minutes to get running
+
+## Channels Supported
+
+**Built-in**: WhatsApp, Telegram, Discord, Slack, Google Chat, Signal, iMessage (BlueBubbles), IRC, Matrix, Feishu, LINE, Mattermost, Nextcloud Talk, Nostr, Synology Chat, Twitch, Zalo, WebChat
+
+**Via Plugins**: Microsoft Teams, additional protocols
+
+## Config Location
+
+```
+~/.openclaw/openclaw.json    # Main config
+~/.openclaw/credentials/      # Auth credentials
+~/.openclaw/sessions/         # Session data
+```
+
+## Security Model
+
+- **Default**: DM pairing required (`dmPolicy="pairing"`)
+- Unknown senders get a pairing code
+- Approve with: `openclaw pairing approve <channel> <code>`
+- Run `openclaw doctor` to audit security posture
+
+## Key Commands
+
+| Command | Purpose |
+|---------|---------|
+| `openclaw onboard` | Guided setup wizard |
+| `openclaw gateway` | Start/control gateway |
+| `openclaw agent` | Chat with AI agent |
+| `openclaw message` | Send/receive messages |
+| `openclaw channels` | Manage channel connections |
+| `openclaw doctor` | Diagnose issues |
+| `openclaw config` | View/edit configuration |
+
+## Docs Structure
+
+```
+docs/
+├── start/        # Getting started, onboarding
+├── channels/     # Per-channel setup guides
+├── concepts/     # Sessions, routing, models
+├── tools/        # Browser, skills, subagents
+├── gateway/      # Configuration, security, remote access
+├── nodes/        # iOS/Android/macOS companion apps
+├── install/      # Installation methods (npm, Docker, Nix)
+├── automation/   # Cron, webhooks
+└── help/         # FAQ, troubleshooting
+```
+
+## Source
+
+- Repo: https://github.com/openclaw/openclaw
+- Docs: https://docs.openclaw.ai
+- Community: https://discord.gg/clawd
