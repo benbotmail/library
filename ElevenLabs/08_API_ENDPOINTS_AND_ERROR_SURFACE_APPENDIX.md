@@ -3,7 +3,7 @@
 This appendix captures the **canonical endpoint surface** needed for the architectures in this pack.
 
 Scope: conversation sessions + Scribe realtime STT token flow + self-hosted orchestrator.
-Source basis: `open-source/elevenlabs/packages/client/README.md` + source code (current monorepo state at v1.17.0, commit `78cc4c1`).
+Source basis: `open-source/elevenlabs/packages/client/README.md` + source code (current monorepo state at v1.18.0, commit `6fabb89`).
 
 ## 1) Vendor endpoints (server-to-ElevenLabs)
 

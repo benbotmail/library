@@ -2,7 +2,7 @@
 
 ## What is actively relevant
 
-### 1) `@elevenlabs/client` v1.17.0 (primary)
+### 1) `@elevenlabs/client` v1.18.0 (primary)
 Use this for:
 - Conversational agent sessions — voice (`VoiceConversation`) and text-only (`TextConversation`) via `Conversation.startSession`
 - Realtime speech-to-text with Scribe (`Scribe.connect`)
@@ -17,15 +17,16 @@ Use this for:
 - Full streaming reasoning callbacks (`onAgentReasoningResponsePart` — experimental)
 - Rich content callbacks (`onRichContent` — experimental): agent-sent UI components
 - Connection latency monitoring via `onPing`
+- Raw connection monitoring via `onIncomingEvent` / `onOutgoingEvent` (main, unreleased)
 - Audio alignment metadata via `onAudioAlignment` (works on WebRTC transport)
 - Scribe `workletPaths.scribeAudioProcessor` for self-hosting worklets under strict CSP
 
 ### 2) Framework + integration packages
-- `@elevenlabs/react` v1.12.0 — `ConversationProvider`, `useConversation`, `useScribe` hooks; full callback parity with client
-- `@elevenlabs/react-native` v1.2.18 — modular imports, no provider pattern
-- `@elevenlabs/types` v0.19.0 — generated types only; manual types now live in `@elevenlabs/client`
-- `@elevenlabs/convai-widget-core` v0.15.1 — file upload, `EventBridge`, audio tags, dynamic variables, `show_resize_button`
-- `@elevenlabs/convai-widget-embed` v0.15.1 — keep in sync with core
+- `@elevenlabs/react` v1.12.1 — `ConversationProvider`, `useConversation`, `useScribe` hooks; full callback parity with client
+- `@elevenlabs/react-native` v1.2.19 — modular imports, no provider pattern
+- `@elevenlabs/types` v0.20.0 — generated types only; manual types now live in `@elevenlabs/client`
+- `@elevenlabs/convai-widget-core` v0.16.0 — file upload, `EventBridge`, audio tags, dynamic variables, `show_resize_button`, self-hosted orchestrator attributes, rich content rendering
+- `@elevenlabs/convai-widget-embed` v0.16.0 — keep in sync with core
 
 ### 3) Key architecture changes since earlier v1.x
 - **Types relocation**: `Role`, `Mode`, `Status`, `Callbacks`, `CALLBACK_KEYS`, `DisconnectionDetails`, `MessagePayload`, `AudioAlignmentEvent` moved from `@elevenlabs/types` to `@elevenlabs/client` — import from client now
@@ -110,5 +111,6 @@ All callbacks available on `Conversation.startSession()` options and React `<Con
 | `onAgentTyping` | External agent typing indicator | v0.14.0 widget |
 | `onExternalAgentConnected` | External agent joined | v0.14.0 widget |
 | `onPing` | Server ping with latency estimate | v1.15.0 |
-| `onRichContent` | Agent-sent UI components (item cards, etc.) — experimental | v1.17.0 |
+| `onRichContent` | Agent-sent UI components (item cards, etc.) — experimental | v1.18.0 |
+| `onIncomingEvent` / `onOutgoingEvent` | Raw incoming/outgoing socket event monitoring (debug/observability) | main, unreleased |
 | `onDebug` | Internal debug events | v1.0 |

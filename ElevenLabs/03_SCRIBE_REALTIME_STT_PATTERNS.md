@@ -1,4 +1,4 @@
-# 03 — Scribe Realtime STT Patterns (`@elevenlabs/client` v1.17.0)
+# 03 — Scribe Realtime STT Patterns (`@elevenlabs/client` v1.18.0)
 
 ## Baseline conference preset (English)
 
@@ -107,7 +107,7 @@ const conn = Scribe.connect({
 
 > **Note:** The types package renamed `disable_logging` to `enable_logging` to match the field the server actually reports on the wire (`session_started` config).
 
-## Self-hosting Scribe audio worklets (v1.17.0)
+## Self-hosting Scribe audio worklets (v1.18.0)
 
 For strict Content Security Policies (`script-src`/`script-src-elem` without `blob:`/`data:`), pass `workletPaths.scribeAudioProcessor` to load the worklet from a same-origin URL:
 

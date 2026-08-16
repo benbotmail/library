@@ -1,4 +1,4 @@
-# 02 — Conversation Session Patterns (`@elevenlabs/client` v1.17.0)
+# 02 — Conversation Session Patterns (`@elevenlabs/client` v1.18.0)
 
 ## Canonical start patterns
 
@@ -42,6 +42,7 @@ Always implement:
 
 For advanced observability:
 - `onPing` — connection latency monitoring
+- `onIncomingEvent` / `onOutgoingEvent` — raw socket event monitoring (main, unreleased)
 - `onAudioAlignment` — char-level timing metadata (now works on WebRTC too)
 - `onAgentReasoningResponsePart` — streaming reasoning (experimental)
 - `onAgentChatResponsePart` — streaming chat response chunks
@@ -252,7 +253,29 @@ The interruption flow is **unconditional**:
 1. `handleInterruption` always switches mode to `"listening"` and calls `output.interrupt()`, regardless of event ID ordering.
 2. When new agent audio arrives, the client cancels pending fade-out, resets gain, clears pending interrupt timeout, and clears the `interrupted` flag before queuing the buffer.
 
-## Self-hosted orchestrator sessions (v1.17.0, experimental)
+## Connection event monitoring callbacks (main, unreleased)
+
+`onIncomingEvent` and `onOutgoingEvent` fire for **every raw socket event** received from or sent to the server — before any SDK processing. They are monitoring/debug surfaces, not a stable API (typed as `any`).
+
+```ts
+const conversation = await Conversation.startSession({
+  agentId: "agent_xxx",
+  onIncomingEvent: event => {
+    // every server → client event, e.g. { type: "audio", ... }
+  },
+  onOutgoingEvent: event => {
+    // every client → server event, e.g. { type: "user_audio_chunk", ... }
+  },
+});
+```
+
+Behavior details:
+- `onIncomingEvent` fires at the top of the message dispatcher, before the switch on event type
+- Outgoing events are queued until the callback is attached (constructor-time attachment flushes via microtask), so nothing sent during setup is lost
+- Both are exposed in `@elevenlabs/react` `HookCallbacks` (unreleased) and listed in `CALLBACK_KEYS`
+- Do not use them to build features — they may change without notice; prefer the typed callbacks
+
+## Self-hosted orchestrator sessions (v1.18.0, experimental)
 
 Route conversations to a self-hosted orchestrator (private deployment) instead of the ElevenLabs cloud. The orchestrator config is sent as an `enclave_setup_config` event on the WebSocket immediately after connection.
 
@@ -299,7 +322,31 @@ import type {
 } from "@elevenlabs/client";
 ```
 
-## Rich content callback (v1.17.0, experimental)
+### Widget: self-hosted orchestrator attributes (widget-core 0.16.0, experimental)
+
+The embedded widget can connect to a self-hosted orchestrator without any JS, via two new HTML attributes:
+
+```html
+<elevenlabs-convai
+  agent-id="agent_xxx"
+  orchestrator-url="https://your-host/sagemaker/convai/conversation"
+  orchestrator-agent-config='{"agent_config_dict": { ... }, "tools_config_list": [ ... ], "post_call_transcription_webhook": {"url": "https://your-app/post-transcript", "hmac_secret": "at-least-16-chars"}}'
+></elevenlabs-convai>
+```
+
+Rules (from `parseOrchestratorConfig`):
+- `orchestrator-url` **takes precedence** — `agent-id` and `signed-url` are ignored (console warning if both are set). No HTTP config fetch happens; the widget connects straight to your orchestrator.
+- `http(s)://` URLs are auto-converted to `ws(s)://`.
+- `orchestrator-agent-config` (optional) must be a JSON **object** with snake_case keys mapped to `OrchestratorConfig`:
+  - `agent_config_dict` / `agent_config` → `agentConfig`
+  - `override_agent_config_list` / `override_agent_config` → `agentConfigOverrides`
+  - `tools_config_list` / `tools_config` → `tools`
+  - `prompt_knowledge_base` → `promptKnowledgeBase` (string array)
+  - `bedrock_inference_profile` → `bedrockInferenceProfile` (string)
+  - `post_call_transcription_webhook` / `post_call_audio_webhook` → `{ url, hmac_secret? }` — `url` must be a non-empty string; if `hmac_secret` is present it must be a string, otherwise the whole config is rejected
+- Invalid JSON, non-object root, or bad webhooks → `console.error("[ConversationalAI] ...")` and orchestrator config is dropped (null) — the widget will not connect with a partially-parsed config
+
+## Rich content callback (v1.18.0, experimental)
 
 The `onRichContent` callback fires when the agent sends a component for the client to display (e.g., an item card). The callback receives `{ rich_content_id, component, props, event_id }`. Nothing is sent back — the agent's turn does not wait on the client.
 
@@ -315,7 +362,22 @@ const conversation = await Conversation.startSession({
 });
 ```
 
-## Disconnect state consistency (v1.17.0 fix)
+### Widget rich content rendering (widget-core 0.16.0)
+
+The embedded widget now renders rich content components inline in the transcript (experimental). Current supported component: **`buttons`** (quick-reply button group).
+
+- **`message` button** — `{ type: "message", label, message }`: sends `message` as the user's own turn via `sendUserMessage` (disabled unless connected)
+- **`link` button** — `{ type: "link", label, link }`: opens `link` in a new tab; `link` must start with `https://` (max 2048 chars)
+
+Validation before render (zod-mini, ~5 KB gzipped added):
+- Max **3 buttons** per group (extras silently dropped); at least 1 valid button required
+- Labels/messages trimmed, 1–500 chars (overlong text truncated)
+- Malformed buttons dropped; malformed/unrecognized components render a small "This content could not be displayed" notice instead of breaking the transcript
+- Rich content stays where it arrived in the transcript — no messages are moved across it
+
+Example of what the agent sends: `component: "buttons"`, `props: { buttons: [{ type: "message", label: "Book it", message: "Book the 3pm slot" }, { type: "link", label: "Details", link: "https://example.com/details" }] }`
+
+## Disconnect state consistency (v1.18.0 fix, react 1.12.1)
 
 Several fixes ensure robust session lifecycle:
 

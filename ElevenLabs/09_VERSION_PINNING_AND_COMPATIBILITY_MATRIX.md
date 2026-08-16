@@ -18,16 +18,16 @@ Use two lock levels:
 
 ## 2) Current upstream package snapshot
 
-From upstream commit `78cc4c1` (2026-08-13):
+From upstream commit `6fabb89` (2026-08-16):
 
 | Layer | Package | Version | Key changes since last snapshot |
 |---|---|---|---|
-| Core SDK | `@elevenlabs/client` | 1.17.0 | Self-hosted orchestrator sessions (experimental); `onRichContent` callback (experimental); Scribe `workletPaths.scribeAudioProcessor`; disconnect state consistency fix; `enableLogging` for Scribe zero retention; `onAgentReasoningResponsePart` (experimental); `onAudioAlignment` WebRTC fix; `onPing` callback; `sendFeedback` per-message targeting + null-clear; `overrides.asr.keywords`; `includeLanguageDetection`; Scribe mic reliability; defensive error handling; Unity bridge; platform restructure; `uploadFile` from Unity |
-| React wrapper | `@elevenlabs/react` | 1.12.0 | `ConversationProvider` state consistency through disconnect; `enableLogging` prop on `useScribe`; `onAgentReasoningResponsePart`; `onPing`; `sendFeedback` null + eventId |
-| React Native | `@elevenlabs/react-native` | 1.2.18 | All client improvements propagated; Metro package exports caveat for RN < 0.79 |
-| Types | `@elevenlabs/types` | 0.19.0 | `RichContent` / `RichContentClientEvent` types (experimental); `enable_logging` renamed from `disable_logging`; reasoning response types; ping null values; feedback types; ASR keywords; full tool payload; manual types moved to client |
-| Widget core | `@elevenlabs/convai-widget-core` | 0.15.1 | Markdown rendering fix for voice transcripts; `show_resize_button` config; file upload (`UploadFileButton`, `useFileUpload`); `EventBridge`; rich content callback; dynamic variables in first message; re-enabled text streaming in voice sessions; markdown for guardrail-blocked responses; external agent + typing indicators |
-| Widget embed | `@elevenlabs/convai-widget-embed` | 0.15.1 | Synced with core |
+| Core SDK | `@elevenlabs/client` | 1.18.0 | **Released in 1.18.0** (previously documented from source as v1.17.0): self-hosted orchestrator sessions (experimental); `onRichContent` callback (experimental); Scribe `workletPaths.scribeAudioProcessor`; disconnect state consistency fix. On `main` (unreleased): `onIncomingEvent` / `onOutgoingEvent` raw connection monitoring callbacks. Earlier: `enableLogging` zero retention; `onAgentReasoningResponsePart`; `onAudioAlignment` WebRTC fix; `onPing`; `sendFeedback` targeting; `overrides.asr.keywords`; Unity bridge |
+| React wrapper | `@elevenlabs/react` | 1.12.1 | Disconnect state consistency (v1.12.1); `onIncomingEvent`/`onOutgoingEvent` in `HookCallbacks` (unreleased on main); `enableLogging` on `useScribe`; `onPing`; `sendFeedback` null + eventId |
+| React Native | `@elevenlabs/react-native` | 1.2.19 | Client 1.18.0 propagation; Metro package exports caveat for RN < 0.79 |
+| Types | `@elevenlabs/types` | 0.20.0 | `RichContent` / `RichContentClientEvent` types (experimental) — released in 0.20.0; earlier: `enable_logging` rename; reasoning/ping/feedback/ASR-keyword types |
+| Widget core | `@elevenlabs/convai-widget-core` | 0.16.0 | **0.16.0**: self-hosted orchestrator via `orchestrator-url` + `orchestrator-agent-config` attributes (experimental); rich content rendering in transcript (`buttons` quick replies, zod-mini validation, graceful fallback); language dropdown fix inside CSS container-query ancestors; markdown voice-transcript fix (released from source state) |
+| Widget embed | `@elevenlabs/convai-widget-embed` | 0.16.0 | Synced with core |
 
 > For app-level production pinning, still lock exact versions in your own `package.json` + lockfile.
 
@@ -69,31 +69,26 @@ Define and enforce runtime bounds in project config:
 ## 5) Upstream freshness marker
 
 Current tracked upstream commit in this docs pack:
-- `78cc4c1bc059d25559db3f059ea8e350ff8b62f0` (2026-08-13)
+- `6fabb8973605ea1d959fb59e16d8ccbb58ab71ff` (2026-08-16)
 
 Previous tracked commit:
-- `da7b5323e0e0f5b3c7c0e8e8a0a1b2c3d4e5f6a7` (2026-08-10)
+- `78cc4c1bc059d25559db3f059ea8e350ff8b62f0` (2026-08-13)
 
-Observed surface changes in this revision (9 commits, 53 files changed):
+Observed surface changes in this revision (5 commits, 50 files changed — mostly the "Version Packages" release):
 
-**New experimental features:**
-- Self-hosted orchestrator sessions — `OrchestratorSessionConfig` / `OrchestratorConfig` / `PostCallWebhookConfig` types; routes WebSocket to private deployment; sends `enclave_setup_config` on connect; supports post-call transcription/audio webhooks; Bedrock inference profile selection
-- `onRichContent` callback — agent-sent UI components (`{ rich_content_id, component, props, event_id }`); widget-only currently; `RichContentClientEvent` type added to `@elevenlabs/types`
-- Scribe `workletPaths.scribeAudioProcessor` — self-host audio worklet for strict CSP; worklets published as static assets under `@elevenlabs/client/worklets/*`
+**Releases (previously documented from source, now official):**
+- `@elevenlabs/client` 1.18.0 — orchestrator sessions, `onRichContent`, Scribe `workletPaths`, disconnect fixes
+- `@elevenlabs/types` 0.20.0 — rich content event types
+- `@elevenlabs/react` 1.12.1 — disconnect state consistency
+- `@elevenlabs/react-native` 1.2.19 — dependency propagation
+
+**New since 78cc4c1:**
+- Widget self-hosted orchestrator — `orchestrator-url` + `orchestrator-agent-config` attributes (widget-core 0.16.0, experimental); `orchestrator-url` overrides `agent-id`/`signed-url`; http(s) auto-upgraded to ws(s); agent config JSON snake_case keys parsed into `OrchestratorConfig`; invalid config dropped with console error
+- Widget rich content rendering — `buttons` quick-reply component rendered inline in transcript; `message` buttons send user turns, `link` buttons open https URLs; max 3 buttons, labels capped at 500 chars; zod-mini validation (~5 KB gz); fallback notice for malformed/unrecognized components
+- `onIncomingEvent` / `onOutgoingEvent` — raw socket monitoring callbacks in client `Callbacks` + `CALLBACK_KEYS` and react `HookCallbacks` (**on main, unreleased**); outgoing events queued until handler attaches
 
 **Bug fixes:**
-- Disconnect state consistency — `BaseConversation` always reaches `disconnected` + fires `onDisconnect` even if teardown throws; `ConversationProvider` prevents stale session callbacks from clobbering newer session state; `endSession()` rejections caught
-- Widget markdown rendering — voice transcripts now render markdown (bold, lists, tables, links) instead of showing literal syntax; audio tags processed via rehype plugin after sanitization
-- `ConversationProvider` `useLayoutEffect` removed; replaced with stale-session guard wrapping all callbacks
-
-**Dependency upgrades:**
-- LiveKit dependencies upgraded (removed `livekit-client@2.16.1.patch`)
-- Turborepo upgraded to 2.10.8
-- React group deps bumped (8 packages)
-
-**Documentation:**
-- React Native README: Metro package exports caveat for RN < 0.79
-- Client README: expanded documentation
+- Widget language dropdown positioned wrong when embedded inside a `container-type: inline-size` (container-query) ancestor — overlay root now establishes its own containing block
 
 Policy:
 - When event or session surface changes, update `02_CONVERSATION_SESSION_PATTERNS.md` first

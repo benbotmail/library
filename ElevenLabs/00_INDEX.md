@@ -1,6 +1,6 @@
 # ElevenLabs JS/TS SDK — Current-State Reference
 
-Last validated against upstream `elevenlabs/packages` commit: `78cc4c1bc059d25559db3f059ea8e350ff8b62f0` (2026-08-13).
+Last validated against upstream `elevenlabs/packages` commit: `6fabb8973605ea1d959fb59e16d8ccbb58ab71ff` (2026-08-16).
 
 This pack documents **how the current ElevenLabs JavaScript/TypeScript SDK behaves now** (not a changelog).
 
@@ -8,15 +8,17 @@ This pack documents **how the current ElevenLabs JavaScript/TypeScript SDK behav
 
 | Package | Version |
 |---|---|
-| `@elevenlabs/client` | 1.17.0 |
-| `@elevenlabs/react` | 1.12.0 |
-| `@elevenlabs/react-native` | 1.2.18 |
-| `@elevenlabs/types` | 0.19.0 |
-| `@elevenlabs/convai-widget-core` | 0.15.1 |
-| `@elevenlabs/convai-widget-embed` | 0.15.1 |
+| `@elevenlabs/client` | 1.18.0 |
+| `@elevenlabs/react` | 1.12.1 |
+| `@elevenlabs/react-native` | 1.2.19 |
+| `@elevenlabs/types` | 0.20.0 |
+| `@elevenlabs/convai-widget-core` | 0.16.0 |
+| `@elevenlabs/convai-widget-embed` | 0.16.0 |
+
+> Note: orchestrator sessions, `onRichContent`, Scribe `workletPaths`, and the disconnect-state fixes were previously labeled v1.17.0 from source state; they are officially released in client **1.18.0** / types **0.20.0** / react **1.12.1**. The `onIncomingEvent`/`onOutgoingEvent` monitoring callbacks exist on `main` but are **not yet in a released version**.
 
 ## What this pack covers
-- `@elevenlabs/client` v1.17.0 for agent conversations (WebSocket + WebRTC, text + voice)
+- `@elevenlabs/client` v1.18.0 for agent conversations (WebSocket + WebRTC, text + voice)
 - Full callback surface including `onAgentReasoningResponsePart`, `onPing`, `onAudioAlignment`, `onAgentTyping`, `onExternalAgentConnected`, `onRichContent` (experimental)
 - Scribe real-time STT with `enableLogging`, `includeLanguageDetection`, `keyterms`, `noVerbatim`
 - Scribe `workletPaths.scribeAudioProcessor` for self-hosting audio worklets under strict CSP
@@ -24,6 +26,9 @@ This pack documents **how the current ElevenLabs JavaScript/TypeScript SDK behav
 - `overrides.asr.keywords` for per-conversation ASR biasing
 - `textOnly` mode for text-only agent sessions
 - Self-hosted orchestrator sessions (experimental) — route conversations to private deployments
+- Widget self-hosted orchestrator via `orchestrator-url` / `orchestrator-agent-config` attributes (0.16.0, experimental)
+- Widget rich content rendering — agent-sent `buttons` (quick replies) rendered inline in transcript with validation + graceful fallback
+- `onIncomingEvent` / `onOutgoingEvent` connection monitoring callbacks (main, unreleased)
 - Platform abstraction layer (`platform/web/`, `internal/unity`)
 - Unity WebGL bridge (`@elevenlabs/client/internal/unity`)
 - Multimodal user turns via `sendMultimodalMessage({ text?, fileId? })` + `uploadFile()`
