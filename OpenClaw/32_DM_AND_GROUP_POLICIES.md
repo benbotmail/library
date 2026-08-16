@@ -9,6 +9,8 @@
 
 ## Policy Overview
 
+> Current as of 2026-08-16 (upstream `66db70133b2`).
+
 | Policy | DMs (direct messages) | Groups |
 |--------|-----------------------|--------|
 | **open** | All messages processed | All messages processed (use with caution) |
@@ -64,6 +66,8 @@ security:
 ```
 
 ## Platform Quirks
+
+**Env-only auto-start removed (Discord/Slack):** a channel with only environment credentials (`DISCORD_BOT_TOKEN`, `SLACK_*`) and no `channels.<name>` config block is **no longer auto-started** by the Gateway. Create the block (env vars then serve as default-account credential fallbacks) or pass `--ambient-channels`, which uses `groupPolicy="allowlist"` + a warning even when `channels.defaults.groupPolicy` is `open`.
 
 | Platform | DM Behavior | Group Behavior |
 |----------|-------------|----------------|

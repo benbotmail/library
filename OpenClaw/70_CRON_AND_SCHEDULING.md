@@ -1,6 +1,6 @@
 # Cron and Scheduling
 
-> Current as of 2026-08-13 (upstream `0926d56cbf9`).
+> Current as of 2026-08-16 (upstream `66db70133b2`).
 
 ## Overview
 
@@ -102,6 +102,26 @@ Heartbeat cadence is owned by the Automations scheduler:
 - Heartbeat config (`agents.*.heartbeat`) is the desired-state input
 - The persisted monitor schedule owns the actual tick
 - `openclaw doctor --fix` can materialize missing or stale monitor rows
+
+### Heartbeat config keys (`agents.defaults.heartbeat` / `agents.entries.*.heartbeat`)
+
+Strict schema — only these fields are accepted:
+
+| Key | Type / Values | Default | Notes |
+|-----|---------------|---------|-------|
+| `every` | duration (`0m` disables) | `30m` (Anthropic OAuth/token auth bumps to `1h` while unset) | Cadence |
+| `target` | `owner` \| `last` \| channel id \| `none` | `owner` | `owner` = first `commands.ownerAllowFrom` entry, then channel `allowFrom`; never a group. `last` follows most recent conversation incl. groups. `none` = internal only |
+| `directPolicy` | `allow` \| `block` | `allow` | `block` suppresses direct/DM delivery (`reason=dm-blocked`) while still running the turn |
+| `to` | string | — | Recipient for explicit channel target (E.164, Telegram chat id; topics via `<chatId>:topic:<threadId>`) |
+| `accountId` | string | — | Multi-account channel account id (validated when `target: "last"`) |
+| `prompt` | string | built-in monitor prompt | Overrides default prompt body (not merged) |
+| `timeoutSeconds` | number | `agents.defaults.timeoutSeconds` else `min(every, 600)` | Max turn duration |
+| `activeHours` | `{ start, end, timezone? }` | — | HH:MM window; `end` exclusive (`24:00` allowed); timezone `user`/`local`/IANA |
+| `session` | session key | main session | Run context only; delivery is `target`/`to` |
+| `lightContext` | boolean | — | Skip workspace bootstrap files for heartbeat runs |
+| `isolatedSession` | boolean | — | Fresh session each run (no conversation history) |
+
+Alert/visibility flags (`showOk`, `showAlerts`, `useIndicator`) control skip behavior; if all three are disabled the run is skipped up front (`reason=alerts-disabled`).
 
 ## Wake Events
 

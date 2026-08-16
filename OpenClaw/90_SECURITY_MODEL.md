@@ -1,6 +1,6 @@
 # Security Model
 
-> Current as of 2026-08-13 (upstream `0926d56cbf9`).
+> Current as of 2026-08-16 (upstream `66db70133b2`).
 
 ## Scope
 
@@ -172,6 +172,20 @@ Selects a sender-specific policy by typed sender key:
 - Group sessions isolated by group ID; forum topics append `:topic:<threadId>`
 
 ## Secret Management
+
+### Sentinel-based egress protection
+
+Model-provider credentials backed by SecretRefs are minted as opaque, process-local sentinels (`oc-sent-v2.<authenticated-ciphertext>.end`). Logs, error objects, and runtime introspection never see the plaintext; substitution happens immediately before each request leaves the process. Unknown sentinel-shaped values **fail closed** — the request is refused rather than forwarded. Resolved values are also exact-match log-redacted.
+
+### Secret egress proxy (default-off)
+
+Lets Gateway-hosted agent subprocesses use shared-store `secret` entries without receiving plaintext:
+
+- Enable via `secrets.egressProxy.enabled: true` (requires Gateway restart); configures `HTTPS_PROXY`/`HTTP_PROXY` to a loopback proxy plus an ephemeral CA (`NODE_EXTRA_CA_CERTS`, etc.) in exec environments.
+- Each secret must name exact allowed HTTPS hosts: `openclaw secrets store set NAME --allow-host api.example.com` (repeatable; `--clear-allowed-hosts` removes). Wildcards/suffixes/ports unsupported; unbound secrets are never substituted; refused requests print the exact fix command.
+- Proxy auth: Basic auth (`openclaw` + per-run random password), expires when the agent run closes; `407` on missing/expired credentials.
+- `bypassHosts`: authenticated blind CONNECT tunnels for certificate-pinned clients — sentinels are not substituted there (fail vendor auth safely).
+- Limits: HTTP/1.1 upstream only; no HTTP/2, WebSocket rewriting, or plain-HTTP substitution; applies only to **Gateway-hosted exec** (sandbox/remote node exec and provider-native harnesses are excluded); hostname-based policy is not an IP pin.
 
 | Secret Type | Storage | Example |
 |-------------|---------|---------|

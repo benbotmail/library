@@ -1,6 +1,6 @@
 # OpenClaw Channels Reference
 
-> Messaging channel setup, streaming modes, and configuration — current as of 2026-08-13 (upstream `0926d56cbf9`).
+> Messaging channel setup, streaming modes, and configuration — current as of 2026-08-16 (upstream `66db70133b2`).
 
 ## Supported Channels
 
@@ -179,6 +179,8 @@ Canonical key: `channels.telegram.streaming` (nested `{ mode, ... }`).
 
 **Legacy keys** (`streamMode`, boolean `streaming`): rewritten to `streaming.mode` by `openclaw doctor --fix`; not read at runtime.
 
+**Webhook mode:** set `channels.telegram.webhookUrl` + `webhookSecret` (optional `webhookPath` default `/telegram-webhook`, `webhookHost` default `127.0.0.1`, `webhookPort` default `8787`). The listener reserves **`/healthz` for health checks** — `webhookPath` must use a different route (existing setups on `/healthz` must pick another path and update the reverse proxy). Default is long polling; the restart watermark persists only after an update dispatches successfully.
+
 ### Group Allowlists (Telegram)
 
 - **Which groups:** `channels.telegram.groups` (explicit chat IDs or `"*"`)
@@ -278,6 +280,8 @@ openclaw pairing approve whatsapp <CODE>
 
 Default: `off` when `streaming` is unset. Supports `partial`, `block`, and `progress` modes. In `progress` mode, appends a `-#` activity receipt (tool/thought counts + elapsed time) to the final answer and deletes the status draft.
 
+**Env-only startup:** without a `channels.discord` block, the Gateway does **not** auto-start Discord from `DISCORD_BOT_TOKEN`. Once the block exists, `DISCORD_BOT_TOKEN` is the default-account token fallback. Passing `--ambient-channels` opts into env-only auto-configuration; that path uses `groupPolicy="allowlist"` and logs a warning, even if `channels.defaults.groupPolicy` is `open`.
+
 ---
 
 ## Slack
@@ -301,7 +305,17 @@ Default: `off` when `streaming` is unset. Supports `partial`, `block`, and `prog
 
 ### Streaming (Slack)
 
-Default: `progress` (Block Kit session card). Supports native streaming API (`chat.startStream`/`append`/`stop`) when `streaming.nativeTransport: true` (default) and `mode: "partial"`.
+Default mode: `progress`. In `progress` mode, Slack's **native agent card is the default**: the whole turn is one streamed message interleaving narration with a live plan/task card, finishing with the answer in that same message. The card appears only once a turn does real work (tool/plan activity still running after a short delay); plain questions are answered without one.
+
+Set `channels.slack.streaming.progress.nativeTaskCards: false` to fall back to the Block Kit session card (separate message with title, narration, plan checklist, recent activity, tool/file totals, elapsed time; finalizes to success/error).
+
+Native text streaming API (`chat.startStream`/`append`/`stop`) applies when `streaming.mode: "partial"` with `streaming.nativeTransport: true` (default).
+
+**"Open in OpenClaw" link** on cards appears only when `gateway.publicOrigin` is set and the Control UI is not disabled (`gateway.controlUi.enabled` not `false`). If the Control UI is served under a path prefix, also set `gateway.controlUi.basePath`.
+
+**Env-only startup:** without a `channels.slack` block, the Gateway does **not** auto-start Slack from `SLACK_*` environment variables. Once the block exists, those variables remain default-account credential fallbacks. `--ambient-channels` opts into env-only auto-configuration with `groupPolicy="allowlist"` + warning.
+
+**Presence wakes:** `presenceEvents` (`off|auto|on`, default `off`) polls at most 45 unique workspace-user pairs/min per account, with a durable 8-hour cooldown per account/workspace/user; only `away→active` transitions wake the agent. `presenceEvents.prompt` (new) replaces the default greeting guidance after the event facts — account-level default, per-channel override via `channels.<id>.presenceEvents.prompt`, max 20,000 chars, empty string omits event-specific guidance.
 
 ---
 

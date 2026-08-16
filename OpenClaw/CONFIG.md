@@ -1,6 +1,6 @@
 # OpenClaw Configuration Guide
 
-> Current as of 2026-08-13 (upstream `0926d56cbf9`).
+> Current as of 2026-08-16 (upstream `66db70133b2`).
 
 ## Config Location
 

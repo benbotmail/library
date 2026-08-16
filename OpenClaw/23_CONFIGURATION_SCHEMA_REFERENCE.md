@@ -444,6 +444,13 @@ Run `openclaw config schema` for the full schema or `openclaw config.schema.look
       path: "~/.openclaw/secrets",
     },
 
+    // Secret egress proxy (default-off; new 2026.8.x)
+    // Substitutes shared-store `secret` sentinels at a loopback proxy on egress
+    egressProxy: {
+      enabled: false,           // requires Gateway restart to change
+      bypassHosts: [],          // exact hostnames for blind CONNECT tunnels (cert-pinned clients)
+    },
+
     // Approval policy
     approvals: {
       requireForElevated: true,

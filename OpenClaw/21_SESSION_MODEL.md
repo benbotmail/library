@@ -109,6 +109,8 @@ At session start, the Gateway loads context files:
 | Orphan cleanup | On Gateway start | Automatic |
 | History retention | 30 days | Configurable |
 
+**Recent-session protection (new):** `sessions.maintenance.preserveRecent` (e.g. `"7d"`; disabled when omitted or `false`) protects recently active interactive sessions and their SQLite history generations from entry/disk-budget cleanup. Default installs keep the oldest-first policy; synthetic model-run/cron/hook/heartbeat/ACP/sub-agent sessions stay eligible. Protection can temporarily hold the store above targets and expires after the inactivity window. Archiving and pinning remain explicit user actions exempt from all automatic maintenance.
+
 ## Related Documentation
 
 - `20_GATEWAY_COMPONENTS.md` — Overall Gateway architecture
