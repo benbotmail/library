@@ -3,7 +3,7 @@
 This appendix captures the **canonical endpoint surface** needed for the architectures in this pack.
 
 Scope: conversation sessions + Scribe realtime STT token flow + self-hosted orchestrator.
-Source basis: `open-source/elevenlabs/packages/client/README.md` + source code (current monorepo state at v1.18.0, commit `6fabb89`).
+Source basis: `open-source/elevenlabs/packages/client/README.md` + source code (current monorepo state at v1.20.0, commit `fc2380cf`).
 
 ## 1) Vendor endpoints (server-to-ElevenLabs)
 
@@ -105,6 +105,7 @@ Map these to actionable recovery:
 | `UNACCEPTED_TERMS` | Prompt terms acceptance |
 | `RATE_LIMITED` | Backoff and retry |
 | `INPUT_ERROR` | Validate input format |
+| `INVALID_REQUEST` | Connection parameters rejected server-side — fix `Scribe.connect()` options and reconnect (v1.20.0) |
 | `QUEUE_OVERFLOW` | Reduce audio chunk rate |
 | `RESOURCE_EXHAUSTED` | Retry with backoff |
 | `SESSION_TIME_LIMIT_EXCEEDED` | Start new session |
@@ -113,6 +114,8 @@ Map these to actionable recovery:
 | `CLOSE` | Reconnect policy with jitter and max attempts |
 
 > **v1.15.1 robustness:** Generic local Scribe errors now use the same typed error payload as server errors, and malformed error messages (missing `error_event` payload) are handled defensively instead of crashing the consumer.
+>
+> **v1.20.0 events:** the SDK now also dispatches `final_transcript`, `final_transcript_with_timestamps`, `committed_transcript_entities` (with `entityDetection`), and `invalid_request` as first-class `RealtimeEvents`. See `03_SCRIBE_REALTIME_STT_PATTERNS.md`.
 
 ---
 

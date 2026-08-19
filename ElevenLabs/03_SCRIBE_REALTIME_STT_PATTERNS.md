@@ -1,4 +1,4 @@
-# 03 — Scribe Realtime STT Patterns (`@elevenlabs/client` v1.18.0)
+# 03 — Scribe Realtime STT Patterns (`@elevenlabs/client` v1.20.0)
 
 ## Baseline conference preset (English)
 
@@ -21,9 +21,9 @@ const conn = Scribe.connect({
   sampleRate: 16000,
   commitStrategy: CommitStrategy.VAD,
   vadThreshold: 0.5,
-  vadSilenceThresholdSecs: 0.5,
-  minSpeechDurationMs: 100,
-  minSilenceDurationMs: 500,
+  vadSilenceThresholdSecs: 0.5, // valid range [0.3, 3.0] — bounds inclusive (v1.20.0)
+  minSpeechDurationMs: 100, // [50, 2000] inclusive
+  minSilenceDurationMs: 500, // [50, 2000] inclusive
 });
 ```
 
@@ -63,6 +63,76 @@ const conn = Scribe.connect({
 ```
 
 Keyterms are sent as repeated query parameters (`keyterms=term1&keyterms=term2`).
+
+## Secondary languages (v1.20.0)
+
+Pass `secondaryLanguages` (ISO-639-1 or ISO-639-3 codes) alongside `languageCode` when the audio may contain multiple known languages. Restricting the candidate set makes language identification more reliable:
+
+```ts
+const conn = Scribe.connect({
+  token: scribeTokenFromBackend,
+  modelId: "scribe_v2_realtime",
+  languageCode: "en",
+  secondaryLanguages: ["es", "fr"],
+});
+```
+
+## Entity detection (v1.20.0)
+
+Set `entityDetection` to flag PII/PHI/PCI and other entities in committed transcripts. Accepts a category (`"all"`, `"pii"`, `"phi"`, `"pci"`, `"other"`, `"offensive_language"`), a specific entity type (e.g. `"email_address"`, `"credit_card"`), or a list of either:
+
+```ts
+import { RealtimeEvents } from "@elevenlabs/client";
+
+const conn = Scribe.connect({
+  token: scribeTokenFromBackend,
+  modelId: "scribe_v2_realtime",
+  entityDetection: ["pii", "email_address"],
+});
+
+conn.on(RealtimeEvents.COMMITTED_TRANSCRIPT_ENTITIES, (d) => {
+  // d.entities: DetectedEntity[] — text, type, and character positions
+});
+```
+
+Detected entities arrive in a dedicated `committed_transcript_entities` event carrying `{ entities: DetectedEntity[] }` with each entity's text, type, and character positions in the committed text.
+
+## Background speech filtering (v1.20.0)
+
+Set `filterBackgroundAudio: true` to reduce false activations from nearby conversations and ambient noise. When enabled without an explicit `vadThreshold`, the server applies a **lower default VAD threshold**. Cannot be combined with `includeTimestamps`.
+
+```ts
+const conn = Scribe.connect({
+  token: scribeTokenFromBackend,
+  modelId: "scribe_v2_realtime",
+  filterBackgroundAudio: true, // mutually exclusive with includeTimestamps
+});
+```
+
+## Final transcript events (v1.20.0)
+
+The SDK now dispatches four previously-dropped server messages as first-class events:
+
+| Event constant | Wire type | When |
+|---|---|---|
+| `RealtimeEvents.FINAL_TRANSCRIPT` | `final_transcript` | Final transcript for a segment, before it is committed |
+| `RealtimeEvents.FINAL_TRANSCRIPT_WITH_TIMESTAMPS` | `final_transcript_with_timestamps` | Delayed final transcript with timestamps and/or detected language |
+| `RealtimeEvents.COMMITTED_TRANSCRIPT_ENTITIES` | `committed_transcript_entities` | Entities detected in a committed transcript (requires `entityDetection`) |
+| `RealtimeEvents.INVALID_REQUEST` | `invalid_request` | Connection parameters rejected by the server |
+
+```ts
+conn.on(RealtimeEvents.FINAL_TRANSCRIPT, (d) => appendSegment(d.text));
+conn.on(RealtimeEvents.INVALID_REQUEST, (d) => fixParamsAndReconnect(d));
+```
+
+## Word timestamps shape (v1.20.0)
+
+`includeTimestamps` data uses a single shared `Word` type (exported) matching the live AsyncAPI contract. Each word may have:
+- `type`: `"word"` | `"spacing"` | `"audio_event"` (non-word sounds such as laughter or footsteps)
+- `characters`: structured `TranscriptCharacter[]` with per-character timings (not plain strings)
+- `channel_index`: channel for multichannel audio (undefined for single-channel)
+
+`@elevenlabs/react`'s `WordTimestamp` now mirrors `Word` exactly, with `WordTimestampCharacter` for the character-level shape. If you relied on the old narrow shape (`type` limited to word/spacing, `characters: string[]`), update your consumers.
 
 ## Clean transcripts with noVerbatim
 
@@ -130,7 +200,7 @@ The worklet processors are published as static assets under `@elevenlabs/client/
 
 ## React useScribe hook (v1.12.0)
 
-Full Scribe options parity including `enableLogging`, `includeLanguageDetection`, `keyterms`, `noVerbatim`, `workletPaths`:
+Full Scribe options parity including `enableLogging`, `includeLanguageDetection`, `keyterms`, `noVerbatim`, `workletPaths`, and (v1.20.0) `secondaryLanguages`, `entityDetection`, `filterBackgroundAudio`. Mic-permission failures are retriable: call `connect()` again after a denied prompt without remounting.
 
 ```tsx
 import { useScribe } from "@elevenlabs/react";
@@ -190,14 +260,16 @@ Frontend:
 
 Never place permanent key in browser/mobile app.
 
-## Scribe microphone reliability (v1.15.1 fixes)
+## Scribe microphone reliability
 
-The microphone subsystem now handles edge cases robustly:
+The microphone subsystem handles edge cases robustly:
 - **Teardown during setup**: Closing the connection while async microphone setup is resolving no longer leaks `MediaStreamTrack`/`AudioContext`
 - **Late frames**: Microphone frames arriving after socket close are dropped silently (no `WebSocket is not connected` throw)
 - **Server-initiated close**: Releases microphone automatically; consumers reacting to `CLOSE` without calling `close()` won't leave a live mic
 - **Setup failures**: Reported through `RealtimeEvents.ERROR` with typed error payload (same as server errors)
 - **Connecting abort**: `close()` aborting a still-connecting socket no longer logs spurious `1006` errors
+
+**Mic-permission failure is retriable (v1.20.0):** a microphone-mode session whose `getUserMedia` rejects now **closes the connection** instead of stranding a silent open socket. `onError` fires first, then the session ends `disconnected` with the error preserved — so `useScribe().connect()` can be retried without remounting after a denied/dismissed permission prompt. The hook also ignores a late `close` from a superseded connection, so disconnect-then-reconnect races no longer tear down the newer session.
 
 ## Error events to treat as first-class
 
@@ -216,6 +288,7 @@ The microphone subsystem now handles edge cases robustly:
 | Session time limit | `RealtimeEvents.SESSION_TIME_LIMIT_EXCEEDED` | Max session duration reached |
 | Chunk size exceeded | `RealtimeEvents.CHUNK_SIZE_EXCEEDED` | Audio chunk too large |
 | Insufficient audio activity | `RealtimeEvents.INSUFFICIENT_AUDIO_ACTIVITY` | Not enough audio detected |
+| Invalid request | `RealtimeEvents.INVALID_REQUEST` | Server rejected connection parameters (v1.20.0) |
 
 ```ts
 conn.on(RealtimeEvents.ERROR, (e) => reportError(e));

@@ -1,6 +1,6 @@
 # ElevenLabs JS/TS SDK — Current-State Reference
 
-Last validated against upstream `elevenlabs/packages` commit: `6fabb8973605ea1d959fb59e16d8ccbb58ab71ff` (2026-08-16).
+Last validated against upstream `elevenlabs/packages` commit: `fc2380cf2d964f3c1d55b24f53eba4cca680b2da` (2026-08-17).
 
 This pack documents **how the current ElevenLabs JavaScript/TypeScript SDK behaves now** (not a changelog).
 
@@ -8,19 +8,21 @@ This pack documents **how the current ElevenLabs JavaScript/TypeScript SDK behav
 
 | Package | Version |
 |---|---|
-| `@elevenlabs/client` | 1.18.0 |
-| `@elevenlabs/react` | 1.12.1 |
-| `@elevenlabs/react-native` | 1.2.19 |
-| `@elevenlabs/types` | 0.20.0 |
-| `@elevenlabs/convai-widget-core` | 0.16.0 |
-| `@elevenlabs/convai-widget-embed` | 0.16.0 |
+| `@elevenlabs/client` | 1.20.0 |
+| `@elevenlabs/react` | 1.12.4 |
+| `@elevenlabs/react-native` | 1.2.22 |
+| `@elevenlabs/types` | 0.21.0 |
+| `@elevenlabs/convai-widget-core` | 0.16.3 |
+| `@elevenlabs/convai-widget-embed` | 0.16.3 |
 
-> Note: orchestrator sessions, `onRichContent`, Scribe `workletPaths`, and the disconnect-state fixes were previously labeled v1.17.0 from source state; they are officially released in client **1.18.0** / types **0.20.0** / react **1.12.1**. The `onIncomingEvent`/`onOutgoingEvent` monitoring callbacks exist on `main` but are **not yet in a released version**.
+> Note: the `onIncomingEvent`/`onOutgoingEvent` monitoring callbacks exist on `main` but are **not yet in a released version**. For 1.19–1.20 release highlights see `09_VERSION_PINNING_AND_COMPATIBILITY_MATRIX.md`.
 
 ## What this pack covers
 - `@elevenlabs/client` v1.18.0 for agent conversations (WebSocket + WebRTC, text + voice)
 - Full callback surface including `onAgentReasoningResponsePart`, `onPing`, `onAudioAlignment`, `onAgentTyping`, `onExternalAgentConnected`, `onRichContent` (experimental)
 - Scribe real-time STT with `enableLogging`, `includeLanguageDetection`, `keyterms`, `noVerbatim`
+- Scribe (v1.20.0): `secondaryLanguages`, `entityDetection` (+ `committed_transcript_entities` event), `filterBackgroundAudio`, `final_transcript` / `final_transcript_with_timestamps` / `invalid_request` events, widened `Word` timestamps shape, retriable mic-permission failures
+- `webRtc.iceTransportPolicy` session option (v1.20.0) for TURN-only WebRTC on UDP-blocked networks
 - Scribe `workletPaths.scribeAudioProcessor` for self-hosting audio worklets under strict CSP
 - `sendFeedback` with per-message targeting and null-clearing
 - `overrides.asr.keywords` for per-conversation ASR biasing

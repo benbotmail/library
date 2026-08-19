@@ -1,4 +1,4 @@
-# 02 — Conversation Session Patterns (`@elevenlabs/client` v1.18.0)
+# 02 — Conversation Session Patterns (`@elevenlabs/client` v1.20.0)
 
 ## Canonical start patterns
 
@@ -274,6 +274,38 @@ Behavior details:
 - Outgoing events are queued until the callback is attached (constructor-time attachment flushes via microtask), so nothing sent during setup is lost
 - Both are exposed in `@elevenlabs/react` `HookCallbacks` (unreleased) and listed in `CALLBACK_KEYS`
 - Do not use them to build features — they may change without notice; prefer the typed callbacks
+
+## WebRTC ICE transport policy (v1.20.0)
+
+Set `webRtc.iceTransportPolicy` in the session config for WebRTC connections. Use `"relay"` to restrict ICE candidates to TURN relay — the fix for corporate/mobile networks that drop direct UDP flows:
+
+```ts
+const conversation = await Conversation.startSession({
+  agentId: "agent_xxx",
+  connectionType: "webrtc",
+  webRtc: {
+    iceTransportPolicy: "relay", // TURN-only; default is "all"
+  },
+});
+```
+
+- Values: `"all"` (default) | `"relay"`
+- Only affects WebRTC connections; WebSocket sessions ignore it
+- Combine with your agent's TURN configuration — the policy only filters candidates the server/peer already offers
+
+## Self-hosted AudioWorklets under strict CSP (WebRTC fixed in v1.20.0)
+
+`workletPaths` now applies on the **WebRTC connection path** too (previously only WebSocket), so self-hosted AudioWorklet files are used for output capture instead of falling back to `blob:`/`data:` URLs under a strict CSP. The worklet module cache is also keyed by the requested source, so a self-hosted `workletPaths` entry is no longer served a stale inlined `blob:` URL cached by an earlier default load.
+
+If you self-host worklets and previously saw CSP violations on WebRTC sessions, re-test — this was the likely cause.
+
+## React Native setup guard (v1.20.0)
+
+On React Native, when no voice session setup strategy is registered, the error message now points at importing `@elevenlabs/react-native` instead of suggesting the browser entry point. If you see this error, add:
+
+```ts
+import "@elevenlabs/react-native"; // registers the RN voice session setup strategy
+```
 
 ## Self-hosted orchestrator sessions (v1.18.0, experimental)
 

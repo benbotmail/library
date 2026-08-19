@@ -2,7 +2,7 @@
 
 ## What is actively relevant
 
-### 1) `@elevenlabs/client` v1.18.0 (primary)
+### 1) `@elevenlabs/client` v1.20.0 (primary)
 Use this for:
 - Conversational agent sessions — voice (`VoiceConversation`) and text-only (`TextConversation`) via `Conversation.startSession`
 - Realtime speech-to-text with Scribe (`Scribe.connect`)
@@ -19,14 +19,15 @@ Use this for:
 - Connection latency monitoring via `onPing`
 - Raw connection monitoring via `onIncomingEvent` / `onOutgoingEvent` (main, unreleased)
 - Audio alignment metadata via `onAudioAlignment` (works on WebRTC transport)
-- Scribe `workletPaths.scribeAudioProcessor` for self-hosting worklets under strict CSP
+- Scribe `workletPaths.scribeAudioProcessor` for self-hosting worklets under strict CSP (honored on WebSocket and, since v1.20.0, WebRTC)
+- Scribe v1.20.0: `secondaryLanguages`, `entityDetection`, `filterBackgroundAudio`; `final_transcript` / `final_transcript_with_timestamps` / `committed_transcript_entities` / `invalid_request` events; `webRtc.iceTransportPolicy` for TURN-only WebRTC
 
 ### 2) Framework + integration packages
-- `@elevenlabs/react` v1.12.1 — `ConversationProvider`, `useConversation`, `useScribe` hooks; full callback parity with client
-- `@elevenlabs/react-native` v1.2.19 — modular imports, no provider pattern
-- `@elevenlabs/types` v0.20.0 — generated types only; manual types now live in `@elevenlabs/client`
-- `@elevenlabs/convai-widget-core` v0.16.0 — file upload, `EventBridge`, audio tags, dynamic variables, `show_resize_button`, self-hosted orchestrator attributes, rich content rendering
-- `@elevenlabs/convai-widget-embed` v0.16.0 — keep in sync with core
+- `@elevenlabs/react` v1.12.4 — `ConversationProvider`, `useConversation`, `useScribe` hooks; full callback parity with client; `WordTimestamp` mirrors client `Word`
+- `@elevenlabs/react-native` v1.2.22 — modular imports, no provider pattern
+- `@elevenlabs/types` v0.21.0 — generated types only; manual types now live in `@elevenlabs/client`
+- `@elevenlabs/convai-widget-core` v0.16.3 — file upload, `EventBridge`, audio tags, dynamic variables, `show_resize_button`, self-hosted orchestrator attributes, rich content rendering
+- `@elevenlabs/convai-widget-embed` v0.16.3 — keep in sync with core
 
 ### 3) Key architecture changes since earlier v1.x
 - **Types relocation**: `Role`, `Mode`, `Status`, `Callbacks`, `CALLBACK_KEYS`, `DisconnectionDetails`, `MessagePayload`, `AudioAlignmentEvent` moved from `@elevenlabs/types` to `@elevenlabs/client` — import from client now
