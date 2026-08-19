@@ -1,6 +1,6 @@
 # OpenClaw Channels Reference
 
-> Messaging channel setup, streaming modes, and configuration — current as of 2026-08-16 (upstream `66db70133b2`).
+> Messaging channel setup, streaming modes, and configuration — current as of 2026-08-19 (upstream `7a82d8b0f25`).
 
 ## Supported Channels
 
@@ -55,6 +55,24 @@
 | `allowlist` | Only groups in `groups` config (default) |
 | `open` | Any group |
 | `disabled` | No group messages |
+
+### Group session routing (`session.groupScope`)
+
+Groups and channels get isolated sessions per room under the default `session.groupScope: "per-group"`. Set the global `session.groupScope: "main"` to route all non-direct peers into the agent's **main session**, or override selected rooms via `bindings[].session.groupScope` (binding override wins over the global value):
+
+```json5
+{
+  bindings: [
+    {
+      agentId: "main",
+      match: { channel: "slack", peer: { kind: "channel", id: "C0123TEAM" } },
+      session: { groupScope: "main" },
+    },
+  ],
+}
+```
+
+This changes shared **context** only — group admission, mention gating, and replies still use the originating group or channel. **Sandbox warning:** a room scoped to `main` is a main session and is **not** covered by sandbox `mode: "non-main"`; never merge untrusted/public rooms into main when relying on that boundary.
 
 ```json5
 {
@@ -281,6 +299,12 @@ openclaw pairing approve whatsapp <CODE>
 Default: `off` when `streaming` is unset. Supports `partial`, `block`, and `progress` modes. In `progress` mode, appends a `-#` activity receipt (tool/thought counts + elapsed time) to the final answer and deletes the status draft.
 
 **Env-only startup:** without a `channels.discord` block, the Gateway does **not** auto-start Discord from `DISCORD_BOT_TOKEN`. Once the block exists, `DISCORD_BOT_TOKEN` is the default-account token fallback. Passing `--ambient-channels` opts into env-only auto-configuration; that path uses `groupPolicy="allowlist"` and logs a warning, even if `channels.defaults.groupPolicy` is `open`.
+
+### Discord voice presence
+
+- `voice.autoJoin[]` — fixed-room presence; with multiple entries per guild, OpenClaw joins the **last** configured channel for that guild.
+- `voice.autoJoin[].whenOccupied` (default `false`) — set `true` for occupancy-managed presence: OpenClaw joins on the first human arrival and leaves after the last human departs (bots don't count). Startup and resumed sessions reconcile from Discord's voice-state roster. Occupancy management owns **only** sessions it joined — manual `/vc join`, transcript capture, or other ad-hoc joins are never moved or disconnected when the room empties.
+- `voice.allowedChannels` — optional residency allowlist for `/vc join` and auto-join; unset = any authorized voice channel, `[]` = deny all.
 
 ---
 

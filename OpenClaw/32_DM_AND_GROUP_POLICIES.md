@@ -9,7 +9,7 @@
 
 ## Policy Overview
 
-> Current as of 2026-08-16 (upstream `66db70133b2`).
+> Current as of 2026-08-19 (upstream `7a82d8b0f25`).
 
 | Policy | DMs (direct messages) | Groups |
 |--------|-----------------------|--------|
@@ -30,6 +30,8 @@ Only messages from `security.allowlists.senders` are processed. Others are silen
 Only messages from users who have completed device pairing are processed.
 
 ## Group Policies
+
+**Session scoping:** groups are isolated per room by default (`session.groupScope: "per-group"`). `session.groupScope: "main"` (global or per-binding via `bindings[].session.groupScope`, binding wins) routes non-direct peers into the agent's main session — changing shared context only, not admission/mention gating. See CHANNELS.md for details and the sandbox caveat.
 
 ### open
 Every message in the group triggers the agent. **Warning:** high noise, high token burn. Rarely appropriate.

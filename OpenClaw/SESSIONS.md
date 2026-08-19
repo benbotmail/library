@@ -1,6 +1,6 @@
 # OpenClaw Sessions Reference
 
-> Current as of 2026-08-16 (upstream `66db70133b2`).
+> Current as of 2026-08-19 (upstream `7a82d8b0f25`).
 
 ## Session Model
 

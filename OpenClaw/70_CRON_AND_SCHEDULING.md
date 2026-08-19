@@ -1,6 +1,6 @@
 # Cron and Scheduling
 
-> Current as of 2026-08-16 (upstream `66db70133b2`).
+> Current as of 2026-08-19 (upstream `7a82d8b0f25`).
 
 ## Overview
 
@@ -56,8 +56,34 @@ OpenClaw supports scheduled automation via cron jobs. Cron jobs are persisted au
 
 | Target | Behavior |
 |--------|----------|
-| `isolated` | Fresh ephemeral session (no conversation history) |
-| `main` | Deliver to agent's main session |
+| `isolated` | Fresh ephemeral session (no conversation history); pruned after `cron.sessionRetention` (default `24h`) |
+| `main` | Enqueue a system event into the owning agent's **main session** — processed with that session's existing context and last delivery context |
+| `current` | Bound to the creating session at job-creation time |
+| `session:<id>` | Persistent named session; context accumulates across runs (e.g. daily standups) |
+
+**Freshness rule:** internal automation turns (main-session events) do **not** extend daily or idle reset freshness; only visible user activity updates session freshness.
+
+### Run Completion Semantics
+
+- Run history records payload execution in `status` (`ok` \| `error` \| `skipped`) and whole-run completion in `completionStatus` (`succeeded` \| `failed` \| `unknown`).
+- Delivery is "required" only when the job explicitly sets `delivery.bestEffort: false`. A delivery-only failure leaves execution `status: "ok"`, does not increment error counters or retry backoff, and records `completionStatus: "failed"`.
+- One-shot jobs (`--at`) auto-delete **only** when `completionStatus` is `succeeded`; pass `--keep-after-run` to keep successful runs. A required-delivery failure or unknown completion keeps the job disabled for inspection and restart recovery without replaying the payload.
+- `openclaw automations run <jobId> --wait` exits `0` only for `completionStatus: "succeeded"`; errors, skipped runs, and wait timeouts exit non-zero (default timeout `10m`, poll `2s`).
+- Direct Gateway event sources can use the `cron.run` API with `mode: "if-enabled"` to run immediately without overriding an operator-disabled or auto-disabled job; explicit operator run-now commands use `force`.
+
+### Triggers, Script Payloads, and Stream Schedules
+
+Event-driven automation runs **by default** (`cron.triggers.enabled: true`):
+
+- **Condition triggers** — scripts evaluated against gateway state
+- **`script` payloads** — headless code-mode execution (no conversational agent turn); only `main` and `isolated` session targets
+- **Stream schedules** — a long-lived operator-authored argv command whose stdout/stderr lines fire the job; disabling the job stops the process; 5 consecutive runs < 60s error-caps the job (manual re-enable clears it)
+
+**Security:** these surfaces run unattended with the owning agent's **full tool policy, including `exec`**. Set `cron.triggers.enabled: false` for a hard stop (disables creation and execution of all three). The `cron` block is strict: only `enabled`, `triggers`, `webhookToken`, `webhookSsrfPolicy`, `sessionRetention`, and `failureAlert` keys are accepted.
+
+### Choosing a Model for Jobs
+
+Pick the model for the job's difficulty, not the agent's default. Routine automation (summaries, triage, classification, status checks) runs well on a **lighter model** — cheaper and faster per run, and the savings compound across a schedule. Keep the default model for deep-reasoning jobs; use `--fallbacks` when a light primary should escalate on failure.
 
 ### Cron Expression Format
 
@@ -109,6 +135,7 @@ Strict schema — only these fields are accepted:
 
 | Key | Type / Values | Default | Notes |
 |-----|---------------|---------|-------|
+| `agentId` | agent id | — | `agents.defaults.heartbeat` only: explicit owner for ambient heartbeat runs when no per-agent `heartbeat` block exists; without it, a shared block enrolls all agents |
 | `every` | duration (`0m` disables) | `30m` (Anthropic OAuth/token auth bumps to `1h` while unset) | Cadence |
 | `target` | `owner` \| `last` \| channel id \| `none` | `owner` | `owner` = first `commands.ownerAllowFrom` entry, then channel `allowFrom`; never a group. `last` follows most recent conversation incl. groups. `none` = internal only |
 | `directPolicy` | `allow` \| `block` | `allow` | `block` suppresses direct/DM delivery (`reason=dm-blocked`) while still running the turn |

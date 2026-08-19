@@ -1,6 +1,6 @@
 # Security Model
 
-> Current as of 2026-08-16 (upstream `66db70133b2`).
+> Current as of 2026-08-19 (upstream `7a82d8b0f25`).
 
 ## Scope
 
@@ -42,7 +42,13 @@ Access control, sandboxing, tool policy, secret management, and isolation bounda
 - **Approval is allow-once:** Each elevated command needs fresh approval
 - **`tools.elevated`:** Lists tools allowed to bypass sandbox and run on host
 - **`exec.security` modes:** `deny` | `allowlist` | `full`
+- **Full-access sessions (`exec.security: "full"`) do not request exec approval** — the session's full-access policy propagates through compaction and session state; approval prompts only apply to sessions with stricter policies
 - Dangerous commands trigger warnings before execution
+
+### 5. Unattended Automation Surface
+- **Automation triggers are ON by default** (`cron.triggers.enabled: true`): condition-trigger scripts, `script` payloads, and stream schedules run unattended with the owning agent's **full tool policy, including `exec`**
+- Treat this as unattended code execution with agent permissions; set `cron.triggers.enabled: false` for a hard stop
+- Secrets distinguish **protected (write-only)** values from **agent-readable** Gateway environment values — explicit access modes control what agents can read vs. what only the Gateway can inject
 
 ## Sandboxing
 

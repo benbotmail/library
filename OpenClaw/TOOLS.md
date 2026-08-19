@@ -1,6 +1,6 @@
 # OpenClaw Tools Reference
 
-> Current as of 2026-08-16 (upstream `66db70133b2`).
+> Current as of 2026-08-19 (upstream `7a82d8b0f25`).
 
 ## Tool Control
 
@@ -190,6 +190,8 @@ Actions: `present`, `hide`, `navigate`, `eval`, `snapshot`, `a2ui_push`, `a2ui_r
 ## Cron Tool
 
 Actions: `status`, `list`, `add`, `update`, `remove`, `run`, `runs`, `wake`, `scratch`
+
+Note: `cron.run` accepts `mode: "if-enabled"` (run immediately without overriding a disabled job — for direct Gateway event sources) vs `mode: "force"`/`now` (operator run-now). A `sessionKey` target requires `mode: "now"`, `hooks.allowRequestSessionKey: true`, and must match `hooks.allowedSessionKeyPrefixes` when configured.
 
 ---
 

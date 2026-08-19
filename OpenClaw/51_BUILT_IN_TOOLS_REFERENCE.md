@@ -528,6 +528,15 @@ Error: Command exited with code 1
 ```
 **Fix:** Check command syntax, dependencies, and logs
 
+## Custodian skills
+
+Release-versioned operational skills shipped with OpenClaw under `custodian-skills/`. They load at the bundled-skill precedence tier **only for the agent resolved by `agents.defaults.systemAgent.agentId`** (fallback: the sole configured agent, or legacy `main` when no explicit roster exists). With multiple agents and no system agent selected, **no agent** receives them — other agents never see them in discovery, slash-command catalogs, or the skills prompt.
+
+- First wave: `configure-channel`, `add-model-provider`, `diagnose-gateway`, `cloud-image-bake`
+- Standard controls apply: `skills.entries.<name>.enabled: false` disables one; agent skill allowlists narrow the set
+- Workflow contract: Gather → Mutate (validated non-interactive writes) → Repair (`openclaw doctor`) → Prove (one live end-to-end outcome) → Report; secrets stay out of prompts/logs via SecretRefs
+- Related: skill proposals now **require re-review when the proposal changes** before activation
+
 ## Provenance
 - **Source:** AGENTS.md, docs/tools/, `src/`
-- **Last validated:** 2026-03-18 (against openclaw@latest from GitHub)
+- **Last validated:** 2026-08-19 (against upstream `7a82d8b0f25`)
