@@ -25,10 +25,11 @@ Token storage, allowlists, pairing codes, and isolation boundaries. Covers how O
 - **Rotation:** Replace token in env, then `openclaw gateway restart`
 
 ### 2. Sender Authorization
-- **Allowlist:** `security.allowlists.senders` — list of authorized user IDs
-- **DM policy:** Controls which DMs are processed (open, allowlist, paired)
-- **Group policy:** Controls group message handling (open, mention, allowlist, paired)
-- **Authorized senders:** Numeric IDs matching the channel provider's user identification
+- **DM allowlist:** per-channel `allowFrom` list of authorized user IDs (there is no global `security.allowlists` key; allowlisting is per channel)
+- **Group allowlist:** per-channel `groupAllowFrom` plus per-group `groups.*.allowFrom`
+- **Owner routing:** `commands.ownerAllowFrom` — explicit operator destinations (e.g. `telegram:<id>`)
+- **DM policy:** `dmPolicy` — `pairing` (default), `allowlist`, `open` (requires `allowFrom: ["*"]`), `disabled`
+- **Group policy:** `groupPolicy` — `allowlist` (default), `open`, `mention` variants, `disabled`
 
 ### 3. Device Pairing
 - **Bootstrap tokens:** Time-limited tokens for initial device pairing

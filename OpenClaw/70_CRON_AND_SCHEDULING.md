@@ -88,6 +88,32 @@ Cron jobs can trigger Gateway wake events when the daemon would otherwise be idl
 | One-shot reminders | Reducing API call count |
 | Standalone channel delivery | Background periodic checks |
 
+## Heartbeat Configuration (current defaults)
+
+Heartbeats live under `agents.defaults.heartbeat` (per-agent override: `agents.entries.*.heartbeat`). The object is strict; supported fields: `agentId`, `every`, `activeHours`, `model`, `session`, `target`, `directPolicy`, `to`, `accountId`, `prompt`, `timeoutSeconds`, `lightContext`, `isolatedSession`.
+
+```json5
+{
+  agents: {
+    defaults: {
+      heartbeat: {
+        every: "30m", // default 30m; Anthropic OAuth/token auth bumps to 1h while unset; "0m" disables
+        target: "owner", // "owner" (default) | "last" | "none"
+        directPolicy: "allow", // "allow" (default) | "block"
+        // activeHours: { start: "08:00", end: "24:00", timezone: "user" },
+        // lightContext: true,      // skip workspace bootstrap files for heartbeat runs
+        // isolatedSession: true,   // fresh session each run (no conversation history)
+      },
+    },
+  },
+}
+```
+
+- `target: "owner"` resolves the operator DM from `commands.ownerAllowFrom`, then channel `allowFrom`; it never routes to a group. Without a resolvable owner DM, ambient polls skip with `reason=no-route`. `"last"` follows the most recent conversation (groups included); `"none"` runs internally with no delivery.
+- `directPolicy: "block"` suppresses delivery to DM-style targets while still running the heartbeat turn (skip log shows `reason=dm-blocked`). Default is `"allow"`.
+- Timeout: unset heartbeat turns use `agents.defaults.timeoutSeconds`, else the heartbeat cadence capped at 600s.
+- Heartbeats defer while the main queue/automation work is active or the resolved target session is busy; immediate/manual wakes bypass the same-agent check only.
+
 ## Troubleshooting
 
 | Symptom | Cause | Fix |
@@ -119,7 +145,8 @@ openclaw cron test "*/30 * * * *"
 
 ## Provenance
 
-- Cron scheduler from `packages/gateway/src/cron.ts`
+- Cron scheduler from `src/cron/` (service, isolated-agent runs, failure notifications)
+- Heartbeat defaults from `src/config/types.agent-defaults.ts` and `docs/gateway/heartbeat.md`
 - Schedule parsing from `node-cron` or equivalent
 - Official docs: <https://docs.openclaw.ai>
 - Repository: <https://github.com/openclaw/openclaw>

@@ -105,6 +105,34 @@ openclaw pairing list telegram
 openclaw pairing approve telegram <CODE>
 ```
 
+### Streaming and Delivery (current defaults)
+
+`channels.telegram.streaming` controls how replies render while the agent works:
+
+```json5
+{
+  channels: {
+    telegram: {
+      streaming: {
+        mode: "progress", // off | partial | block | progress (default: progress)
+        preview: {
+          toolProgress: true, // reuse one edited preview message for tool/progress lines
+          commandText: "status", // "status" (default, tool label only) | "raw" (command text)
+        },
+        progress: { commentary: false }, // opt into commentary/preamble in the draft
+        chunkMode: "newline", // "length" | "newline" (prefer paragraph boundaries when splitting)
+      },
+    },
+  },
+}
+```
+
+- **Default mode is `progress`**: one editable status draft (agent status + tool lines); the final answer is sent as a normal message. Use `mode: "partial"` to stream the answer text into the preview instead.
+- `streaming.mode: "off"` disables preview edits and suppresses generic tool chatter; approval prompts, media, and errors still deliver normally.
+- `textChunkLimit` (default 4000) caps message length; `chunkMode: "newline"` splits at blank lines before falling back to length.
+- Preview streaming and block streaming are mutually exclusive: an explicit non-`off` preview mode overrides `agents.defaults.blockStreamingDefault: "on"`; explicit `streaming.block.enabled: true` overrides the preview.
+- Legacy keys (`channels.telegram.streamMode`, boolean `streaming`) are auto-migrated by `openclaw doctor --fix`.
+
 ---
 
 ## WhatsApp Setup
