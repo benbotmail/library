@@ -307,14 +307,9 @@ Run `openclaw config schema` for the full schema or `openclaw config.schema.look
 
 ## Cron configuration
 
-The `cron` block is **strict** — only `enabled`, `triggers`, `webhookToken`, `webhookSsrfPolicy`, `sessionRetention`, and `failureAlert` are accepted keys (plus the `jobs` list).
-
 ```json5
 {
   cron: {
-    enabled: true,                // default: true; false pauses all automation without deleting jobs
-    triggers: { enabled: true },  // default: true; false = hard stop for condition triggers, script payloads, stream schedules
-    sessionRetention: "24h",     // default: 24h; prune window for completed isolated run sessions; false/"0h" disables
     jobs: [
       {
         name: "morning-check",
@@ -342,12 +337,6 @@ The `cron` block is **strict** — only `enabled`, `triggers`, `webhookToken`, `
   },
 }
 ```
-
-**Automation triggers run by default.** With `cron.triggers.enabled: true` (default), condition-trigger scripts, `script` payloads, and stream schedules run unattended with the owning agent's full tool policy including `exec`. See `90_SECURITY_MODEL.md` and `70_CRON_AND_SCHEDULING.md`.
-
-**Session routing:** the global `session.groupScope` key controls group session scoping — `"per-group"` (default, isolated per room) or `"main"` (all non-direct peers share the agent's main session). Per-binding override: `bindings[].session.groupScope` (wins over global). Context-only; admission and mention gating unchanged.
-
-**Heartbeat block** (`agents.defaults.heartbeat` / `agents.entries.*.heartbeat`) is strict: `agentId`, `every`, `activeHours`, `model`, `session`, `target`, `directPolicy`, `to`, `accountId`, `prompt`, `timeoutSeconds`, `lightContext`, `isolatedSession`. See `70_CRON_AND_SCHEDULING.md` for semantics.
 
 ## Hooks configuration
 
@@ -453,13 +442,6 @@ The `cron` block is **strict** — only `enabled`, `triggers`, `webhookToken`, `
     secrets: {
       backend: "file", // file | keychain | gopass
       path: "~/.openclaw/secrets",
-    },
-
-    // Secret egress proxy (default-off; new 2026.8.x)
-    // Substitutes shared-store `secret` sentinels at a loopback proxy on egress
-    egressProxy: {
-      enabled: false,           // requires Gateway restart to change
-      bypassHosts: [],          // exact hostnames for blind CONNECT tunnels (cert-pinned clients)
     },
 
     // Approval policy

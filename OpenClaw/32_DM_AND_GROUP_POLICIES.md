@@ -9,8 +9,6 @@
 
 ## Policy Overview
 
-> Current as of 2026-08-19 (upstream `7a82d8b0f25`).
-
 | Policy | DMs (direct messages) | Groups |
 |--------|-----------------------|--------|
 | **open** | All messages processed | All messages processed (use with caution) |
@@ -30,8 +28,6 @@ Only messages from `security.allowlists.senders` are processed. Others are silen
 Only messages from users who have completed device pairing are processed.
 
 ## Group Policies
-
-**Session scoping:** groups are isolated per room by default (`session.groupScope: "per-group"`). `session.groupScope: "main"` (global or per-binding via `bindings[].session.groupScope`, binding wins) routes non-direct peers into the agent's main session — changing shared context only, not admission/mention gating. See CHANNELS.md for details and the sandbox caveat.
 
 ### open
 Every message in the group triggers the agent. **Warning:** high noise, high token burn. Rarely appropriate.
@@ -68,8 +64,6 @@ security:
 ```
 
 ## Platform Quirks
-
-**Env-only auto-start removed (Discord/Slack):** a channel with only environment credentials (`DISCORD_BOT_TOKEN`, `SLACK_*`) and no `channels.<name>` config block is **no longer auto-started** by the Gateway. Create the block (env vars then serve as default-account credential fallbacks) or pass `--ambient-channels`, which uses `groupPolicy="allowlist"` + a warning even when `channels.defaults.groupPolicy` is `open`.
 
 | Platform | DM Behavior | Group Behavior |
 |----------|-------------|----------------|

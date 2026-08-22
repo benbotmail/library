@@ -1,107 +1,108 @@
-# OpenClaw Quick Reference
+# OpenClaw Quick Reference Card
 
-> Current as of 2026-08-19 (upstream `7a82d8b0f25`).
+> Essential commands and patterns
 
-## Essential Commands
-
-```bash
-openclaw onboard              # Guided setup
-openclaw gateway              # Start gateway
-openclaw gateway status       # Check gateway
-openclaw gateway restart      # Restart gateway
-openclaw doctor               # Diagnose issues
-openclaw doctor --fix         # Auto-repair config
-openclaw logs --follow        # Live logs
-```
-
-## Config Quick Set
+## Installation
 
 ```bash
-openclaw config get agents.defaults.model.primary
-openclaw config set agents.defaults.heartbeat.every "2h"
-openclaw config set agents.defaults.sandbox.mode "non-main"
-openclaw configure             # Interactive wizard
+npm install -g openclaw@latest
+openclaw onboard --install-daemon
 ```
 
-## Channel Setup Patterns
+## Gateway
 
-```json5
-// Telegram
-{ channels: { telegram: { enabled: true, botToken: "...", dmPolicy: "pairing" } } }
-
-// WhatsApp
-{ channels: { whatsapp: { dmPolicy: "pairing", allowFrom: ["+15551234567"] } } }
-
-// Discord
-{ channels: { discord: { enabled: true, botToken: "...", applicationId: "..." } } }
+```bash
+openclaw gateway                    # Start gateway
+openclaw gateway status             # Check status
+openclaw gateway --port 18789       # Custom port
 ```
 
-## Streaming Quick Config
+## Configuration
 
-```json5
-// Telegram: default progress mode (tool progress in draft, final as new message)
-{ channels: { telegram: { streaming: { mode: "progress" } } } }
-
-// Telegram: stream answer text into preview (legacy behavior)
-{ channels: { telegram: { streaming: { mode: "partial" } } } }
-
-// Discord: enable progress preview
-{ channels: { discord: { streaming: { mode: "progress" } } } }
-
-// Any channel: disable preview
-{ channels: { telegram: { streaming: { mode: "off" } } } }
+```bash
+openclaw config get <path>          # Get value
+openclaw config set <path> <value>  # Set value
+openclaw config unset <path>        # Remove value
+openclaw configure                  # Interactive wizard
 ```
 
-## Heartbeat Quick Config
+## Channels
 
-```json5
-{
-  agents: {
-    defaults: {
-      heartbeat: {
-        every: "30m",
-        target: "owner",
-        directPolicy: "allow",
-      },
-    },
-  },
-}
+```bash
+openclaw channels login             # Login to channel
+openclaw channels status --probe    # Check connections
+openclaw pairing list <channel>     # View pending
+openclaw pairing approve <ch> <code> # Approve sender
 ```
 
-## Sandbox Quick Config
+## Messaging
+
+```bash
+openclaw message send --to +123 --message "Hello"
+openclaw message read --from +123
+```
+
+## Agent
+
+```bash
+openclaw agent --message "Hello"    # Chat with agent
+openclaw agent --thinking high      # Enable thinking
+```
+
+## Sessions
+
+```bash
+openclaw sessions                   # List sessions
+openclaw sessions cleanup --dry-run # Preview cleanup
+```
+
+## Diagnostics
+
+```bash
+openclaw doctor                     # Health check
+openclaw logs --follow              # Live logs
+openclaw status                     # System status
+```
+
+## Config File
+
+`~/.openclaw/openclaw.json`
 
 ```json5
 {
   agents: {
     defaults: {
-      sandbox: {
-        mode: "non-main",     // sandbox all sessions except main
-        backend: "docker",
-        scope: "session",
-        workspaceAccess: "ro",
-      },
+      workspace: "~/.openclaw/workspace",
+      model: { primary: "anthropic/claude-sonnet-4-5" },
     },
+  },
+  channels: {
+    telegram: {
+      enabled: true,
+      botToken: "123:abc",
+      dmPolicy: "pairing",
+    },
+  },
+  session: {
+    dmScope: "main",
+    maintenance: { mode: "enforce" },
   },
 }
 ```
 
-## Pairing
+## Chat Commands
 
-```bash
-openclaw pairing list <channel>
-openclaw pairing approve <channel> <code>
-```
+| Command | Action |
+|---------|--------|
+| `/new` | Reset session |
+| `/status` | Session info |
+| `/compact` | Summarize context |
+| `/stop` | Abort current run |
+| `/send on/off` | Toggle delivery |
 
-## Model Switching
+## Key URLs
 
-```
-/model anthropic/claude-opus-4-6    # In chat
-openclaw agent --model zai/glm-5    # CLI
-```
-
-## Session Management
-
-```bash
-openclaw sessions                    # List sessions
-openclaw sessions --json             # JSON output
-```
+- Docs: https://docs.openclaw.ai
+- Repo: https://github.com/openclaw/openclaw
+- Discord: https://discord.gg/clawd
+- Control UI: http://127.0.0.1:18789

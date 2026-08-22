@@ -92,10 +92,6 @@ providers:
 
 ## Fallback and Failover
 
-### Anthropic server-side compaction (opt-in)
-
-For supported `anthropic/*` models with API-key auth directly against `api.anthropic.com`, set per-model `params.anthropicServerCompaction: true`. OpenClaw sends a `context_management` compaction edit (beta header `compact-2026-01-12`), stores the newest summary as hidden provider replay state, and omits outbound pre-checkpoint history (full transcript stays local). `params.anthropicCompactThreshold` overrides the input-token trigger — default `max(50000, floor(contextWindow * 0.7))`, configured lower values clamp to `50000`. If Anthropic rejects a stored checkpoint, that turn errors and the next falls back to full local history. OAuth/subscription and non-direct endpoints are excluded.
-
 ### Model Fallbacks
 When the primary model fails, the Gateway can fall back to alternatives:
 
