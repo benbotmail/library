@@ -18,16 +18,16 @@ Use two lock levels:
 
 ## 2) Current upstream package snapshot
 
-From upstream commit `fc2380cf` (2026-08-17):
+From upstream commit `2a9057ee` (2026-08-22):
 
 | Layer | Package | Version | Key changes since last snapshot |
 |---|---|---|---|
-| Core SDK | `@elevenlabs/client` | 1.20.0 | **1.20.0**: `webRtc.iceTransportPolicy` session option (TURN-only relay for UDP-blocked networks); Scribe `secondaryLanguages`, `entityDetection` (+ `committed_transcript_entities` event), `filterBackgroundAudio`; Scribe now dispatches `final_transcript`, `final_transcript_with_timestamps`, `invalid_request`; shared `Word` shape with `audio_event`/`channel_index`/per-character timings; `workletPaths` honored on WebRTC + cache keyed by source; RN setup-guard error points at `@elevenlabs/react-native`; scribe mic-permission failure is retriable. **1.18.0**: orchestrator sessions (experimental); `onRichContent`; Scribe `workletPaths.scribeAudioProcessor`; disconnect state consistency. On `main` (unreleased): `onIncomingEvent` / `onOutgoingEvent` monitoring callbacks |
-| React wrapper | `@elevenlabs/react` | 1.12.4 | `WordTimestamp` widened to mirror client `Word` (+ `WordTimestampCharacter`); `useScribe` mic-permission retry + stale-close race fix; disconnect state consistency (1.12.1); `enableLogging` on `useScribe`; `onPing`; `sendFeedback` null + eventId |
-| React Native | `@elevenlabs/react-native` | 1.2.22 | Client 1.20.0 propagation; Metro package exports caveat for RN < 0.79 |
-| Types | `@elevenlabs/types` | 0.21.0 | Scribe asyncapi schema aligned with live contract: merged `Word` type, entity detection schemas, `final_transcript*` messages, `timestamps_granularity` / `max_tokens_to_recompute` config; earlier: `RichContent` types (0.20.0), `enable_logging` rename |
-| Widget core | `@elevenlabs/convai-widget-core` | 0.16.3 | 0.16.x: self-hosted orchestrator via `orchestrator-url` + `orchestrator-agent-config` (experimental); rich content rendering in transcript (`buttons` quick replies, zod-mini validation, graceful fallback); language dropdown fix inside container-query ancestors; markdown voice-transcript fix |
-| Widget embed | `@elevenlabs/convai-widget-embed` | 0.16.3 | Synced with core |
+| Core SDK | `@elevenlabs/client` | 1.21.0 | **1.21.0**: `onContextUsage` callback — `context_usage` server event after each completed agent turn (`{ event_id, model, context_tokens, context_limit_tokens }`); React Native resolved via `react-native` export condition instead of global sniffing; platform entry points inject setup guidance (RN error says to `import "@elevenlabs/react-native"` before other imports). **On `main` (unreleased)**: `onMCPToolApprovalRequest` MCP approval handler (SDK wires `mcp_tool_approval_result`, exactly-once per `tool_call_id`, AbortSignal for stale windows); `onExternalAgentDisconnected` callback; WebRTC setup hard-fails when initiation payload can't be published (no more ghost connected sessions). Earlier 1.20.0: `webRtc.iceTransportPolicy`, Scribe `secondaryLanguages`/`entityDetection`/`filterBackgroundAudio`, `final_transcript*` events, widened `Word` shape, `workletPaths` on WebRTC. `onIncomingEvent`/`onOutgoingEvent` present in released code since 1.20.0 |
+| React wrapper | `@elevenlabs/react` | 1.13.0 | `onContextUsage` added to `HookCallbacks`; client 1.21.0 propagation. On main (unreleased): `onExternalAgentDisconnected` in `HookCallbacks` |
+| React Native | `@elevenlabs/react-native` | 1.2.23 | Client 1.21.0 propagation; Expo example app upgraded to SDK 57, `expo-modules-jsi` local patch dropped in favor of 57.0.5 |
+| Types | `@elevenlabs/types` | 0.21.1 | `ContextUsage`/`ContextUsageEvent` types; `context_usage`, `external_agent_connected`/`external_agent_disconnected` in agent asyncapi schema + generated types. On main (unreleased): MCP approval shapes |
+| Widget core | `@elevenlabs/convai-widget-core` | 0.16.4 | 0.16.4: client 1.21.0 dependency bump. **On `main` (unreleased, next minor)**: concurrency wait-queue UX (`queue_status` events — waiting status, blocked sends, `queue_timed_out` friendly message); `first_message_rich_content` (rich content painted with first message on cold start, button taps start conversation + `rich_content_id` attribution); text-mode first message for any text-capable agent (`strip_audio_tags` honored); `show_language_selector_on_trigger` config + attribute (default `true`) |
+| Widget embed | `@elevenlabs/convai-widget-embed` | 0.16.4 | Synced with core |
 
 > For app-level production pinning, still lock exact versions in your own `package.json` + lockfile.
 
@@ -49,6 +49,9 @@ At each upgrade:
 - If using Scribe timestamps, verify consumers handle the widened `Word` shape (`audio_event`, structured characters, `channel_index`)
 - Test `onPing` callback fires with expected latency values
 - Test `onRichContent` callback if rendering agent components (experimental)
+- Wire `onContextUsage` and verify payload shape after agent turns (client 1.21.0)
+- If wiring MCP approvals on a pre-release client, verify `onMCPToolApprovalRequest` resolves booleans only and abort-signal dismissal works
+- If using the widget with concurrency limits, plan UX for wait-queue states (blocked sends, queue timeout message) once released
 - Verify `onAudioAlignment` fires on WebRTC transport (was broken before v1.15.2)
 - If using Scribe microphone mode, test teardown/reconnect scenarios
 - If using Scribe with strict CSP, verify `workletPaths.scribeAudioProcessor` loads correctly
@@ -72,32 +75,26 @@ Define and enforce runtime bounds in project config:
 ## 5) Upstream freshness marker
 
 Current tracked upstream commit in this docs pack:
-- `fc2380cf2d964f3c1d55b24f53eba4cca680b2da` (2026-08-17)
+- `2a9057eec7d18709306e3831385fc6e300f18b41` (2026-08-22)
 
 Previous tracked commit:
-- `6fabb8973605ea1d959fb59e16d8ccbb58ab71ff` (2026-08-16)
+- `fc2380cf2d964f3c1d55b24f53eba4cca680b2da` (2026-08-17)
 
-Observed surface changes in this revision (10 commits — client 1.18.0 → 1.20.0 releases):
+Observed surface changes in this revision (12 commits — client 1.20.0 → 1.21.0 releases + pending changesets):
 
-**New session option:**
-- `webRtc.iceTransportPolicy` (`"all"` | `"relay"`, default `"all"`) — pass `"relay"` for TURN-only connections on networks that drop direct UDP
+**Released (client 1.21.0 / react 1.13.0 / types 0.21.1 / RN 1.2.23 / widget 0.16.4):**
+- New `onContextUsage` callback — `context_usage` server event after each completed agent turn; reports model, `context_tokens` (last LLM generation's prompt size), and `context_limit_tokens` (model context window)
+- React Native resolution via `react-native` export condition; platform setup hints injected from entry points (no more global runtime sniffing); actionable missing-setup error for RN
 
-**Scribe new options (client 1.20.0):**
-- `secondaryLanguages: string[]` — restrict language-identification candidates
-- `entityDetection` — category (`all`/`pii`/`phi`/`pci`/`other`/`offensive_language`), specific type (`email_address`, `credit_card`, …), or list; entities delivered via `committed_transcript_entities`
-- `filterBackgroundAudio: boolean` — lowers default VAD threshold; **incompatible with `includeTimestamps`**
+**On `main`, pending release (7 changesets):**
+- `onMCPToolApprovalRequest` — opt-in MCP tool approval handler; SDK sends `mcp_tool_approval_result` exactly once per `tool_call_id`; non-boolean resolution/rejection → `onError` + denial; `AbortSignal` in context for stale approval windows; manual `sendMCPToolApprovalResult()` path unaffected
+- `onExternalAgentDisconnected` — external-agent handback event (client, react, widget: exits external-agent mode and clears typing indicator)
+- WebRTC: session setup now rejects when `conversation_initiation_client_data` can't be published (previously could fire `onConnect` for a session the server never initialized)
+- Widget: concurrency wait-queue support (`queue_status` events, waiting status strings, blocked text/attachment sends, friendly queue-timeout); `first_message_rich_content` config (cold-start rich content + `rich_content_id` button-tap attribution via `sendUserMessage`); text-mode first message rendered for any text-capable agent (incl. `override-first-message`, `strip_audio_tags` honored); `show_language_selector_on_trigger` config/attribute (default `true`, hide dropdown on collapsed launcher)
+- Examples: Expo SDK 57 upgrade, `expo-modules-jsi` local patch dropped (use 57.0.5+)
 
-**Scribe new dispatched events:** `final_transcript`, `final_transcript_with_timestamps`, `committed_transcript_entities`, `invalid_request`
-
-**Scribe behavior corrections:**
-- `vadSilenceThresholdSecs` (0.3–3.0), `minSpeechDurationMs` (50–2000), `minSilenceDurationMs` (50–2000) lower bounds are now **inclusive**, matching the API
-- Shared `Word` timestamp shape per live AsyncAPI contract: `audio_event` type, structured `TranscriptCharacter[]`, `channel_index`; react `WordTimestamp` mirrors it
-- Mic-permission failure closes the connection (retriable without remount); `useScribe` ignores stale close from superseded connection
-
-**Fixes:**
-- `workletPaths` now passed through on the WebRTC connection path (output capture honors self-hosted worklets under strict CSP)
-- Worklet module cache keyed by requested source — no more stale `blob:` URL served for self-hosted paths
-- React Native setup error message points at `@elevenlabs/react-native`
+**Corrections to prior snapshot:**
+- `onIncomingEvent` / `onOutgoingEvent` were listed as "main, unreleased" — they are present in released code since 1.20.0 (shipped without a dedicated changelog entry)
 
 Policy:
 - When event or session surface changes, update `02_CONVERSATION_SESSION_PATTERNS.md` first
@@ -118,4 +115,5 @@ Policy:
 9. Test Scribe microphone teardown scenarios
 10. If using orchestrator sessions, verify WebSocket-only + webhook setup
 11. If using strict CSP, test Scribe `workletPaths` self-hosting
-12. Promote only if thresholds remain within accepted bounds
+12. Verify `onContextUsage` wiring and MCP approval handler behavior before promoting past client 1.21.x
+13. Promote only if thresholds remain within accepted bounds

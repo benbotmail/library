@@ -1,4 +1,4 @@
-# 02 — Conversation Session Patterns (`@elevenlabs/client` v1.20.0)
+# 02 — Conversation Session Patterns (`@elevenlabs/client` v1.21.0)
 
 ## Canonical start patterns
 
@@ -253,7 +253,7 @@ The interruption flow is **unconditional**:
 1. `handleInterruption` always switches mode to `"listening"` and calls `output.interrupt()`, regardless of event ID ordering.
 2. When new agent audio arrives, the client cancels pending fade-out, resets gain, clears pending interrupt timeout, and clears the `interrupted` flag before queuing the buffer.
 
-## Connection event monitoring callbacks (main, unreleased)
+## Connection event monitoring callbacks (in released code since 1.20.0)
 
 `onIncomingEvent` and `onOutgoingEvent` fire for **every raw socket event** received from or sent to the server — before any SDK processing. They are monitoring/debug surfaces, not a stable API (typed as `any`).
 
@@ -272,8 +272,78 @@ const conversation = await Conversation.startSession({
 Behavior details:
 - `onIncomingEvent` fires at the top of the message dispatcher, before the switch on event type
 - Outgoing events are queued until the callback is attached (constructor-time attachment flushes via microtask), so nothing sent during setup is lost
-- Both are exposed in `@elevenlabs/react` `HookCallbacks` (unreleased) and listed in `CALLBACK_KEYS`
+- Both are exposed in `@elevenlabs/react` `HookCallbacks` and listed in `CALLBACK_KEYS`
 - Do not use them to build features — they may change without notice; prefer the typed callbacks
+
+## Context-window budget monitoring (v1.21.0)
+
+`onContextUsage` fires after **each completed agent turn** with the server's `context_usage` event — the prompt size of the turn's last LLM generation against the model's context window:
+
+```ts
+const conversation = await Conversation.startSession({
+  agentId: "agent_xxx",
+  onContextUsage: ({ model, context_tokens, context_limit_tokens }) => {
+    const pct = Math.round((context_tokens / context_limit_tokens) * 100);
+    if (pct > 80) telemetry.warn("context_pressure", { model, pct });
+  },
+});
+```
+
+- Payload: `{ event_id: number, model: string, context_tokens: number, context_limit_tokens: number }`
+- `context_tokens` is the **prompt size of the last LLM generation** in the turn, not a cumulative transcript length — but it grows with the conversation, making it a good proxy for how close a long session is to the model's limit
+- Available in `@elevenlabs/client` ≥ 1.21.0, `@elevenlabs/react` ≥ 1.13.0 (`HookCallbacks`), and `@elevenlabs/types` ≥ 0.21.1 (`ContextUsageEvent`)
+- Practical uses: warn near the limit, trigger a graceful wrap-up, or log per-model token consumption for cost analysis
+
+## MCP tool-call approvals (main, unreleased — target: next client minor)
+
+When an agent's MCP tool requires approval, the server sends an `mcp_tool_call` in the `awaiting_approval` state and waits. Pass `onMCPToolApprovalRequest` and the SDK sends the resulting `mcp_tool_approval_result` for you — exactly once per `tool_call_id`:
+
+```ts
+const conversation = await Conversation.startSession({
+  agentId: "agent_xxx",
+  onMCPToolApprovalRequest: toolCall =>
+    window.confirm(
+      `Allow ${toolCall.tool_name} from ${toolCall.service_id}?\n\n` +
+        JSON.stringify(toolCall.parameters, null, 2)
+    ),
+});
+```
+
+Semantics that matter for approval UI:
+- Resolve `true` to allow, `false` to deny. **Rejecting the promise — or resolving to anything non-boolean — is reported via `onError` and treated as a denial.** A broken handler can never let a tool call through.
+- The second argument carries `{ signal: AbortSignal }` — aborted once the SDK will no longer send this decision (approval window elapsed, server moved on, or session ended). Use it to dismiss approval UI:
+
+```ts
+onMCPToolApprovalRequest: (toolCall, { signal }) =>
+  new Promise(resolve => {
+    const dialog = showApprovalDialog(toolCall, resolve);
+    signal.addEventListener("abort", () => dialog.close());
+  }),
+```
+
+- `onMCPToolCall` still fires for **every** state including `awaiting_approval` — existing observability code is unaffected
+- Manual handling (`onMCPToolCall` + `conversation.sendMCPToolApprovalResult()`) keeps working; the handler is opt-in
+- The handler sits **outside** the multi-listener callback composition the React SDK does for `Callbacks` — it has request/response semantics, like `clientTools`
+
+## External agent handback (main, unreleased)
+
+`onExternalAgentDisconnected` fires when a connected external (human/live) agent disconnects, complementing `onExternalAgentConnected`. After it fires, the AI agent resumes control of the conversation. Wire both if you surface live-agent presence in UI:
+
+```ts
+onExternalAgentConnected: () => setLiveAgent(true),
+onExternalAgentDisconnected: () => setLiveAgent(false),
+```
+
+Also included in React `HookCallbacks` (on main). The widget clears its external-agent mode and typing indicator on this event.
+
+## WebRTC setup fails fast on unpublishable initiation payload (main, unreleased)
+
+Previously `Conversation.startSession()` on WebRTC could **resolve with a "connected" session that could never speak**: the mandatory `conversation_initiation_client_data` publish went through the best-effort send path, which returns early when the room isn't connected and swallows `publishData()` rejections. You'd get `onConnect` firing while the room and microphone stayed live for a conversation the server never initialized.
+
+Now that send is mandatory: a failure rejects `startSession()` and the existing error path disconnects the room and reports to the caller. Behavior notes:
+- `onConnect` no longer fires for sessions the server never initialized
+- Mid-session data messages remain best-effort (logged, not thrown) — only the initiation send is fatal
+- If your app previously "recovered" from ghost sessions by timing out after `onConnect`, you can now rely on `startSession()` rejection instead
 
 ## WebRTC ICE transport policy (v1.20.0)
 
@@ -299,13 +369,16 @@ const conversation = await Conversation.startSession({
 
 If you self-host worklets and previously saw CSP violations on WebRTC sessions, re-test — this was the likely cause.
 
-## React Native setup guard (v1.20.0)
+## React Native setup guard (v1.19.1 → superseded by v1.21.0 export conditions)
 
-On React Native, when no voice session setup strategy is registered, the error message now points at importing `@elevenlabs/react-native` instead of suggesting the browser entry point. If you see this error, add:
+On React Native, when no voice session setup strategy is registered, the error message points at importing `@elevenlabs/react-native`. If you see this error, add:
 
 ```ts
 import "@elevenlabs/react-native"; // registers the RN voice session setup strategy
+// ⚠️ must come BEFORE any other ElevenLabs imports
 ```
+
+Since v1.21.0 the client resolves React Native via the **`react-native` export condition** in package.json instead of sniffing globals, and a dedicated `platform/react-native` entry point injects the setup guidance ("Add `import \"@elevenlabs/react-native\";` before any other ElevenLabs imports"). Bundler config that strips or reorders export conditions (Metro transforms, `browser`-field resolution in web-focused tools) can defeat this — the Expo example app is the reference for correct Metro setup.
 
 ## Self-hosted orchestrator sessions (v1.18.0, experimental)
 

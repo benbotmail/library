@@ -11,9 +11,13 @@
 - [ ] Reconnect with exponential backoff
 - [ ] Persist session + segment IDs for idempotent UI replay
 - [ ] Wire `onPing` for connection latency monitoring
+- [ ] Wire `onContextUsage` (client ≥ 1.21.0) to track context-window pressure on long sessions — decide a threshold (e.g. 80%) that triggers wrap-up or reconnect
 - [ ] Use `onDisconnect` details (`reason: "error" | "agent" | "user"`) for smart retry logic
 - [ ] Verify `endSession()` always reaches `disconnected` status even if teardown throws
 - [ ] If using React `ConversationProvider`, test rapid session restart scenarios for state consistency
+- [ ] React Native: verify `import "@elevenlabs/react-native"` comes **before** all other ElevenLabs imports (v1.21.0 export-condition resolution); a missing setup strategy now yields an actionable error
+- [ ] If wiring MCP tool approvals (`onMCPToolApprovalRequest`, client main/unreleased): wire the `AbortSignal` to dismiss approval UI, and treat handler rejection as denial (it is reported via `onError`)
+- [ ] If surfacing live-agent presence: wire both `onExternalAgentConnected` and `onExternalAgentDisconnected` (main/unreleased) so UI reflects AI resuming control
 
 ## Audio/transcription quality
 - [ ] Force `languageCode: "en"` when source language is known
